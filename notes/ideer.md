@@ -1,11 +1,12 @@
 # Alle de gode idéene
 
 ## Content
-Bunadskjenning
-Blogg
+- Bunadskjenning
+- Blogg
+- Hvor fort tømmes en trakt
 
 ## Funksjonalitet
-Grafer
-Quizer
-Stilbytte
-Språk
+- Grafer
+- Quizer
+- Stilbytte
+- Språk
