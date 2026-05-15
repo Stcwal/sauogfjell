@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "dev": "npx astro dev"
+  },
+  "dependencies": {
+  "astro": "^6.3.3"
+  }
+}
