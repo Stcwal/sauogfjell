@@ -1,0 +1,9 @@
+outer {
+  min-height: 100vh;
+}
+content {
+  display: block;
+  box-sizing: border-box;
+  min-height: 100%;
+  font-family: 'Courier New', Courier, monospace;
+}
