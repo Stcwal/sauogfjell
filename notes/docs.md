@@ -1,7 +1,4 @@
 # Documentation nation
-<<<<<<< Updated upstream
-[Astro dokumentasjon](https://docs.astro.build/en/)
-=======
 [Astro dokumentasjon](https://docs.astro.build/en/)
 
 ## Routing
@@ -13,4 +10,3 @@ lag en mappe, linken følger mappestrukturen, for eksempel:
 url vil her være `sauogfjell.no/blog/stian`
 
 pathen vil da prøve å lese index.astro filen, så det er her du lager nettsiden din
->>>>>>> Stashed changes
