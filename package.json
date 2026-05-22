@@ -3,7 +3,6 @@
     "dev": "npx astro dev"
   },
   "dependencies": {
-    "@astrojs/db": "^0.21.2",
-    "astro": "^6.3.3"
+  "astro": "^6.3.3"
   }
 }
