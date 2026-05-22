@@ -1,10 +1,45 @@
-outer {
-  min-height: 100vh;
+:root {
+  font-family: monospace;
 }
-content {
-  display: block;
-  box-sizing: border-box;
+.wrapper, html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#outer {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#header {
+  min-height: 20px;
+  background-color: rgb(255, 158, 226);
+  width: 100%;
+  position: fixed;
+}
+
+#content {
+  padding-top: 20px;
+  flex: 1;
   min-height: 100%;
-  height: 100;
-  font-family: 'Courier New', Courier, monospace;
+}
+
+
+#footer {
+  align-self: baseline;
+  width: 100%;
+}
+
+#footer-outer {
+  background-color: azure;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#footer-inner {
+  background-color: lightblue;
 }
