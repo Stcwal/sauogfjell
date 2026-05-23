@@ -4,11 +4,13 @@ const prop = Astro.props;
 const posts = await getCollection('dev');
 ---
 <div>
-  {await Promise.all(posts.map(async (post: any) => {const {Content} = await render(post);
-  return(
-    <div>
-      <Content />
-    </div>
-  );
-  }))}
+  { await Promise.all(
+    posts.map(async (post) => { const {Content} = await render(post);
+      return (
+        <div>
+          <Content />
+        </div>
+      );
+    })
+  )}
 </div>
