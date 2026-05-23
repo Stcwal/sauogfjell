@@ -1,12 +1,12 @@
 ---
-id: dev01
 title: Første testinnlegg
-author: Stian Walmann
-date: 23.05.2026
+#draft: false
+#author: stian
+#publishDate: 2026-05-23
+#editDate: 2026-05-23
 ---
-
 # Første innlegg
-_Sist endret av Stian den 23. mai 2026_
+
 ## Velkommen til bunns
 Om du har bladd ned hit så har en av tre ting skjedd:
 

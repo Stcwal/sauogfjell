@@ -1,7 +1,14 @@
 ---
-import {Content as Post} from '../developer-updates/test.md';
+import { getCollection, render } from 'astro:content';
+const prop = Astro.props;
+const posts = await getCollection('dev');
 ---
-
-<div class="post-wrapper">
-  <Post />
+<div>
+  {await Promise.all(posts.map(async (post: any) => {const {Content} = await render(post);
+  return(
+    <div>
+      <Content />
+    </div>
+  );
+  }))}
 </div>
