@@ -15,6 +15,9 @@
     * dagbladet
     * nrk
     * vy
+    * alt er sirkler
+    * uten css
+    * stygg selvlaget css
 - Språk
 - ELO system for musikk
 - Kommentarfelt
