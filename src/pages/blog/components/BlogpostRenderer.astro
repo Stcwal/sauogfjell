@@ -18,7 +18,7 @@ const formatDate = (date: Date) =>
           <hr/>
         <PostWrapper>
           <Content />
-          <a class="post-subtext">Skrevet av {post.data.author} {formatDate(post.data.publishDate)}, sist endret {formatDate(post.data.editDate)} av {post.data.author}</a>
+          <a class="post-subtext">Skrevet av {post.data.author} {formatDate(post.data.publishDate)}{post.data.editDate ? `, sist endret ${formatDate(post.data.editDate)} av ${post.data.author}` : ''}</a>
         </PostWrapper>
       );
     })

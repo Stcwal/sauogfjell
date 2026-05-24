@@ -10,7 +10,7 @@ const dev = defineCollection({
     author: z.string(),
     draft: z.boolean(),
     publishDate: z.date(),
-    editDate: z.date(),
+    editDate: z.date().optional(),
   }),
 });
 

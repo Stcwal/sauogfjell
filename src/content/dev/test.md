@@ -3,7 +3,7 @@ title: Første testinnlegg
 author: Stian
 draft: false
 publishDate: 2026-05-23
-editDate: 2026-05-23
+editDate: 2026-05-24
 ---
 # Første innlegg
 
