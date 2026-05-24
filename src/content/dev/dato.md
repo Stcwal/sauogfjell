@@ -3,7 +3,6 @@ title: Fikset datoer
 author: Stian
 draft: false
 publishDate: 2026-05-24
-editDate: 2026-05-24
 ---
 
 # Jeg har fikset datoer

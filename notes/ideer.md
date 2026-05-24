@@ -25,6 +25,8 @@
 - Strava
 - Dumme navigasjonsmuligheter
 - Feedback
+- Mailing-liste med varsler om nye innlegg
+  + noreply@sauogfjell.no
 
 ### Liste over Stians fantastiske idéer
 - Strava
