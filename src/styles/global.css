@@ -7,8 +7,7 @@
 }
 
 #outer {
-  height: 100%;
-  margin: 0;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -22,14 +21,12 @@
 
 #content {
   padding-top: 20px;
-  flex: 1;
-  min-height: 100%;
+  display: flex;
 }
 
-
 #footer {
-  align-self: baseline;
   width: 100%;
+  margin-top: auto;
 }
 
 #footer-outer {
@@ -40,5 +37,14 @@
 }
 
 #footer-inner {
-  background-color: lightblue;
+  background-color:color(from color srgb r g b);
+}
+
+.post-wrapper {
+  margin: 25px;
+}
+
+.post-subtext {
+  font-size: xx-small;
+  font-style: italic;
 }

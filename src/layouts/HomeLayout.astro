@@ -1,13 +1,13 @@
 ---
 import '../styles/global.css';
 import Footer from './components/Footer.astro';
+import Header from './components/Header.astro';
 ---
 <meta charset="UTF-8">
 <html lang="no">
 <div id="outer">
   <div id="header">
-      <a href="/">Home</a>
-      <a href="/blog/">Blog</a>
+    <Header/>
   </div>
     <div id="content">
       <slot/>
