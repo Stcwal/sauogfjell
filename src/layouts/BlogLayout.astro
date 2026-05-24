@@ -1,14 +1,13 @@
 ---
-import '../styles/global.css';
 import Footer from './components/Footer.astro';
 import Header from './components/Header.astro';
+import Layout from './Layout.astro';
 ---
-<meta charset="UTF-8">
-<html lang="no">
-<div id="outer">
-  <div id="header">
+<Layout>
+  <div id="outer">
+    <div id="header">
       <Header/>
-  </div>
+    </div>
     <div id="content">
       <slot/>
     </div>
@@ -16,4 +15,5 @@ import Header from './components/Header.astro';
       <Footer/>
     </div>
   </div>
-</html>
+  </html>
+</Layout>
