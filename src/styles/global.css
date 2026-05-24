@@ -20,9 +20,17 @@
   border-bottom: 2px solid black;
 }
 
-#content {
+#blog-content {
   padding-top: 50px;
   display: flex;
+}
+
+#home-content {
+  padding-top: 50px;
+  display: grid;
+  grid-auto-columns: 33vw;
+  grid-template-columns: 33vw 33vw 33vw;
+  justify-content: center;
 }
 
 #footer {
