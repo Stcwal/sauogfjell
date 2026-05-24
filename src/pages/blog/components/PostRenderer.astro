@@ -1,15 +1,26 @@
 ---
 import { getCollection, render } from 'astro:content';
+import PostWrapper from "./PostWrapper.astro";
 const prop = Astro.props;
 const posts = await getCollection('dev');
+
+const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat('nb-NO', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).format(date);
 ---
 <div>
   { await Promise.all(
     posts.map(async (post) => { const {Content} = await render(post);
       return (
-        <div>
+        <PostWrapper>
+          <div>
+          </div>
           <Content />
-        </div>
+          <a class="post-subtext">Skrevet av {post.data.author} {formatDate(post.data.publishDate)}, sist endret {formatDate(post.data.editDate)} av {post.data.author}</a>
+        </PostWrapper>
       );
     })
   )}

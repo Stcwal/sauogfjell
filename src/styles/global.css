@@ -43,3 +43,8 @@
 .post-wrapper {
   margin: 25px;
 }
+
+.post-subtext {
+  font-size: xx-small;
+  font-style: italic;
+}

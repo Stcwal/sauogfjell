@@ -5,11 +5,29 @@
     "title": {
       "type": "string"
     },
+    "author": {
+      "type": "string"
+    },
+    "draft": {
+      "type": "boolean"
+    },
+    "publishDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "editDate": {
+      "type": "string",
+      "format": "date-time"
+    },
     "$schema": {
       "type": "string"
     }
   },
   "required": [
-    "title"
+    "title",
+    "author",
+    "draft",
+    "publishDate",
+    "editDate"
   ]
 }

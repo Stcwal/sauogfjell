@@ -1,9 +1,9 @@
 ---
 title: Første testinnlegg
-#draft: false
-#author: stian
-#publishDate: 2026-05-23
-#editDate: 2026-05-23
+author: Stian
+draft: false
+publishDate: 2026-05-23
+editDate: 2026-05-23
 ---
 # Første innlegg
 
