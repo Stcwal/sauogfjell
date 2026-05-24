@@ -1,9 +1,11 @@
 ---
 import BlogLayout from "../../layouts/BlogLayout.astro"
-import PostRenderer from "./components/PostRenderer.astro"
+import BlogpostRenderer from "./components/BlogpostRenderer.astro"
+
+const blog = 'dev';
 ---
 
 
 <BlogLayout>
-  <PostRenderer/>
+  <BlogpostRenderer collection={blog}/>
 </BlogLayout>
