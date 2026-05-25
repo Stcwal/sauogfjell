@@ -11,17 +11,11 @@ const Comment = defineTable({
 const Songs = defineTable({
   columns: {
     songID: column.number({ primaryKey: true }),
-    artistID: column.number({ references: () => Artists.columns.artistID }),
+    artistName: column.text(),
+    // artistID: column.number({ references: () => Artists.columns.artistID }),
     songName: column.text(),
     elo: column.number(),
     numMatches: column.number(),
-  }
-})
-
-const Artists = defineTable({
-  columns: {
-    artistID: column.number({ primaryKey: true }),
-    artistName: column.text(),
   }
 })
 
@@ -41,6 +35,6 @@ const Matches = defineTable({
 // https://astro.build/db/config
 export default defineDb({
   tables: {
-    Comment, Songs, Artists, Matches
+    Comment, Songs, Matches
   }
 });
