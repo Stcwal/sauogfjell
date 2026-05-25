@@ -5,10 +5,10 @@ const Comment = defineTable({
     author: column.text(),
     body: column.text(),
   }
-});
+})
 
 ////// ELO for sanger
-const Songs = defineTable({
+export const Songs = defineTable({
   columns: {
     songID: column.number({ primaryKey: true }),
     artistName: column.text(),
@@ -19,7 +19,7 @@ const Songs = defineTable({
   }
 })
 
-const Matches = defineTable({
+export const Matches = defineTable({
   columns: {
     matchID: column.number({ primaryKey: true }),
     songID1: column.number({ references: () => Songs.columns.songID }),
@@ -27,8 +27,6 @@ const Matches = defineTable({
     songIDwinner: column.number({ references: () => Songs.columns.songID }),
   }
 })
-
-
 
 
 
