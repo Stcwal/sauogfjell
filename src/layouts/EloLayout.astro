@@ -1,0 +1,19 @@
+---
+import '../styles/global.css';
+import Footer from './components/Footer.astro';
+import Header from './components/Header.astro';
+---
+<meta charset="UTF-8">
+<html lang="no">
+<div id="outer">
+  <div id="header">
+    <Header/>
+  </div>
+    <div id="content">
+      <slot/>
+    </div>
+    <div id="footer">
+      <Footer/>
+    </div>
+  </div>
+</html>
