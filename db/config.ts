@@ -41,6 +41,6 @@ const Matches = defineTable({
 // https://astro.build/db/config
 export default defineDb({
   tables: {
-    Comment
+    Comment, Songs, Artists, Matches
   }
 });
