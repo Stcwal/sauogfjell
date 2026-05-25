@@ -6,10 +6,7 @@ https://docs.astro.build/en/guides/astro-db/
 
 
 ## Sang-elo-rating
-Songs(<u>songID</u>, <u>artistID</u>, songName,  elo, numMatches)
-- artistID er fremmednøkkel mot Artists
-
-Artists(<u>artistID</u>, artistName)
+Songs(<u>songID</u>, artistName, songName,  elo, numMatches)
 
 
 Matches(<u>matchID</u>, <u>songID1</u>, <u>songID2</u>, <u>songIDwinner</u>)
