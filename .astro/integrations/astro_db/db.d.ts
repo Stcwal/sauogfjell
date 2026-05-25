@@ -4,4 +4,12 @@ declare module 'astro:db' {
 		"Comment",
 		{"author":{"type":"text","schema":{"unique":false,"deprecated":false,"name":"author","collection":"Comment","primaryKey":false,"optional":false}},"body":{"type":"text","schema":{"unique":false,"deprecated":false,"name":"body","collection":"Comment","primaryKey":false,"optional":false}}}
 	>;
+	export const Songs: import("@astrojs/db/runtime").Table<
+		"Songs",
+		{"songID":{"type":"number","schema":{"unique":false,"deprecated":false,"name":"songID","collection":"Songs","primaryKey":true}},"artistName":{"type":"text","schema":{"unique":false,"deprecated":false,"name":"artistName","collection":"Songs","primaryKey":false,"optional":false}},"songName":{"type":"text","schema":{"unique":false,"deprecated":false,"name":"songName","collection":"Songs","primaryKey":false,"optional":false}},"elo":{"type":"number","schema":{"unique":false,"deprecated":false,"name":"elo","collection":"Songs","primaryKey":false,"optional":false}},"numMatches":{"type":"number","schema":{"unique":false,"deprecated":false,"name":"numMatches","collection":"Songs","primaryKey":false,"optional":false}}}
+	>;
+	export const Matches: import("@astrojs/db/runtime").Table<
+		"Matches",
+		{"matchID":{"type":"number","schema":{"unique":false,"deprecated":false,"name":"matchID","collection":"Matches","primaryKey":true}},"songID1":{"type":"number","schema":{"unique":false,"deprecated":false,"name":"songID1","collection":"Matches","primaryKey":false,"optional":false,"references":{"type":"number","schema":{"unique":false,"deprecated":false,"name":"songID","collection":"Songs","primaryKey":true}}}},"songID2":{"type":"number","schema":{"unique":false,"deprecated":false,"name":"songID2","collection":"Matches","primaryKey":false,"optional":false,"references":{"type":"number","schema":{"unique":false,"deprecated":false,"name":"songID","collection":"Songs","primaryKey":true}}}},"songIDwinner":{"type":"number","schema":{"unique":false,"deprecated":false,"name":"songIDwinner","collection":"Matches","primaryKey":false,"optional":false,"references":{"type":"number","schema":{"unique":false,"deprecated":false,"name":"songID","collection":"Songs","primaryKey":true}}}}}
+	>;
 }
