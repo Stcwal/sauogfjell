@@ -1,0 +1,18 @@
+---
+import Footer from './components/Footer.astro';
+import Header from './components/Header.astro';
+import Layout from './Layout.astro';
+---
+<Layout>
+  <div id="outer">
+    <div id="header">
+      <Header/>
+    </div>
+    <div id="home-content">
+      <slot/>
+    </div>
+    <div id="footer">
+      <Footer/>
+    </div>
+  </div>
+</Layout>

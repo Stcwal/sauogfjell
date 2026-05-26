@@ -1,0 +1,59 @@
+:root {
+  font-family: monospace;
+}
+.wrapper, html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#outer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#header {
+  min-height: 50px;
+  background-color: rgb(255, 158, 226);
+  width: 100%;
+  position: fixed;
+  border-bottom: 2px solid black;
+}
+
+#blog-content {
+  padding-top: 50px;
+  display: flex;
+}
+
+#home-content {
+  padding-top: 50px;
+  display: grid;
+  grid-auto-columns: 33vw;
+  grid-template-columns: 33vw 33vw 33vw;
+  justify-content: center;
+}
+
+#footer {
+  width: 100%;
+  margin-top: auto;
+}
+
+#footer-outer {
+  background-color: azure;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#footer-inner {
+  background-color:color(from color srgb r g b);
+}
+
+.post-wrapper {
+  margin: 25px;
+}
+
+.post-subtext {
+  font-size: xx-small;
+  font-style: italic;
+}

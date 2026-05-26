@@ -1,0 +1,26 @@
+---
+import { getCollection, render } from 'astro:content';
+import PostWrapper from "./BlogpostWrapper.astro";
+const { collection } = Astro.props;
+const posts = await getCollection(collection as any);
+
+const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat('nb-NO', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).format(date);
+---
+<div>
+  { await Promise.all(
+    posts.map(async (post: any, i: number) => { const {Content} = await render(post);
+      return (
+        <PostWrapper>
+          <Content />
+          <a class="post-subtext">Skrevet av {post.data.author} {formatDate(post.data.publishDate)}{post.data.editDate ? `, sist endret ${formatDate(post.data.editDate)} av ${post.data.author}` : ''}</a>
+          {i < posts.length - 1 ? <hr/> : null}
+        </PostWrapper>
+      );
+    })
+  )}
+</div>
