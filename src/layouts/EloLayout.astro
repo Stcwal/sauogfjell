@@ -1,19 +1,89 @@
 ---
-import '../styles/global.css';
-import Footer from './components/Footer.astro';
-import Header from './components/Header.astro';
+import "../styles/global.css";
+import Footer from "./components/Footer.astro";
+import Header from "./components/Header.astro";
+
+interface Props {
+  song1?: string;
+  artist1?: string;
+  albumCover1?: string;
+
+  song2?: string;
+  artist2?: string;
+  albumCover2?: string;
+}
+
+const { song1, artist1, albumCover1, song2, artist2, albumCover2 } =
+  Astro.props as Props;
 ---
-<meta charset="UTF-8">
-<html lang="no">
-<div id="outer">
-  <div id="header">
-    <Header/>
-  </div>
-    <div id="content">
-      <slot/>
+
+<Header />
+
+<main>
+  <div class="elo-container">
+    <div class="elo-column">
+      <div class="elo-row">{song1}</div>
+      <div class="elo-row">{artist1}</div>
+      <img src={albumCover1} alt={`${song1} album cover`} class="elo-cover" />
+      <button type="button" class="elo-btn" data-choice="1">Stem</button>
     </div>
-    <div id="footer">
-      <Footer/>
+
+    <div class="elo-column">
+      <div class="elo-row">{song2}</div>
+      <div class="elo-row">{artist2}</div>
+      <img src={albumCover2} alt={`${song2} album cover`} class="elo-cover" />
+      <button type="button" class="elo-btn" data-choice="2">Stem</button>
     </div>
   </div>
-</html>
+</main>
+
+<Footer />
+
+<style>
+  main {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  .elo-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 500px;
+    width: 100%;
+  }
+
+  .elo-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .elo-row {
+    font-size: 1rem;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .elo-cover {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  .elo-btn {
+    border: 1px solid #222;
+    background: white;
+    padding: 0.5rem 1.5rem;
+    font: inherit;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .elo-btn:hover {
+    background: #f0f0f0;
+  }
+</style>
+

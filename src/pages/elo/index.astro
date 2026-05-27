@@ -1,7 +1,34 @@
 ---
 import EloLayout from "../../layouts/EloLayout.astro";
+import { db, Songs, Matches } from "astro:db";
+import { eq } from "drizzle-orm";
+
+// Queries: https://orm.drizzle.team/docs/select
+
+const [choice1] = await db
+    .select({
+        songName: Songs.songName,
+        artistName: Songs.artistName,
+        albumCoverLink: Songs.albumCoverLink,
+    })
+    .from(Songs)
+    .where(eq(Songs.songID, 1));
+
+const [choice2] = await db
+    .select({
+        songName: Songs.songName,
+        artistName: Songs.artistName,
+        albumCoverLink: Songs.albumCoverLink,
+    })
+    .from(Songs)
+    .where(eq(Songs.songID, 2));
 ---
 
-<EloLayout>
-    <b> Dette er elo-skjerm </b>
-</EloLayout>
+<EloLayout
+    song1={choice1.songName}
+    artist1={choice1.artistName}
+    albumCover1={choice1.albumCoverLink}
+    song2={choice2.songName}
+    artist2={choice2.artistName}
+    albumCover2={choice2.albumCoverLink}
+/>
