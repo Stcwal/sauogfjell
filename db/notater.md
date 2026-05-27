@@ -6,7 +6,7 @@ https://docs.astro.build/en/guides/astro-db/
 
 
 ## Sang-elo-rating
-Songs(<u>songID</u>, artistName, songName,  elo, numMatches)
+Songs(<u>songID</u>, artistName, songName,  elo, numMatches, albumCoverLink)
 
 
 Matches(<u>matchID</u>, <u>songID1</u>, <u>songID2</u>, <u>songIDwinner</u>)
