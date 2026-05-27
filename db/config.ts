@@ -16,6 +16,7 @@ export const Songs = defineTable({
     songName: column.text(),
     elo: column.number(),
     numMatches: column.number(),
+    albumCoverLink: column.text()
   }
 })
 
