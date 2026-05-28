@@ -3,7 +3,8 @@
 .git
 node_modules/
 package-lock.json
-.astro/content-assets.mjs
-.astro/content.d.ts
-.astro/data-store.json
-.astro/content.db
+.astro/
+# .astro/content-assets.mjs
+# .astro/content.d.ts
+# .astro/data-store.json
+# .astro/content.db

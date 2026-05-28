@@ -28,7 +28,23 @@ const [choice2] = await db
     song1={choice1.songName}
     artist1={choice1.artistName}
     albumCover1={choice1.albumCoverLink}
+    onClickEvent1="button1Clicked"
+
     song2={choice2.songName}
     artist2={choice2.artistName}
     albumCover2={choice2.albumCoverLink}
+    onClickEvent2="button2Clicked"
 />
+
+<script>
+  function onVoteSong1() {
+    console.log("voted for song 1");
+  }
+
+  function onVoteSong2() {
+    console.log("voted for song 2");
+  }
+
+  window.addEventListener("button1Clicked", onVoteSong1);
+  window.addEventListener("button2Clicked", onVoteSong2);
+</script>

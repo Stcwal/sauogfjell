@@ -7,13 +7,15 @@ interface Props {
   song1?: string;
   artist1?: string;
   albumCover1?: string;
+  onClickEvent1?: string;
 
   song2?: string;
   artist2?: string;
   albumCover2?: string;
+  onClickEvent2?: string;
 }
 
-const { song1, artist1, albumCover1, song2, artist2, albumCover2 } =
+const { song1, artist1, albumCover1, onClickEvent1 = "elo:vote:song1", song2, artist2, albumCover2, onClickEvent2 = "elo:vote:song2" } =
   Astro.props as Props;
 ---
 
@@ -25,19 +27,25 @@ const { song1, artist1, albumCover1, song2, artist2, albumCover2 } =
       <div class="elo-row">{song1}</div>
       <div class="elo-row">{artist1}</div>
       <img src={albumCover1} alt={`${song1} album cover`} class="elo-cover" />
-      <button type="button" class="elo-btn" data-choice="1">Stem</button>
+      <button type="button" class="elo-btn" data-event={onClickEvent1}>Stem</button>
     </div>
 
     <div class="elo-column">
       <div class="elo-row">{song2}</div>
       <div class="elo-row">{artist2}</div>
       <img src={albumCover2} alt={`${song2} album cover`} class="elo-cover" />
-      <button type="button" class="elo-btn" data-choice="2">Stem</button>
+      <button type="button" class="elo-btn" data-event={onClickEvent2}>Stem</button>
     </div>
   </div>
 </main>
 
 <Footer />
+
+<script>
+  const [btn1, btn2] = document.querySelectorAll<HTMLButtonElement>(".elo-btn");
+  btn1.addEventListener("click", () => window.dispatchEvent(new CustomEvent("button1Clicked")));
+  btn2.addEventListener("click", () => window.dispatchEvent(new CustomEvent("button2Clicked")));
+</script>
 
 <style>
   main {
