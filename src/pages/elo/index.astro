@@ -1,27 +1,37 @@
 ---
+// Queries: https://orm.drizzle.team/docs/select
+
 import EloLayout from "../../layouts/EloLayout.astro";
 import { db, Songs, Matches } from "astro:db";
 import { eq } from "drizzle-orm";
 
-// Queries: https://orm.drizzle.team/docs/select
+import { getNewSongs } from "../../lib/songs";
 
+// Gir to semi-tilfeldige sanger ved oppstart
+const songs = await getNewSongs();
+const song1 = songs[0];
+const song2 = songs[1];
+
+// Henter informasjon fra databasen basert på de to sangene over
 const [choice1] = await db
     .select({
+        songID: Songs.songID,
         songName: Songs.songName,
         artistName: Songs.artistName,
         albumCoverLink: Songs.albumCoverLink,
     })
     .from(Songs)
-    .where(eq(Songs.songID, 1));
+    .where(eq(Songs.songID, song1.songID));
 
 const [choice2] = await db
     .select({
+        songID: Songs.songID,
         songName: Songs.songName,
         artistName: Songs.artistName,
         albumCoverLink: Songs.albumCoverLink,
     })
     .from(Songs)
-    .where(eq(Songs.songID, 2));
+    .where(eq(Songs.songID, song2.songID));
 ---
 
 <EloLayout
@@ -29,22 +39,43 @@ const [choice2] = await db
     artist1={choice1.artistName}
     albumCover1={choice1.albumCoverLink}
     onClickEvent1="button1Clicked"
-
     song2={choice2.songName}
     artist2={choice2.artistName}
     albumCover2={choice2.albumCoverLink}
     onClickEvent2="button2Clicked"
 />
 
-<script>
-  function onVoteSong1() {
-    console.log("voted for song 1");
-  }
+<script define:vars={{ choice1, choice2 }}>
+    let current1 = choice1;
+    let current2 = choice2;
 
-  function onVoteSong2() {
-    console.log("voted for song 2");
-  }
+    function updateColumn(colNum, song) {
+        const col = document.querySelector(`[data-col="${colNum}"]`);
+        const rows = col.querySelectorAll(".elo-row");
+        const img = col.querySelector(".elo-cover");
+        rows[0].textContent = song.songName;
+        rows[1].textContent = song.artistName;
+        img.src = song.albumCoverLink;
+        img.alt = `${song.songName} album cover`;
+    }
 
-  window.addEventListener("button1Clicked", onVoteSong1);
-  window.addEventListener("button2Clicked", onVoteSong2);
+    async function vote(winnerID, loserID) {
+        const res = await fetch("/api/vote", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ winnerID, loserID }),
+        });
+        const { song1, song2 } = await res.json();
+        current1 = song1;
+        current2 = song2;
+        updateColumn(1, song1);
+        updateColumn(2, song2);
+    }
+
+    window.addEventListener("button1Clicked", () =>
+        vote(current1.songID, current2.songID),
+    );
+    window.addEventListener("button2Clicked", () =>
+        vote(current2.songID, current1.songID),
+    );
 </script>

@@ -12,11 +12,10 @@ export const Songs = defineTable({
   columns: {
     songID: column.number({ primaryKey: true }),
     artistName: column.text(),
-    // artistID: column.number({ references: () => Artists.columns.artistID }),
     songName: column.text(),
+    albumCoverLink: column.text(),
     elo: column.number(),
     numMatches: column.number(),
-    albumCoverLink: column.text()
   }
 })
 
