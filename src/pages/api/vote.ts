@@ -13,6 +13,7 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({ error: "Song not found" }), { status: 404 });
   }
 
+  // Dette er claude. vil helst skrive det selv
   const K = 32;
   const expectedWinner = 1 / (1 + Math.pow(10, (loser.elo - winner.elo) / 400));
   const newWinnerElo = Math.round(winner.elo + K * (1 - expectedWinner));
