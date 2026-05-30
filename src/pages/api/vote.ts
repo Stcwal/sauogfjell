@@ -13,11 +13,19 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({ error: "Song not found" }), { status: 404 });
   }
 
-  // Dette er claude. vil helst skrive det selv
-  const K = 32;
-  const expectedWinner = 1 / (1 + Math.pow(10, (loser.elo - winner.elo) / 400));
-  const newWinnerElo = Math.round(winner.elo + K * (1 - expectedWinner));
-  const newLoserElo = Math.round(loser.elo + K * (0 - (1 - expectedWinner)));
+  // Regner ut ny elo-rating for begge spillere
+  const K = 32; // Maks endring i elo for en kamp
+  const f = 400; // Vet ikke hva denne gjør helt konkret
+  const winnerElo = winner.elo;
+  const loserElo = loser.elo;
+
+  const expectedScoreWinner = 1 / (1 + Math.pow(10, (loserElo - winnerElo) / f));
+  const expectedScoreLoser = 1 / (1 + Math.pow(10, (winnerElo - loserElo) / f));
+  const scoreWinner = 1;
+  const scoreLoser = 0;
+
+  const newWinnerElo = Math.round(winnerElo + K * (scoreWinner - expectedScoreWinner))
+  const newLoserElo = Math.round(loserElo + K * (scoreLoser - expectedScoreLoser))
 
   await db.insert(Matches).values({
     songID1: winnerID,
