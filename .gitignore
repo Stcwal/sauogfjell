@@ -8,3 +8,8 @@ package-lock.json
 .astro/content.d.ts
 .astro/data-store.json
 .astro/content.db
+.astro/types.d.ts
+.astro/collections/anders.schema.json
+.astro/collections/dev.schema.json
+.astro/collections/stian.schema.json
+.astro./integrations/astro_db
