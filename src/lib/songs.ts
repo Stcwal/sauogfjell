@@ -1,30 +1,26 @@
-import { getDataEntryById } from "astro:content";
 import { db, Songs } from "astro:db";
-import { eq } from "drizzle-orm";
+import { lte, sql } from "drizzle-orm";
 
 export async function getNewSongs() {
-    // Returnerer 2 ulike sanger
-    const songID1 = 1;
-    const songID2 = 2;
-    const [song1] = await db
-        .select({
-            songID: Songs.songID,
-            songName: Songs.songName,
-            artistName: Songs.artistName,
-            albumCoverLink: Songs.albumCoverLink,
-        })
+    // Velger to tilfeldeige sanger fra mengden sanger der numMatches er en av de fem lavest verdien
+    // Dersom det er færre enn fem distinkte verdier, finner den to tilfeldige sanger fra alle sangene
+    // (Ja, det var Claude som skrev spørringen)
+    const songs = await db
+        .select()
         .from(Songs)
-        .where(eq(Songs.songID, songID1));
+        .where(
+            lte(
+                Songs.numMatches,
+                sql<number>`COALESCE(
+                    (SELECT DISTINCT numMatches FROM Songs ORDER BY numMatches ASC LIMIT 1 OFFSET 4),
+                    (SELECT MAX(numMatches) FROM Songs)
+                )`
+            )
+        )
+        .orderBy(sql`RANDOM()`)
+        .limit(2);
 
-    const [song2] = await db
-        .select({
-            songID: Songs.songID,
-            songName: Songs.songName,
-            artistName: Songs.artistName,
-            albumCoverLink: Songs.albumCoverLink,
-        })
-        .from(Songs)
-        .where(eq(Songs.songID, songID2));
-
+    const song1 = songs[0]
+    const song2 = songs[1]
     return [song1, song2];
 }

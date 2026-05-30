@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { getNewSongs } from "../../lib/songs";
 
 export const POST: APIRoute = async ({ request }) => {
+  // Input er to sangID-er. Første ID er vinner, andre ID er taper
   const { winnerID, loserID } = await request.json();
 
   const [winner] = await db.select().from(Songs).where(eq(Songs.songID, winnerID));
