@@ -17,6 +17,8 @@ $$\begin{aligned}
 	K:&\quad\text{K-faktor. Maks endring av elo per match} \\
 \end{aligned}$$
 
+$f$ sier noe om hvor viktig forskjellen i rating er. Stor $f$ gjør at $E$ nærmer seg $0.5$ for begge spillere, som gjør at vinneren får omtrent like stor endring i elo hver gang. Lav $f$ gjør at spillere med høy rating som taper mot spillere med lav rating taper veldig mange ratingpoeng. 
+
 **Formler for $E_A$ og $E_B$**
 $$\begin{aligned}
 	E_A
@@ -34,10 +36,10 @@ $$\begin{aligned}
 \end{aligned}$$
 
 ### Eksempel
-$R_A=2000$
-$R_B=1800$
-$f=400$
-$K=32$
+$R_A=2000$  
+$R_B=1800$  
+$f=400$  
+$K=32$  
 
 Regner ut $E$
 $$\begin{aligned}
