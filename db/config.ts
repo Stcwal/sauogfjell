@@ -1,3 +1,6 @@
+// https://docs.turso.tech/introduction
+//https://docs.astro.build/en/guides/astro-db/
+
 import { defineDb, defineTable, column } from 'astro:db';
 
 const Comment = defineTable({
@@ -13,9 +16,10 @@ export const Songs = defineTable({
     songID: column.number({ primaryKey: true }),
     artistName: column.text(),
     songName: column.text(),
-    albumCoverLink: column.text(),
     elo: column.number(),
     numMatches: column.number(),
+    qualified: column.boolean(),
+    albumCoverLink: column.text(),
   }
 })
 
@@ -27,7 +31,7 @@ export const Matches = defineTable({
     songIDwinner: column.number({ references: () => Songs.columns.songID }),
   }
 })
-
+//// ELO slutt
 
 
 // https://astro.build/db/config
