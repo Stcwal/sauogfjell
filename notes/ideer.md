@@ -32,6 +32,7 @@
 - Strava
 - Geoguessr færøyene
 - Ølen var god
+- Bokforslag
 
 ### Liste over Anders' fantastiske idéer
 - Mitt løsningsforslag i matte
