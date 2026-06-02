@@ -3,5 +3,7 @@
 .git/
 .venv/
 .astro/
+.env
 node_modules/
 package-lock.json
+.go-tetris.log

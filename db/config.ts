@@ -1,5 +1,5 @@
 // https://docs.turso.tech/introduction
-//https://docs.astro.build/en/guides/astro-db/
+// https://docs.astro.build/en/guides/astro-db/
 
 import { defineDb, defineTable, column } from 'astro:db';
 
