@@ -1,9 +1,27 @@
 :root {
-  font-family: monospace;
+  --font: monospace;
+  --bg: #fff;
+  --radius: 0px;
+  --border: none;
+  --padding: 0px;
+
 }
+
+[data-theme="floop"]{
+  --font: Arial;
+  --bg: #e1e1e1;
+  --radius: 16px;
+  --border: 2px solid #000;
+  --padding: 10px;
+
+}
+
+
 .wrapper, html, body {
     height: 100%;
     margin: 0;
+    background-color: var(--bg);
+
 }
 
 #outer {
@@ -18,11 +36,17 @@
   width: 100%;
   position: fixed;
   border-bottom: 2px solid black;
+  font-family: var(--font);
+
 }
 
 #blog-content {
+  border: var(--border);
+  border-radius: var(--radius);
   padding-top: 50px;
   display: flex;
+  font-family: var(--font);
+
 }
 
 #home-content {
@@ -36,6 +60,8 @@
 #footer {
   width: 100%;
   margin-top: auto;
+  font-family: var(--font);
+
 }
 
 #footer-outer {
@@ -51,9 +77,12 @@
 
 .post-wrapper {
   margin: 25px;
+  font-family: var(--font);
+
 }
 
 .post-subtext {
+  font-family: var(--font);
   font-size: xx-small;
   font-style: italic;
 }
