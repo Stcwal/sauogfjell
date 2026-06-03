@@ -1,6 +1,7 @@
 .vscode/
 .idea/
-.git
+.git/
+.venv/
+.astro/
 node_modules/
 package-lock.json
-.astro/
