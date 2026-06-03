@@ -3,7 +3,7 @@ title: Første testinnlegg
 author: Stian
 draft: false
 publishDate: 2026-05-23
-editDate: 2026-05-24
+editDate: 2026-06-03
 ---
 # Første innlegg
 
@@ -45,7 +45,7 @@ takk for tålmodigheten
 ### Så hva er svaret da?
 Jeg lager masse **markdown tekst** for å teste markdown preview komponenten min.
 
-#### Unnskydning
+#### Unnskyldning
 Jeg beklager at jeg ikke hadde noe bedre svar enn det, men desverre er det sånn verden er i dag. Egentlig beklager jeg ikke engang, jeg bare følte jeg kunne legge inn det her også, bare for å generere enda mer tekst.
 
 ### Hvorfor genererer du ikke teksten her med AI?
