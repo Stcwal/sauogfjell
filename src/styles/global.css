@@ -19,28 +19,28 @@ Layout attributes are fomulated as this:
   Padding: "--l-p-"
   Height: "--l-h-"
   Width: "--l-w-"
-  Position: "--l-po-"
 
 
 Would be cool if it was stackable, yes?
   Imagine: --c-l-b-w for Content-layout-border-width
 But that is a great idea for another time...
 
-If it turns out that this is shit to work with, please feel free to  change it up.
+If it turns out that this is shit to work with, please feel free to  gchange it up.
 
 It is okay to define a couple of things directly, like the header being pos fixed and the page-height being full height.
 
 */
 :root {
-  --l-font: monospace;
+  --l-f: monospace;
   --l-bg: #fff;
-  --b-radius: 0px;
-  --l-padding: 0px;
-  --h-color: rgb(255, 158, 226);
-  --b-radius: 0px;
-  --b-color: none;
-  --b-width: 0px;
-  --f-color: azure;
+  --l-p: 0px;
+  --h-c: rgb(255, 158, 226);
+  --b-r: 0px;
+  --b-c: none;
+  --b-w: 0px;
+  --f-c: azure;
+  --c-bg: #fdfdfd;
+  --c-p: 0px;
 }
 
 [data-theme="floop"]{
@@ -48,10 +48,21 @@ It is okay to define a couple of things directly, like the header being pos fixe
   --bg: #e1e1e1;
   --b-radius: 16px;
   --border: solid;
-  --b-width: 2px;
+  --b-w: 2px;
   --padding: 10px;
   --header-color: #fff;
   --footer-color: #fff;
+
+  --l-f: Arial;
+  --l-bg: #e1e1e1;
+  --l-p: 16px;
+  --h-c: rgb(145, 145, 145);
+  --b-r: 16px;
+  --b-c: #000;
+  --b-w: 2px;
+  --f-c: rgb(198, 198, 198);
+  --c-bg: #1f5840;
+  --c-p: 16px;
 
 }
 
@@ -59,14 +70,16 @@ It is okay to define a couple of things directly, like the header being pos fixe
 .wrapper, html, body {
     height: 100%;
     margin: 0;
-    background-color: var(--bg);
+    background-color: var(--l-bg);
 
 }
 
 .card {
-  border-color: var(--b-color);
-  border-radius: var(--b-radius);
-  border-width: var(--b-width);
+  border-color: var(--b-c);
+  border-radius: var(--b-r);
+  border-width: var(--b-w);
+  background: var(--c-bg);
+  padding: var(--c-p);
 }
 
 #outer {
@@ -77,20 +90,19 @@ It is okay to define a couple of things directly, like the header being pos fixe
 
 #header {
   min-height: 50px;
-  background-color: var(--header-color);
+  background-color: var(--h-c);
   width: 100%;
   position: fixed;
   border-bottom: 2px solid black;
-  font-family: var(--font);
+  font-family: var(--l-f);
 
 }
 
 #blog-content {
-  border: var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--b-r);
   padding-top: 50px;
   display: flex;
-  font-family: var(--font);
+  font-family: var(--l-f);
 
 }
 
@@ -105,11 +117,11 @@ It is okay to define a couple of things directly, like the header being pos fixe
 #footer {
   width: 100%;
   margin-top: auto;
-  font-family: var(--font);
+  font-family: var(--l-f);
 }
 
 #footer-outer {
-  background-color: var(--footer-color);
+  background-color: var(--f-c);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -124,12 +136,12 @@ It is okay to define a couple of things directly, like the header being pos fixe
 
 .post-wrapper {
   margin: 25px;
-  font-family: var(--font);
+  font-family: var(--l-f);
 
 }
 
 .post-subtext {
-  font-family: var(--font);
+  font-family: var(--l-f);
   font-size: xx-small;
   font-style: italic;
 }
