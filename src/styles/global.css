@@ -1,19 +1,47 @@
-:root {
-  --font: monospace;
-  --bg: #fff;
-  --radius: 0px;
-  --border: none;
-  --padding: 0px;
-  --header-color: rgb(255, 158, 226);
-  --footer-color: azure;
+/*
+Fill inn this as new CSS rules and practices are discovered.
+Also, if you make any special exceptions fo ahead and explain them here as well.
 
+CSS styling rules:
+
+Different parts are prefaced with the following:
+  Content: "--c-"
+  Header: "--h-"
+  Footer: "--f-"
+  Layout: "--l-"
+
+Attributes to the content/page-part are defined with the following:
+  Border: "--x-b-"
+  Font: : "--x-f-"
+
+Layout attributes are fomulated as this:
+  Margin: "--l-m-"
+  Padding: "--l-p-"
+  Height: "--l-h-"
+  Width: "--l-w-"
+  Position: "--l-po-"
+
+  If it turns out that this is shit to worik with, please change it up.
+
+*/
+:root {
+  --l-font: monospace;
+  --l-bg: #fff;
+  --b-radius: 0px;
+  --l-padding: 0px;
+  --h-color: rgb(255, 158, 226);
+  --b-radius: 0px;
+  --b-color: none;
+  --b-width: 0px;
+  --f-color: azure;
 }
 
 [data-theme="floop"]{
   --font: Arial;
   --bg: #e1e1e1;
-  --radius: 16px;
-  --border: 2px solid #000;
+  --b-radius: 16px;
+  --border: solid;
+  --b-width: 2px;
   --padding: 10px;
   --header-color: #fff;
   --footer-color: #fff;
@@ -26,6 +54,12 @@
     margin: 0;
     background-color: var(--bg);
 
+}
+
+.card {
+  border-color: var(--b-color);
+  border-radius: var(--b-radius);
+  border-width: var(--b-width);
 }
 
 #outer {
