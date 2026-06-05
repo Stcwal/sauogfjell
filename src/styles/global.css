@@ -21,7 +21,14 @@ Layout attributes are fomulated as this:
   Width: "--l-w-"
   Position: "--l-po-"
 
-  If it turns out that this is shit to worik with, please change it up.
+
+Would be cool if it was stackable, yes?
+  Imagine: --c-l-b-w for Content-layout-border-width
+But that is a great idea for another time...
+
+If it turns out that this is shit to work with, please feel free to  change it up.
+
+It is okay to define a couple of things directly, like the header being pos fixed and the page-height being full height.
 
 */
 :root {
