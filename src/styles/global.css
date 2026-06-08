@@ -1,9 +1,85 @@
+/*
+Fill inn this as new CSS rules and practices are discovered.
+Also, if you make any special exceptions fo ahead and explain them here as well.
+
+CSS styling rules:
+
+Different parts are prefaced with the following:
+  Content: "--c-"
+  Header: "--h-"
+  Footer: "--f-"
+  Layout: "--l-"
+
+Attributes to the content/page-part are defined with the following:
+  Border: "--x-b-"
+  Font: : "--x-f-"
+
+Layout attributes are fomulated as this:
+  Margin: "--l-m-"
+  Padding: "--l-p-"
+  Height: "--l-h-"
+  Width: "--l-w-"
+
+
+Would be cool if it was stackable, yes?
+  Imagine: --c-l-b-w for Content-layout-border-width
+But that is a great idea for another time...
+
+If it turns out that this is shit to work with, please feel free to  gchange it up.
+
+It is okay to define a couple of things directly, like the header being pos fixed and the page-height being full height.
+
+*/
 :root {
-  font-family: monospace;
+  --l-f: monospace;
+  --l-bg: #fff;
+  --l-p: 0px;
+  --h-c: rgb(255, 158, 226);
+  --b-r: 0px;
+  --b-c: none;
+  --b-w: 0px;
+  --f-c: azure;
+  --c-bg: #fdfdfd;
+  --c-p: 0px;
 }
+
+[data-theme="floop"]{
+  --font: Arial;
+  --bg: #e1e1e1;
+  --b-radius: 16px;
+  --border: solid;
+  --b-w: 2px;
+  --padding: 10px;
+  --header-color: #fff;
+  --footer-color: #fff;
+
+  --l-f: Arial;
+  --l-bg: #e1e1e1;
+  --l-p: 16px;
+  --h-c: rgb(145, 145, 145);
+  --b-r: 16px;
+  --b-c: #000;
+  --b-w: 2px;
+  --f-c: rgb(198, 198, 198);
+  --c-bg: #1f5840;
+  --c-p: 16px;
+
+}
+
+
 .wrapper, html, body {
     height: 100%;
     margin: 0;
+    background-color: var(--l-bg);
+
+}
+
+.card {
+  border-color: var(--b-c);
+  border-radius: var(--b-r);
+  border-width: var(--b-w);
+  background: var(--c-bg);
+  padding: var(--c-p);
 }
 
 #outer {
@@ -14,15 +90,20 @@
 
 #header {
   min-height: 50px;
-  background-color: rgb(255, 158, 226);
+  background-color: var(--h-c);
   width: 100%;
   position: fixed;
   border-bottom: 2px solid black;
+  font-family: var(--l-f);
+
 }
 
 #blog-content {
+  border-radius: var(--b-r);
   padding-top: 50px;
   display: flex;
+  font-family: var(--l-f);
+
 }
 
 #home-content {
@@ -36,13 +117,17 @@
 #footer {
   width: 100%;
   margin-top: auto;
+  font-family: var(--l-f);
 }
 
 #footer-outer {
-  background-color: azure;
+  background-color: var(--f-c);
   display: flex;
   justify-content: center;
   align-items: center;
+  border-top: 2px solid black;
+  padding-bottom: 20px;
+  padding-top: 20px;
 }
 
 #footer-inner {
@@ -51,9 +136,12 @@
 
 .post-wrapper {
   margin: 25px;
+  font-family: var(--l-f);
+
 }
 
 .post-subtext {
+  font-family: var(--l-f);
   font-size: xx-small;
   font-style: italic;
 }
