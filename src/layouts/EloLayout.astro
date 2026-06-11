@@ -1,7 +1,7 @@
 ---
-import "../styles/global.css";
-import Header from "./components/Header.astro";
-import Footer from "./components/Footer.astro";
+import Footer from './components/Footer.astro';
+import Header from './components/Header.astro';
+import Layout from './Layout.astro';
 
 interface Props {
   song1: { songName: string; artistName: string; albumCoverLink: string } | null;
@@ -10,16 +10,14 @@ interface Props {
 
 const { song1, song2 } = Astro.props;
 ---
-<!-- Claude har skrevet layouten -->
-<html lang="no">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.svg" />
-    <title>Elo</title>
-  </head>
-  <body>
-    <Header />
-    <main>
+<!-- Claude har skrevet deler av layouten -->
+
+<Layout>
+  <div id="outer">
+    <div id="header">
+      <Header/>
+    </div>
+    <div id="elo-content">
       <h1>Which is the best song?</h1>
       <div class="elo-container">
         <div class="elo-column">
@@ -43,12 +41,22 @@ const { song1, song2 } = Astro.props;
           <button type="button" class="elo-btn">Vote for song</button>
         </div>
       </div>
-    </main>
-    <Footer />
-  </body>
-</html>
+    </div>
+    <div id="footer">
+      <Footer/>
+    </div>
+  </div>
+</Layout>
 
-<style>
+<style is:global>
+  #elo-content {
+    padding: 50px 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
   /*
     Adjust --box-width to control how much of the screen each song box fills.
     The two boxes + gap should sum to ≤ 100%.
@@ -59,14 +67,6 @@ const { song1, song2 } = Astro.props;
     justify-content: center;
     gap: 2rem;
     width: 100%;
-  }
-
-  main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem 1rem;
-    gap: 2rem;
   }
 
   h1 {
