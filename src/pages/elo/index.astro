@@ -1,0 +1,9 @@
+---
+import EloLayout from "../../layouts/EloLayout.astro";
+import { getRandomLowMatchSong } from "../../lib/songs";
+
+const song1 = await getRandomLowMatchSong(-1, 2);
+const song2 = song1 ? await getRandomLowMatchSong(song1.songID, 2) : null;
+---
+
+<EloLayout song1={song1} song2={song2} />
