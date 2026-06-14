@@ -20,6 +20,7 @@ export const Songs = defineTable({
     numMatches: column.number(),
     qualified: column.boolean(),
     albumCoverLink: column.text(),
+    eloHistory: column.text(),
   }
 })
 

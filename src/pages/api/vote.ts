@@ -29,11 +29,11 @@ export const POST: APIRoute = async ({ request }) => {
   const { newWinnerElo, newLoserElo } = calcNewElos(winner.elo, loser.elo);
 
   await db.update(Songs)
-    .set({ elo: newWinnerElo, numMatches: winner.numMatches + 1 })
+    .set({ elo: newWinnerElo, numMatches: winner.numMatches + 1, eloHistory: winner.eloHistory + ',' + newWinnerElo })
     .where(eq(Songs.songID, winnerId));
 
   await db.update(Songs)
-    .set({ elo: newLoserElo, numMatches: loser.numMatches + 1 })
+    .set({ elo: newLoserElo, numMatches: loser.numMatches + 1, eloHistory: loser.eloHistory + ',' + newLoserElo })
     .where(eq(Songs.songID, loserId));
 
   await db.insert(Matches).values({
