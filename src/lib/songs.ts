@@ -1,12 +1,13 @@
 import { db, Songs } from 'astro:db';
 
-export async function getRandomLowMatchSong(excludeSongID: number, numDistinctValues: number) {
+export async function getRandomLowMatchSong(numDistinctValues: number, excludeSongID?: number) {
   // Returnerer en tilfeldig sang blant sangene med de numDistinctValues lavest antallet kamper
-  // Ekskluderer sangen med ID excludeSongID
+  // Ekskluderer sangen med ID excludeSongID hvis den er oppgitt
   // Claudet funksjon
+  if (numDistinctValues <= 0) throw new Error('numDistinctValues must be a positive integer larger than 0');
+
   const allSongs = await db.select().from(Songs);
 
-  if (numDistinctValues <= 0) throw new Error('numDistinctValues must be a positive integer larger than 0');
   if (allSongs.length === 0) throw new Error('allSongs is empty');
 
   const distinctCounts = [...new Set(allSongs.map(s => s.numMatches))].sort((a, b) => a - b);

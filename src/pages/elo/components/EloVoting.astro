@@ -24,6 +24,7 @@ const { song1, song2 } = Astro.props;
         <button class="vote-btn" data-song-id={song2.songID}>Stem</button>
       </div>
     </div>
+    <p class="vote-error" role="alert"></p>
   </>
 ) : (
   <p>Ingen sanger tilgjengelig.</p>
@@ -41,19 +42,34 @@ const { song1, song2 } = Astro.props;
   const col2 = document.querySelector('.voting-column[data-index="2"]') as HTMLElement;
   const btn1 = col1.querySelector('.vote-btn') as HTMLButtonElement;
   const btn2 = col2.querySelector('.vote-btn') as HTMLButtonElement;
+  const errorEl = document.querySelector('.vote-error') as HTMLElement;
 
   async function vote(winnerId: number, loserId: number) {
-    await fetch('/api/vote', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ winnerId, loserId }),
-    });
+    btn1.disabled = true;
+    btn2.disabled = true;
+    errorEl.textContent = '';
 
-    const res = await fetch('/api/random-pair');
-    const { song1, song2 }: { song1: Song; song2: Song } = await res.json();
+    try {
+      const voteRes = await fetch('/api/vote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ winnerId, loserId }),
+      });
+      if (!voteRes.ok) throw new Error('Vote failed');
 
-    updateColumn(col1, btn1, song1);
-    updateColumn(col2, btn2, song2);
+      const res = await fetch('/api/random-pair');
+      if (!res.ok) throw new Error('Could not load new songs');
+      const { song1, song2 }: { song1: Song; song2: Song } = await res.json();
+
+      updateColumn(col1, btn1, song1);
+      updateColumn(col2, btn2, song2);
+    } catch (err) {
+      errorEl.textContent = 'Noe gikk galt. Prøv igjen.';
+      console.error(err);
+    } finally {
+      btn1.disabled = false;
+      btn2.disabled = false;
+    }
   }
 
   function updateColumn(col: HTMLElement, btn: HTMLButtonElement, song: Song) {
@@ -117,6 +133,13 @@ const { song1, song2 } = Astro.props;
 
   .vote-btn:hover {
     background: #f0f0f0;
+  }
+
+  .vote-error {
+    text-align: center;
+    color: #c00;
+    margin: 0;
+    min-height: 1.2em;
   }
 
   @media (max-width: 600px) {

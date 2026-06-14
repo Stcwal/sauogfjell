@@ -3,8 +3,8 @@ import EloLayout from "../../layouts/EloLayout.astro";
 import EloVoting from "./components/EloVoting.astro";
 import { getRandomLowMatchSong } from "../../lib/songs";
 
-const song1 = await getRandomLowMatchSong(-1, 2);
-const song2 = song1 ? await getRandomLowMatchSong(song1.songID, 2) : null;
+const song1 = await getRandomLowMatchSong(2);
+const song2 = song1 ? await getRandomLowMatchSong(2, song1.songID) : null;
 ---
 
 <EloLayout>

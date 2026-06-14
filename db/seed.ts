@@ -1,7 +1,7 @@
 // https://astro.build/db/seed
 
 // import { db } from 'astro:db';
-import { db, Songs, Matches } from 'astro:db';
+import { db, Songs } from 'astro:db';
 
 
 
