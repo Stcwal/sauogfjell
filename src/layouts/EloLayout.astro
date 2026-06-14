@@ -2,13 +2,6 @@
 import Footer from './components/Footer.astro';
 import Header from './components/Header.astro';
 import Layout from './Layout.astro';
-
-interface Props {
-  song1: { songName: string; artistName: string; albumCoverLink: string } | null;
-  song2: { songName: string; artistName: string; albumCoverLink: string } | null;
-}
-
-const { song1, song2 } = Astro.props;
 ---
 <!-- Claude har skrevet deler av layouten -->
 
@@ -18,29 +11,7 @@ const { song1, song2 } = Astro.props;
       <Header/>
     </div>
     <div id="elo-content">
-      <h1>Which is the best song?</h1>
-      <div class="elo-container">
-        <div class="elo-column">
-          <img
-            src={song1?.albumCoverLink}
-            alt={`${song1?.songName} album cover`}
-            class="elo-cover"
-          />
-          <p class="elo-song">{song1?.songName}</p>
-          <p class="elo-artist">{song1?.artistName}</p>
-          <button type="button" class="elo-btn">Vote for song</button>
-        </div>
-        <div class="elo-column">
-          <img
-            src={song2?.albumCoverLink}
-            alt={`${song2?.songName} album cover`}
-            class="elo-cover"
-          />
-          <p class="elo-song">{song2?.songName}</p>
-          <p class="elo-artist">{song2?.artistName}</p>
-          <button type="button" class="elo-btn">Vote for song</button>
-        </div>
-      </div>
+      <slot/>
     </div>
     <div id="footer">
       <Footer/>
@@ -48,7 +19,7 @@ const { song1, song2 } = Astro.props;
   </div>
 </Layout>
 
-<style is:global>
+<style>
   #elo-content {
     padding: 50px 1rem 2rem;
     display: flex;

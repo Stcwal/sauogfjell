@@ -1,0 +1,81 @@
+---
+interface Props {
+  song1: { songID: number; songName: string; artistName: string; albumCoverLink: string } | null;
+  song2: { songID: number; songName: string; artistName: string; albumCoverLink: string } | null;
+}
+
+const { song1, song2 } = Astro.props;
+---
+
+{song1 && song2 ? (
+  <div class="voting-container">
+    <div class="voting-column">
+      <img class="album-cover" src={song1.albumCoverLink} alt={`Album cover for ${song1.songName}`} />
+      <p class="song-name">{song1.songName}</p>
+      <p class="artist-name">{song1.artistName}</p>
+      <button class="vote-btn" data-song-id={song1.songID}>Stem</button>
+    </div>
+    <div class="voting-column">
+      <img class="album-cover" src={song2.albumCoverLink} alt={`Album cover for ${song2.songName}`} />
+      <p class="song-name">{song2.songName}</p>
+      <p class="artist-name">{song2.artistName}</p>
+      <button class="vote-btn" data-song-id={song2.songID}>Stem</button>
+    </div>
+  </div>
+) : (
+  <p>Ingen sanger tilgjengelig.</p>
+)}
+
+<style>
+  .voting-container {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+  }
+
+  .voting-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    width: 250px;
+  }
+
+  .album-cover {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  .song-name {
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+  }
+
+  .artist-name {
+    text-align: center;
+    margin: 0;
+    color: #555;
+  }
+
+  .vote-btn {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #222;
+    background: white;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .vote-btn:hover {
+    background: #f0f0f0;
+  }
+
+  @media (max-width: 600px) {
+    .voting-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>
