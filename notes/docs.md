@@ -91,3 +91,23 @@ const posts = await getCollection('dev');
 Her tar du og henter alle posts i 'dev' og rendrer dem i hver sin Content komponent.  
 Her kan man også legge inn sortering og sånt om man vil.  
 Dersom man bare vil hente en post så kommer det kanskje info på det senere.
+
+
+## Database tjønst
+Vi bruker [astro db](https://docs.astro.build/en/guides/astro-db/) og [turso](https://docs.turso.tech/introduction)  
+
+### Astro db
+Noen ganger kommer det feilmelding selv når koden *skal* funke. Da løser det seg ofte ved å kjøre kommandoen `npx astro sync`
+
+Push til remote database med kommandoen `npx astro db push --remote`
+
+### Turso
+Turso er astro db sin foretrukne løsning (står i docs). Den krever, hvertfall på windows, at man bruker `Windows Linux Subsystem` (fancy).   
+
+Dette kjøres i PowerShell, og går helt fint å ha i den integrerte terminalen. Noen kommandoer:
+```powershell
+wsl # starter opp systemet
+turso # viser oversikt over kommandoer
+turso auth login --headless # logger deg inn. må bruke --headless når kommandoen er i den integrerte terminalen
+turso --relax # starter bootleg tetris i terminalen
+```

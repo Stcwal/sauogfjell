@@ -1,100 +1,75 @@
 ---
-import "../styles/global.css";
-import Footer from "./components/Footer.astro";
-import Header from "./components/Header.astro";
-
-interface Props {
-  song1?: string;
-  artist1?: string;
-  albumCover1?: string;
-  onClickEvent1?: string;
-
-  song2?: string;
-  artist2?: string;
-  albumCover2?: string;
-  onClickEvent2?: string;
-}
-
-const {
-  song1,
-  artist1,
-  albumCover1,
-  onClickEvent1 = "voteSong1",
-  song2,
-  artist2,
-  albumCover2,
-  onClickEvent2 = "voteSogn2",
-} = Astro.props as Props;
+import Footer from './components/Footer.astro';
+import Header from './components/Header.astro';
+import Layout from './Layout.astro';
 ---
+<!-- Claude har skrevet deler av layouten -->
 
-<Header />
-
-<main>
-  <div class="elo-container">
-    <div class="elo-column" data-col="1">
-      <div class="elo-row">{song1}</div>
-      <div class="elo-row">{artist1}</div>
-      <img src={albumCover1} alt={`${song1} album cover`} class="elo-cover" />
-      <button type="button" class="elo-btn" data-event={onClickEvent1}
-        >Stem</button
-      >
+<Layout>
+  <div id="outer">
+    <div id="header">
+      <Header/>
     </div>
-
-    <div class="elo-column" data-col="2">
-      <div class="elo-row">{song2}</div>
-      <div class="elo-row">{artist2}</div>
-      <img src={albumCover2} alt={`${song2} album cover`} class="elo-cover" />
-      <button type="button" class="elo-btn" data-event={onClickEvent2}
-        >Stem</button
-      >
+    <div id="elo-content">
+      <slot/>
+    </div>
+    <div id="footer">
+      <Footer/>
     </div>
   </div>
-</main>
-
-<Footer />
-
-<script>
-  const [btn1, btn2] = document.querySelectorAll<HTMLButtonElement>(".elo-btn");
-  btn1.addEventListener("click", () =>
-    window.dispatchEvent(new CustomEvent("button1Clicked")),
-  );
-  btn2.addEventListener("click", () =>
-    window.dispatchEvent(new CustomEvent("button2Clicked")),
-  );
-</script>
+</Layout>
 
 <style>
-  main {
+  #elo-content {
+    padding: 50px 1rem 2rem;
     display: flex;
-    justify-content: center;
-    padding: 2rem 1rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
   }
 
+  /*
+    Adjust --box-width to control how much of the screen each song box fills.
+    The two boxes + gap should sum to ≤ 100%.
+  */
   .elo-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    --box-width: 30%;
+    display: flex;
+    justify-content: center;
     gap: 2rem;
-    max-width: 500px;
     width: 100%;
+  }
+
+  h1 {
+    text-align: center;
+    margin: 0;
   }
 
   .elo-column {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
     align-items: center;
-  }
-
-  .elo-row {
-    font-size: 1rem;
-    line-height: 1.4;
-    text-align: center;
+    gap: 0.75rem;
+    width: var(--box-width);
   }
 
   .elo-cover {
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
+  }
+
+  .elo-song {
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+  }
+
+  .elo-artist {
+    font-size: 0.95rem;
+    text-align: center;
+    margin: 0;
   }
 
   .elo-btn {
@@ -108,5 +83,16 @@ const {
 
   .elo-btn:hover {
     background: #f0f0f0;
+  }
+
+  @media (max-width: 600px) {
+    .elo-container {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .elo-column {
+      width: 90%;
+    }
   }
 </style>
