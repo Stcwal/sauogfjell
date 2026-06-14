@@ -2,9 +2,18 @@ import type { APIRoute } from 'astro';
 import { db, Songs, Matches, eq } from 'astro:db';
 
 const K = 32;
+const f = 400;
 
-function expectedScore(ratingA: number, ratingB: number) {
-  return 1 / (1 + Math.pow(10, (ratingB - ratingA) / 400));
+function calcNewElos(winnerElo: number, loserElo: number): { newWinnerElo: number; newLoserElo: number } {
+  const dr = Math.min(winnerElo - loserElo, f); // Forskjell i Elo-rating
+
+  const E1 = 1 / (1 + Math.pow(10, -dr / f));
+  const E2 = 1 / (1 + Math.pow(10, dr / f));
+
+  return {
+    newWinnerElo: winnerElo + Math.round(K * (1 - E1)),
+    newLoserElo: loserElo + Math.round(K * (0 - E2)),
+  };
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -17,8 +26,7 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({ error: 'Song not found' }), { status: 404 });
   }
 
-  const newWinnerElo = Math.round(winner.elo + K * (1 - expectedScore(winner.elo, loser.elo)));
-  const newLoserElo = Math.round(loser.elo + K * (0 - expectedScore(loser.elo, winner.elo)));
+  const { newWinnerElo, newLoserElo } = calcNewElos(winner.elo, loser.elo);
 
   await db.update(Songs)
     .set({ elo: newWinnerElo, numMatches: winner.numMatches + 1 })
