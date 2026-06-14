@@ -8,25 +8,72 @@ const { song1, song2 } = Astro.props;
 ---
 
 {song1 && song2 ? (
-  <div class="voting-container">
-    <div class="voting-column">
-      <img class="album-cover" src={song1.albumCoverLink} alt={`Album cover for ${song1.songName}`} />
-      <p class="song-name">{song1.songName}</p>
-      <p class="artist-name">{song1.artistName}</p>
-      <button class="vote-btn" data-song-id={song1.songID}>Stem</button>
+  <>
+    <h1>Hvilken sang er best?</h1>
+    <div class="voting-container">
+      <div class="voting-column" data-index="1">
+        <img class="album-cover" src={song1.albumCoverLink} alt={`Album cover for ${song1.songName}`} />
+        <p class="song-name">{song1.songName}</p>
+        <p class="artist-name">{song1.artistName}</p>
+        <button class="vote-btn" data-song-id={song1.songID}>Stem</button>
+      </div>
+      <div class="voting-column" data-index="2">
+        <img class="album-cover" src={song2.albumCoverLink} alt={`Album cover for ${song2.songName}`} />
+        <p class="song-name">{song2.songName}</p>
+        <p class="artist-name">{song2.artistName}</p>
+        <button class="vote-btn" data-song-id={song2.songID}>Stem</button>
+      </div>
     </div>
-    <div class="voting-column">
-      <img class="album-cover" src={song2.albumCoverLink} alt={`Album cover for ${song2.songName}`} />
-      <p class="song-name">{song2.songName}</p>
-      <p class="artist-name">{song2.artistName}</p>
-      <button class="vote-btn" data-song-id={song2.songID}>Stem</button>
-    </div>
-  </div>
+  </>
 ) : (
   <p>Ingen sanger tilgjengelig.</p>
 )}
 
+<script>
+  interface Song {
+    songID: number;
+    songName: string;
+    artistName: string;
+    albumCoverLink: string;
+  }
+
+  const col1 = document.querySelector('.voting-column[data-index="1"]') as HTMLElement;
+  const col2 = document.querySelector('.voting-column[data-index="2"]') as HTMLElement;
+  const btn1 = col1.querySelector('.vote-btn') as HTMLButtonElement;
+  const btn2 = col2.querySelector('.vote-btn') as HTMLButtonElement;
+
+  async function vote(winnerId: number, loserId: number) {
+    await fetch('/api/vote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ winnerId, loserId }),
+    });
+
+    const res = await fetch('/api/random-pair');
+    const { song1, song2 }: { song1: Song; song2: Song } = await res.json();
+
+    updateColumn(col1, btn1, song1);
+    updateColumn(col2, btn2, song2);
+  }
+
+  function updateColumn(col: HTMLElement, btn: HTMLButtonElement, song: Song) {
+    (col.querySelector('.album-cover') as HTMLImageElement).src = song.albumCoverLink;
+    (col.querySelector('.album-cover') as HTMLImageElement).alt = `Album cover for ${song.songName}`;
+    (col.querySelector('.song-name') as HTMLElement).textContent = song.songName;
+    (col.querySelector('.artist-name') as HTMLElement).textContent = song.artistName;
+    btn.dataset.songId = String(song.songID);
+  }
+
+  btn1.addEventListener('click', () => vote(Number(btn1.dataset.songId), Number(btn2.dataset.songId)));
+  btn2.addEventListener('click', () => vote(Number(btn2.dataset.songId), Number(btn1.dataset.songId)));
+</script>
+
 <style>
+  h1 {
+    text-align: center;
+    margin: 0 0 1rem;
+  }
+
   .voting-container {
     display: flex;
     gap: 2rem;
