@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { db, Songs, Matches, eq } from 'astro:db';
 
-const K = 32;
+const K = 64;
 const f = 400;
 
 function calcNewElos(winnerElo: number, loserElo: number): { newWinnerElo: number; newLoserElo: number } {
