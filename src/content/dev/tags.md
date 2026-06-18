@@ -1,0 +1,11 @@
+---
+title: La til tags
+author: Anders
+draft: false
+publishDate: 2026-06-18
+editDate: 2026-06-19
+tags: [X, Y, Z]
+---
+
+# Tags
+Nå kan posts ha tags. FOR EN FEATURE!!! (kan hende det skal brukes til noe mer senere altså)

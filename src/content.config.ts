@@ -11,6 +11,7 @@ const dev = defineCollection({
     draft: z.boolean(),
     publishDate: z.date(),
     editDate: z.date().optional(),
+    tags: z.array(z.string()).default([]),
   }),
 });
 

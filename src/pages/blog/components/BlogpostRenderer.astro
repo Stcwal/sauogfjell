@@ -1,26 +1,46 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, render } from "astro:content";
 import PostWrapper from "./BlogpostWrapper.astro";
 const { collection } = Astro.props;
 const posts = await getCollection(collection as any);
 
+posts.sort((a: any, b: any) => { //Sorterer først på publishDate, så editDate
+  const byPublish = b.data.publishDate - a.data.publishDate; // b - a on publishDate
+  if (byPublish !== 0) return byPublish;
+  const aEdit = a.data.editDate ?? a.data.publishDate;
+  const bEdit = b.data.editDate ?? b.data.publishDate; // same for b
+  return bEdit - aEdit; // b - a on the edit dates
+});
+
 const formatDate = (date: Date) =>
-  new Intl.DateTimeFormat('nb-NO', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
+  new Intl.DateTimeFormat("nb-NO", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
   }).format(date);
+
+
 ---
+
 <div>
-  { await Promise.all(
-    posts.map(async (post: any, i: number) => { const {Content} = await render(post);
-      return (
-        <PostWrapper>
-          <Content />
-          <a class="post-subtext">Skrevet av {post.data.author} {formatDate(post.data.publishDate)}{post.data.editDate ? `, sist endret ${formatDate(post.data.editDate)} av ${post.data.author}` : ''}</a>
-          {i < posts.length - 1 ? <hr/> : null}
-        </PostWrapper>
-      );
-    })
-  )}
+  {
+    await Promise.all(
+      posts.map(async (post: any, i: number) => {
+        const { Content } = await render(post);
+        return (
+          <PostWrapper>
+            <a> {post.data.tags.length > 0 ? `Tags: ${post.data.tags}` : ""}</a>
+            <Content />
+            <a class="post-subtext">
+              Skrevet av {post.data.author} {formatDate(post.data.publishDate)}
+              {post.data.editDate
+                ? `, sist endret ${formatDate(post.data.editDate)} av ${post.data.author}`
+                : ""}
+            </a>
+            {i < posts.length - 1 ? <hr /> : null}
+          </PostWrapper>
+        );
+      }),
+    )
+  }
 </div>
