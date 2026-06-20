@@ -9,3 +9,4 @@ package-lock.json
 .go-tetris.log
 .env
 dist/
+.wrangler/
