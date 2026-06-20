@@ -1,7 +1,7 @@
 name = "sauogfjell"
 compatibility_date = "2025-06-01"
 compatibility_flags = ["nodejs_compat"]
-
+main = "src/index.ts"
 # D1 binding. `binding = "DB"` is the name the code reads as env.DB.
 # database_id is filled in after `wrangler d1 create sauogfjell` (placeholder works for local dev).
 [[d1_databases]]
