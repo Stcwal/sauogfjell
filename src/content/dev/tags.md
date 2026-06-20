@@ -4,7 +4,7 @@ author: Anders
 draft: false
 publishDate: 2026-06-18
 editDate: 2026-06-19
-tags: [X, Y, Z]
+tags: [dev, reisebrev, mat og helse]
 ---
 
 # Tags

@@ -4,7 +4,8 @@ import PostWrapper from "./BlogpostWrapper.astro";
 const { collection } = Astro.props;
 const posts = await getCollection(collection as any);
 
-posts.sort((a: any, b: any) => { //Sorterer først på publishDate, så editDate
+posts.sort((a: any, b: any) => {
+  //Sorterer først på publishDate, så editDate
   const byPublish = b.data.publishDate - a.data.publishDate; // b - a on publishDate
   if (byPublish !== 0) return byPublish;
   const aEdit = a.data.editDate ?? a.data.publishDate;
@@ -18,8 +19,6 @@ const formatDate = (date: Date) =>
     month: "2-digit",
     year: "numeric",
   }).format(date);
-
-
 ---
 
 <div>
@@ -29,7 +28,13 @@ const formatDate = (date: Date) =>
         const { Content } = await render(post);
         return (
           <PostWrapper>
-            <a> {post.data.tags.length > 0 ? `Tags: ${post.data.tags}` : ""}</a>
+            <div class="tags">
+              {post.data.tags.length > 0
+                ? post.data.tags.map((tag: string) => (
+                    <button class="tag">{tag}</button>
+                  ))
+                : ""}
+            </div>
             <Content />
             <a class="post-subtext">
               Skrevet av {post.data.author} {formatDate(post.data.publishDate)}
@@ -44,3 +49,17 @@ const formatDate = (date: Date) =>
     )
   }
 </div>
+
+<style>
+  .tags {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    border-radius: 999px;
+    background-color: #b5bcf0;
+    border: none;
+    font-size: 0.7rem;
+  }
+</style>
