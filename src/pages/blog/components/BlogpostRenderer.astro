@@ -19,6 +19,19 @@ const formatDate = (date: Date) =>
     month: "2-digit",
     year: "numeric",
   }).format(date);
+
+// Farge per standard-tag. Egendefinerte tagger faller tilbake på CUSTOM_TAG_COLOR
+// for nå; senere kan denne fallbacken byttes ut med en auto-generert farge.
+const STANDARD_TAG_COLORS: Record<string, string> = {
+  Reisebrev: "#c0563b",
+  Hverdag: "#3b6fc0",
+  Akademisk: "#2e7d4f",
+  Tøys: "#a8417f",
+  Fylla: "#9c5d1f",
+};
+const CUSTOM_TAG_COLOR = "#6b7280";
+
+const getTagColor = (tag: string) => STANDARD_TAG_COLORS[tag] ?? CUSTOM_TAG_COLOR;
 ---
 
 <div>
@@ -31,7 +44,9 @@ const formatDate = (date: Date) =>
             <div class="tags">
               {post.data.tags.length > 0
                 ? post.data.tags.map((tag: string) => (
-                    <button class="tag">{tag}</button>
+                    <button class="tag" style={`background-color: ${getTagColor(tag)}`}>
+                      {tag}
+                    </button>
                   ))
                 : ""}
             </div>
@@ -58,8 +73,8 @@ const formatDate = (date: Date) =>
 
   .tag {
     border-radius: 999px;
-    background-color: #b5bcf0;
     border: none;
     font-size: 0.7rem;
+    color: white;
   }
 </style>
