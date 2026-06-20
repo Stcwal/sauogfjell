@@ -1,5 +1,4 @@
-import type { Client, ResultSet, Transaction } from '@libsql/client';
-import { getDatabaseClient, rowsAsObjects } from './libsql';
+import { getDb } from './db';
 
 export interface Song {
   songID: number;
@@ -35,14 +34,16 @@ function parseSong(row: Record<string, unknown>): Song {
 }
 
 async function selectSongs(sql: string, args: unknown[] = []) {
-  const result = await getDatabaseClient().execute(sql, args);
-  return rowsAsObjects<Record<string, unknown>>(result).map(parseSong);
+  const { results } = await getDb().prepare(sql).bind(...args).all<Record<string, unknown>>();
+  return results.map(parseSong);
 }
 
-async function selectSongById(executor: Pick<Client | Transaction, 'execute'>, songID: number) {
-  const result = await executor.execute(`SELECT ${SONG_COLUMNS} FROM Songs WHERE songID = ?`, [songID]);
-  const [song] = rowsAsObjects<Record<string, unknown>>(result).map(parseSong);
-  return song ?? null;
+async function selectSongById(songID: number) {
+  const row = await getDb()
+    .prepare(`SELECT ${SONG_COLUMNS} FROM Songs WHERE songID = ?`)
+    .bind(songID)
+    .first<Record<string, unknown>>();
+  return row ? parseSong(row) : null;
 }
 
 export async function getAllSongs() {
@@ -84,42 +85,25 @@ function calcNewElos(winnerElo: number, loserElo: number): { newWinnerElo: numbe
   };
 }
 
-async function updateSongInTransaction(tx: Transaction, song: Song) {
-  await tx.execute('UPDATE Songs SET elo = ?, numMatches = ?, eloHistory = ? WHERE songID = ?', [song.elo, song.numMatches, song.eloHistory, song.songID]);
-}
-
 export async function recordVote(winnerId: number, loserId: number) {
-  const tx = await getDatabaseClient().transaction('write');
+  const db = getDb();
 
-  try {
-    const winner = await selectSongById(tx, winnerId);
-    const loser = await selectSongById(tx, loserId);
+  // D1 has no interactive transactions, so we read first, compute in JS, then
+  // commit all writes atomically with db.batch() (a single transaction).
+  const winner = await selectSongById(winnerId);
+  const loser = await selectSongById(loserId);
 
-    if (!winner || !loser) {
-      throw new Error('Song not found');
-    }
-
-    const { newWinnerElo, newLoserElo } = calcNewElos(winner.elo, loser.elo);
-
-    await updateSongInTransaction(tx, {
-      ...winner,
-      elo: newWinnerElo,
-      numMatches: winner.numMatches + 1,
-      eloHistory: `${winner.eloHistory},${newWinnerElo}`,
-    });
-
-    await updateSongInTransaction(tx, {
-      ...loser,
-      elo: newLoserElo,
-      numMatches: loser.numMatches + 1,
-      eloHistory: `${loser.eloHistory},${newLoserElo}`,
-    });
-
-    await tx.execute('INSERT INTO Matches (songID1, songID2, songIDwinner) VALUES (?, ?, ?)', [winnerId, loserId, winnerId]);
-
-    await tx.commit();
-  } catch (error) {
-    await tx.rollback();
-    throw error;
+  if (!winner || !loser) {
+    throw new Error('Song not found');
   }
+
+  const { newWinnerElo, newLoserElo } = calcNewElos(winner.elo, loser.elo);
+
+  const updateSong = db.prepare('UPDATE Songs SET elo = ?, numMatches = ?, eloHistory = ? WHERE songID = ?');
+
+  await db.batch([
+    updateSong.bind(newWinnerElo, winner.numMatches + 1, `${winner.eloHistory},${newWinnerElo}`, winner.songID),
+    updateSong.bind(newLoserElo, loser.numMatches + 1, `${loser.eloHistory},${newLoserElo}`, loser.songID),
+    db.prepare('INSERT INTO Matches (songID1, songID2, songIDwinner) VALUES (?, ?, ?)').bind(winnerId, loserId, winnerId),
+  ]);
 }
