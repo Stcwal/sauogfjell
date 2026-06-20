@@ -11,6 +11,16 @@ url vil her være `sauogfjell.no/blog/stian`
 
 pathen vil da prøve å lese index.astro filen, så det er her du lager nettsiden din
 
+### Tags
+Dette er standardtags, men det er mulig å legge inn sine egne hvis man vil det
+- Reisebrev
+- Hverdag
+- Akademisk
+- Tøys
+- Fylla
+
+
+
 ## CSS
 
 ### Klasser og IDer

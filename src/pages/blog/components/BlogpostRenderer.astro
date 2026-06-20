@@ -1,26 +1,81 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, render } from "astro:content";
 import PostWrapper from "./BlogpostWrapper.astro";
 const { collection } = Astro.props;
 const posts = await getCollection(collection as any);
 
+posts.sort((a: any, b: any) => {
+  //Sorterer først på publishDate, så editDate
+  const byPublish = b.data.publishDate - a.data.publishDate; // b - a on publishDate
+  if (byPublish !== 0) return byPublish;
+  const aEdit = a.data.editDate ?? a.data.publishDate;
+  const bEdit = b.data.editDate ?? b.data.publishDate; // same for b
+  return bEdit - aEdit; // b - a on the edit dates
+});
+
 const formatDate = (date: Date) =>
-  new Intl.DateTimeFormat('nb-NO', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
+  new Intl.DateTimeFormat("nb-NO", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
   }).format(date);
+
+// Farge per standard-tag. Egendefinerte tagger faller tilbake på CUSTOM_TAG_COLOR
+// for nå; senere kan denne fallbacken byttes ut med en auto-generert farge.
+const STANDARD_TAG_COLORS: Record<string, string> = {
+  Reisebrev: "#c0563b",
+  Hverdag: "#3b6fc0",
+  Akademisk: "#2e7d4f",
+  Tøys: "#a8417f",
+  Fylla: "#9c5d1f",
+};
+const CUSTOM_TAG_COLOR = "#6b7280";
+
+const getTagColor = (tag: string) => STANDARD_TAG_COLORS[tag] ?? CUSTOM_TAG_COLOR;
 ---
+
 <div>
-  { await Promise.all(
-    posts.map(async (post: any, i: number) => { const {Content} = await render(post);
-      return (
-        <PostWrapper>
-          <Content />
-          <a class="post-subtext">Skrevet av {post.data.author} {formatDate(post.data.publishDate)}{post.data.editDate ? `, sist endret ${formatDate(post.data.editDate)} av ${post.data.author}` : ''}</a>
-          {i < posts.length - 1 ? <hr/> : null}
-        </PostWrapper>
-      );
-    })
-  )}
+  {
+    await Promise.all(
+      posts.map(async (post: any, i: number) => {
+        const { Content } = await render(post);
+        return (
+          <PostWrapper>
+            <div class="tags">
+              {post.data.tags.length > 0
+                ? post.data.tags.map((tag: string) => (
+                    <button class="tag" style={`background-color: ${getTagColor(tag)}`}>
+                      {tag}
+                    </button>
+                  ))
+                : ""}
+            </div>
+            <Content />
+            <a class="post-subtext">
+              Skrevet av {post.data.author} {formatDate(post.data.publishDate)}
+              {post.data.editDate
+                ? `, sist endret ${formatDate(post.data.editDate)} av ${post.data.author}`
+                : ""}
+            </a>
+            {i < posts.length - 1 ? <hr /> : null}
+          </PostWrapper>
+        );
+      }),
+    )
+  }
 </div>
+
+<style>
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    border-radius: 999px;
+    border: none;
+    font-size: 0.7rem;
+    color: white;
+  }
+</style>
