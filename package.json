@@ -1,9 +1,13 @@
 {
   "scripts": {
-    "dev": "npx astro dev"
+    "dev": "npx astro dev",
+    "build": "npx astro build --remote",
+    "preview": "npx astro preview",
+    "start": "npx astro preview"
   },
   "dependencies": {
-    "@astrojs/db": "^0.21.3",
+    "@astrojs/cloudflare": "^13.7.0",
+    "@libsql/client": "^0.15.15",
     "astro": "^6.4.6"
   },
   "devDependencies": {

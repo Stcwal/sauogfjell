@@ -8,3 +8,5 @@ node_modules/
 package-lock.json
 .go-tetris.log
 .env
+dist/
+.wrangler/
