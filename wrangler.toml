@@ -8,5 +8,3 @@ binding = "DB"
 database_name = "sauogfjell"
 database_id = "b555915f-ca50-4a72-9453-a8fb597ed877"
 migrations_dir = "migrations"
-[assets]
-directory = "./dist"
