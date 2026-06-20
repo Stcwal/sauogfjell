@@ -44,19 +44,10 @@ It is okay to define a couple of things directly, like the header being pos fixe
 }
 
 [data-theme="floop"]{
-  --font: Arial;
-  --bg: #e1e1e1;
-  --b-radius: 16px;
-  --border: solid;
-  --b-w: 2px;
-  --padding: 10px;
-  --header-color: #fff;
-  --footer-color: #fff;
-
   --l-f: Arial;
   --l-bg: #e1e1e1;
   --l-p: 16px;
-  --h-c: rgb(145, 145, 145);
+  --h-c: rgb(46, 75, 47);
   --b-r: 16px;
   --b-c: #000;
   --b-w: 2px;
