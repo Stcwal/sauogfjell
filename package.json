@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "npx astro dev",
-    "build": "npx astro build --remote",
+    "build": "npx astro build",
     "preview": "npx astro preview",
     "start": "npx astro preview"
   },
