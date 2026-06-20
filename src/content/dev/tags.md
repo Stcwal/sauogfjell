@@ -3,7 +3,7 @@ title: La til tags
 author: Anders
 draft: false
 publishDate: 2026-06-18
-editDate: 2026-06-19
+editDate: 2026-06-20
 tags: [Reisebrev, Hverdag, Akademisk, Tøys, Fylla, Mat, Div, Hopp, Sprett, Snurr, Ups]
 ---
 
