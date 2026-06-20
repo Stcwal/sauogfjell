@@ -7,5 +7,5 @@ compatibility_flags = ["nodejs_compat"]
 [[d1_databases]]
 binding = "DB"
 database_name = "sauogfjell"
-database_id = "PLACEHOLDER_REPLACE_AFTER_D1_CREATE"
+database_id = "b555915f-ca50-4a72-9453-a8fb597ed877"
 migrations_dir = "migrations"
