@@ -3,8 +3,15 @@
 Guidance for Claude when working in this repository.
 ## What this project is
 A webpage / blog / testing ground for me and a friend, to use during our exchange year at
-university. It's built with **Astro 6** (with `@astrojs/db` and content collections). Site content
-is written in **Norwegian**; code and these instructions are in English.
+university. It's built with **Astro 6** and content collections, deployed to **Cloudflare** via the
+`@astrojs/cloudflare` adapter. Dynamic data lives in a **Cloudflare D1** (SQLite) database, reached
+through the `DB` binding declared in [wrangler.toml](wrangler.toml); the schema is managed as plain
+SQL migrations in [migrations/](migrations/). Site content is written in **Norwegian**; code and
+these instructions are in English.
+
+Rough layout: SQL schema in `migrations/*.sql`; typed data-access helpers (prepared statements) in
+`src/lib/*.ts`; thin JSON endpoints in `src/pages/api/*.ts`; and interactivity via vanilla
+`<script>` blocks inside `.astro` components (no UI-framework islands).
 
 ## Who I am
 - I'm an experienced programmer (Python, Java, C#) but **new to Astro and new to front-end / web
@@ -57,5 +64,9 @@ approach and implement it directly. When in doubt about which mode I want, ask.
 ```
 npm install
 npm run dev      # local dev server
-npx astro sync   # regenerate types after changing the DB schema or content collections
+npx astro sync   # regenerate types after changing content collections
+
+# Cloudflare D1 migrations (schema changes live in migrations/*.sql)
+npx wrangler d1 migrations apply sauogfjell --local    # apply to local dev DB
+npx wrangler d1 migrations apply sauogfjell --remote    # apply to the deployed DB
 ```
