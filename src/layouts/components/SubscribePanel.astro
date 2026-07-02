@@ -3,7 +3,9 @@ const STANDARD_TAGS = ["Reisebrev", "Hverdag", "Akademisk", "Tøys", "Fylla"]; /
 const AUTHORS = ["stian", "anders"];
 ---
 
-<button id="subscribe-open" class="subscribe-fab" type="button">Få varsel om nye innlegg</button>
+<button id="subscribe-open" class="subscribe-fab" type="button"
+  >Få varsel om nye innlegg</button
+>
 
 <dialog id="subscribe-dialog" class="subscribe-dialog">
   <form id="subscribe-form" class="subscribe-form">
@@ -11,7 +13,12 @@ const AUTHORS = ["stian", "anders"];
 
     <label class="field">
       E-postadresse
-      <input id="sub-email" type="email" required placeholder="deg@eksempel.no" />
+      <input
+        id="sub-email"
+        type="email"
+        required
+        placeholder="deg@eksempel.no"
+      />
     </label>
 
     {
@@ -44,13 +51,53 @@ const AUTHORS = ["stian", "anders"];
 </dialog>
 
 <script>
-  // Kun åpning/lukking her. Innsending (fetch mot /api/subscribe) kommer i Part C.
-  const dialog = document.getElementById("subscribe-dialog") as HTMLDialogElement;
+  const dialog = document.getElementById(
+    "subscribe-dialog",
+  ) as HTMLDialogElement;
   const openBtn = document.getElementById("subscribe-open");
   const closeBtn = document.getElementById("subscribe-close");
+  const form = document.getElementById("subscribe-form") as HTMLFormElement;
+  const statusEl = form.querySelector(".status") as HTMLElement;
+
+  const emailInput = document.getElementById("sub-email") as HTMLInputElement;
+
+  const devUpdatesInput = document.getElementById(
+    "dev-updates",
+  ) as HTMLInputElement;
 
   openBtn?.addEventListener("click", () => dialog.showModal());
   closeBtn?.addEventListener("click", () => dialog.close());
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // #2 goes here:
+    const email = emailInput.value;
+    const devUpdates = devUpdatesInput.checked ? 1 : 0;
+
+    // #3 (tagsByAuthor) here,
+    const tagsByAuthor: Record<string, string[]> = {};
+    form
+      .querySelectorAll<HTMLInputElement>("input[data-author]:checked")
+      .forEach((el) => {
+        const author = el.dataset.author!;
+        (tagsByAuthor[author] ??= []).push(el.value);
+      });
+
+    // then the fetch (#4)
+    const res = await fetch("/api/subscribe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, devUpdates, tagsByAuthor }),
+    });
+
+    if (res.ok){
+      statusEl.textContent = "Gratulerer! Du er påmeldt!";
+    
+    }
+    else {
+      statusEl.textContent = "Noe gikk galt. Prøv igjen."
+    }
+  });
 </script>
 
 <style>
