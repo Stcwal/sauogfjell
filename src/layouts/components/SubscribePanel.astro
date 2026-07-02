@@ -1,0 +1,138 @@
+---
+const STANDARD_TAGS = ["Reisebrev", "Hverdag", "Akademisk", "Tøys", "Fylla"]; // TODO: share with BlogpostRenderer
+const AUTHORS = ["stian", "anders"];
+---
+
+<button id="subscribe-open" class="subscribe-fab" type="button">Få varsel om nye innlegg</button>
+
+<dialog id="subscribe-dialog" class="subscribe-dialog">
+  <form id="subscribe-form" class="subscribe-form">
+    <h2>Meld deg på nyhetsbrevet</h2>
+
+    <label class="field">
+      E-postadresse
+      <input id="sub-email" type="email" required placeholder="deg@eksempel.no" />
+    </label>
+
+    {
+      AUTHORS.map((author) => (
+        <fieldset class="author-group">
+          <legend>{author.charAt(0).toUpperCase() + author.slice(1)}</legend>
+          <label>
+            <input type="checkbox" data-author={author} value="alle" /> Alle
+          </label>
+          {STANDARD_TAGS.map((tag) => (
+            <label>
+              <input type="checkbox" data-author={author} value={tag} /> {tag}
+            </label>
+          ))}
+        </fieldset>
+      ))
+    }
+
+    <label class="dev-updates">
+      <input id="dev-updates" type="checkbox" /> Dev-oppdateringer
+    </label>
+
+    <p class="status" role="status"></p>
+
+    <div class="actions">
+      <button id="subscribe-close" type="button">Lukk</button>
+      <button type="submit">Meld på</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+  // Kun åpning/lukking her. Innsending (fetch mot /api/subscribe) kommer i Part C.
+  const dialog = document.getElementById("subscribe-dialog") as HTMLDialogElement;
+  const openBtn = document.getElementById("subscribe-open");
+  const closeBtn = document.getElementById("subscribe-close");
+
+  openBtn?.addEventListener("click", () => dialog.showModal());
+  closeBtn?.addEventListener("click", () => dialog.close());
+</script>
+
+<style>
+  .subscribe-fab {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 10;
+    padding: 1.25rem 2.5rem;
+    border: 2px solid #222;
+    border-radius: 999px;
+    background: white;
+    font: inherit;
+    font-size: 4rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  }
+
+  .subscribe-fab:hover {
+    background: #f0f0f0;
+  }
+
+  .subscribe-dialog {
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 1.5rem;
+    max-width: 420px;
+  }
+
+  .subscribe-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .subscribe-form h2 {
+    margin: 0;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .field input {
+    font: inherit;
+    padding: 0.4rem;
+  }
+
+  .author-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .author-group label,
+  .dev-updates {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .status {
+    margin: 0;
+    min-height: 1.2em;
+    color: #c00;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+
+  .actions button {
+    font: inherit;
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+  }
+</style>
