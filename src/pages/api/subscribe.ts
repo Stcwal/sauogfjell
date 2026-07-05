@@ -5,7 +5,6 @@ export const POST: APIRoute = async ({ request }) => {
     const { email, devUpdates, tagsByAuthor } = await request.json<{ email: string; devUpdates: number; tagsByAuthor: Record<string, string[]> }>()
 
     const bad = (msg: string) => new Response(JSON.stringify({ error: msg }), { status: 400 })
-    // Valider email, devupdates, tagsbyauthor her
 
     // Valider email
     if (typeof email !== 'string') return bad('email is not string')
