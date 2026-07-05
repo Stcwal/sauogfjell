@@ -1,9 +1,10 @@
 # sauogfjell
 The travel blog about sheep and mountains (and whatever else we find interesting)
 
-To run this program, try:
+## Running locally
 
-``` 
+```
 npm install
 npm run dev
 ```
+

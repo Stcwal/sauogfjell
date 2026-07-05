@@ -19,6 +19,7 @@ const stian = defineCollection({
   loader: glob({ base: './src/content/stian', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
+    tags: z.array(z.string()).default([]),
   }),
 });
 
@@ -26,6 +27,7 @@ const anders = defineCollection({
   loader: glob({ base: './src/content/anders', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
+    tags: z.array(z.string()).default([]),
   }),
 });
 

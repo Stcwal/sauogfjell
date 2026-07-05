@@ -103,21 +103,71 @@ Her kan man også legge inn sortering og sånt om man vil.
 Dersom man bare vil hente en post så kommer det kanskje info på det senere.
 
 
-## Database tjønst
-Vi bruker [astro db](https://docs.astro.build/en/guides/astro-db/) og [turso](https://docs.turso.tech/introduction)  
 
-### Astro db
-Noen ganger kommer det feilmelding selv når koden *skal* funke. Da løser det seg ofte ved å kjøre kommandoen `npx astro sync`
+## Database (Cloudflare D1)
+> Dette er claude sitt verk
 
-Push til remote database med kommandoen `npx astro db push --remote`
+Dynamic data lives in a **Cloudflare D1** (SQLite) database, reached through the `DB` binding
+declared in [wrangler.toml](wrangler.toml). The schema is managed as plain SQL migrations in
+[migrations/](migrations/) — one numbered file per change (e.g. `0003_subscribers.sql`).
 
-### Turso
-Turso er astro db sin foretrukne løsning (står i docs). Den krever, hvertfall på windows, at man bruker `Windows Linux Subsystem` (fancy).   
+There are two separate databases:
 
-Dette kjøres i PowerShell, og går helt fint å ha i den integrerte terminalen. Noen kommandoer:
-```powershell
-wsl # starter opp systemet
-turso # viser oversikt over kommandoer
-turso auth login --headless # logger deg inn. må bruke --headless når kommandoen er i den integrerte terminalen
-turso --relax # starter bootleg tetris i terminalen
+- **local** — a SQLite simulation under `.wrangler/state/`, used by `npm run dev`. Nothing you do
+  here touches production. Target it with the `--local` flag.
+- **remote** — the real production database, targeted with `--remote`. It lives in the Cloudflare
+  account that owns the deployment; you need access to that account to reach it (see *Gotchas*).
+
+### Migrations
+
+Writing a `migrations/*.sql` file does **not** run it — you have to apply it to each database.
+
+```
+# Apply all pending migrations
+npx wrangler d1 migrations apply sauogfjell --local     # to the local dev DB
+npx wrangler d1 migrations apply sauogfjell --remote    # to production (needs account access)
+
+# Preview which migrations are still pending before applying
+npx wrangler d1 migrations list sauogfjell --local
+npx wrangler d1 migrations list sauogfjell --remote
+```
+
+Rule of thumb: apply a migration to **production before the code that uses it goes live**, or the
+live site will error with "no such table".
+
+### Inspecting the data
+
+Run ad-hoc SQL to check what's stored:
+
+```
+npx wrangler d1 execute sauogfjell --local --command "SELECT * FROM Subscribers"
+npx wrangler d1 execute sauogfjell --local --command "SELECT * FROM Subscriptions"
+```
+
+Swap `--local` for `--remote` to query production (read-only queries are safe; be careful with
+writes).
+
+### Gotchas
+
+- **`no such table: ...`** in local dev almost always means the migration hasn't been applied to the
+  *local* DB. Run the `--local` apply command above. It is not a "can't reach production" error —
+  local dev never contacts production.
+- **`database ... could not be found [code: 7404]`** on a `--remote` command means the D1 database
+  isn't in the Cloudflare account you're logged into (it belongs to whoever owns the deploy). Check
+  who you are and what you can see:
+  ```
+  npx wrangler whoami      # which account is wrangler logged into
+  npx wrangler d1 list     # D1 databases in that account
+  ```
+  If the database isn't listed, the account owner has to run the `--remote` migration, or add you to
+  their Cloudflare account. Do **not** change `database_id` in wrangler.toml or run
+  `wrangler d1 create` to "fix" it — that creates a separate database and forks the data.
+
+### Content collections
+
+Blog content is Astro content collections under `src/content/`. After changing a collection schema
+in [src/content.config.ts](src/content.config.ts), regenerate the types:
+
+```
+npx astro sync
 ```
