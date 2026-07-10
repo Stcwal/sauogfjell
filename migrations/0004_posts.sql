@@ -8,6 +8,6 @@ CREATE TABLE IF NOT EXISTS Posts (
     publishDate DATE,
     editDate DATE,
     tags TEXT,
-    bodytext TEXT,
+    bodytext TEXT
     -- fileLink TEXT, # enten denne eller bodytext
 )
