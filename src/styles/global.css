@@ -67,7 +67,7 @@ If this system turns out to be annoying to work with, feel free to change it up.
   --border-width: 0px;
   --layout-padding: 0px;
   --surface-padding: 0px;
-  --btn-surface: #02ff6b;
+  --btn-background: #02ff6b;
   --btn-text: #000000;
   --btn-border-width: 0px;
   --btn-border-color: #000000;
@@ -88,7 +88,7 @@ If this system turns out to be annoying to work with, feel free to change it up.
   --color-footer: rgb(198, 198, 198);
   --color-surface: #1f5840;
   --surface-padding: 16px;
-  --btn-surface: #0b883f;
+  --btn-background: #0b883f;
   --btn-text: #d5d5d5;
   --btn-border-width: 0px;
   --btn-border-color: #000000;
