@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS Comments (
+    commentId INTEGER PRIMARY KEY AUTOINCREMENT,
+    postId INTEGER NOT NULL REFERENCES Posts (postId) ON DELETE CASCADE,
+    author TEXT NOT NULL,
+    commentText TEXT NOT NULL,
+    createdAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    parentCommentId INTEGER REFERENCES Comments (commentId)
+);
