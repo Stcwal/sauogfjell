@@ -14,11 +14,11 @@ export async function getCommentsForPost(postId: number) {
     const db = getDb(); 
 
     const comments = await db
-        .prepare('SELECT * FROM Comments WHERE postId = ? ORDER DESC BY createdAt, commentId')
+        .prepare('SELECT * FROM Comments WHERE postId = ? ORDER BY createdAt DESC, commentId')
         .bind(postId)
         .all<Comment>();
 
-    return comments
+    return comments.results
 
 }
 
@@ -28,5 +28,7 @@ export async function saveComment(postId: number, author: string, commentText: s
     const insertComment = db.prepare('INSERT INTO Comments (postId, author, commentText) VALUES (?, ?, ?) returning commentId');
 
     const commentId = await insertComment.bind(postId, author, commentText).first('commentId');
+
+    return commentId
     
 }
