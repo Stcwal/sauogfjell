@@ -10,4 +10,4 @@ CREATE TABLE IF NOT EXISTS Posts (
     tags TEXT,
     bodytext TEXT
     -- fileLink TEXT, # enten denne eller bodytext
-)
+);

@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS Comments (
     commentText TEXT NOT NULL,
     createdAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     parentCommentId INTEGER REFERENCES Comments (commentId)
-)
+);
