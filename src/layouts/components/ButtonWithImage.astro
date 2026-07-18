@@ -1,0 +1,15 @@
+---
+interface Props {
+    href: string;
+    src: string;
+    alt: string;
+    label: string;
+    variant?: "feature" | "tile";
+}
+const { href, src, alt, label, variant = "feature" } = Astro.props;
+---
+
+<a href={href} class={`image-link ${variant}`}>
+    <img src={src} alt={alt} />
+    <span class="label">{label}</span>
+</a>

@@ -13,6 +13,24 @@ Component styles reference var(--...) and never change — only the values behin
   => To restyle the whole site (or adopt a CSS library's look later), change the token
      VALUES here, not the components.
 
+Tier 1 — Primitives (raw values, named after what they are):
+--color-pink-300: rgb(255, 158, 226);
+--space-4: 1rem;
+--radius-md: 16px;
+--font-mono: monospace;
+--border-2: 2px;
+
+Tier 2 — Semantic (named after their role, pointing at primitives):
+--color-background: var(--color-pink-300);
+--color-surface:    #1f5840;
+--color-text:       #000;
+--border-color:     var(--color-text);
+
+Tier 3 — Component (optional; named component-property):
+--button-bg:           var(--color-surface);
+--button-border-width: var(--border-2);
+--button-shadow:       4px 4px 0 var(--color-text);
+
 NAMING
 ------
 Human-readable, kebab-case, grouped category-first, and named by ROLE (what it's for)
@@ -30,17 +48,33 @@ pointing at the tokens above (--button-bg: var(--color-surface)) so they follow 
 It's fine to set a few things directly (header being position: fixed, page full height).
 If this system turns out to be annoying to work with, feel free to change it up.
 */
+
+/* PRIMITIVES */
+:root {
+  --color-white: #fff;
+  --color-pink-300: #ff9ee2;
+}
+
+
 :root {
   --font-body: monospace;
-  --color-background: #fff;
-  --layout-padding: 0px;
+  --color-background: #fff; /*Alternativt: var(--color-white);*/
   --color-header: rgb(255, 158, 226);
+  --color-footer: azure;
+  --color-surface: #fdfdfd;
   --radius: 0px;
   --border-color: none;
   --border-width: 0px;
-  --color-footer: azure;
-  --color-surface: #fdfdfd;
+  --layout-padding: 0px;
   --surface-padding: 0px;
+  --btn-surface: #02ff6b;
+  --btn-text: #000000;
+  --btn-border-width: 0px;
+  --btn-border-color: #000000;
+  --btn-radius: 0px;
+  --btn-shadow: none;
+  --tile-overlay-bg: #1bb3ff;
+  --tile-overlay-text: #000000;
 }
 
 [data-theme="floop"] {
@@ -54,6 +88,14 @@ If this system turns out to be annoying to work with, feel free to change it up.
   --color-footer: rgb(198, 198, 198);
   --color-surface: #1f5840;
   --surface-padding: 16px;
+  --btn-surface: #0b883f;
+  --btn-text: #d5d5d5;
+  --btn-border-width: 0px;
+  --btn-border-color: #000000;
+  --btn-radius: 0px;
+  --btn-shadow: none;
+  --tile-overlay-bg: #3d88ae;
+  --tile-overlay-text: #b6b6b6;
 }
 
 
