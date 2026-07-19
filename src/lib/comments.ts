@@ -22,12 +22,12 @@ export async function getCommentsForPost(postId: number) {
 
 }
 
-export async function saveComment(postId: number, author: string, commentText: string) {
+export async function saveComment(postId: number, author: string, commentText: string): Promise<number | null> {
     const db = getDb();
 
     const insertComment = db.prepare('INSERT INTO Comments (postId, author, commentText) VALUES (?, ?, ?) returning commentId');
 
-    const commentId = await insertComment.bind(postId, author, commentText).first('commentId');
+    const commentId = await insertComment.bind(postId, author, commentText).first<number>('commentId');
 
     return commentId
     

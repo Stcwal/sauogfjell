@@ -1,15 +1,20 @@
 ---
 import { getCollection, render } from "astro:content";
 import PostWrapper from "./BlogpostWrapper.astro";
-const { collection } = Astro.props;
-const posts = await getCollection(collection as any);
+import { getTagColor } from "../../../lib/tags";
 
-posts.sort((a: any, b: any) => {
+interface Props {
+  collection: "dev" | "stian" | "anders";
+}
+const { collection } = Astro.props;
+const posts = await getCollection(collection);
+
+posts.sort((a, b) => {
   //Sorterer først på publishDate, så editDate
-  const byPublish = b.data.publishDate - a.data.publishDate; // b - a on publishDate
+  const byPublish = b.data.publishDate.getTime() - a.data.publishDate.getTime(); // b - a on publishDate
   if (byPublish !== 0) return byPublish;
-  const aEdit = a.data.editDate ?? a.data.publishDate;
-  const bEdit = b.data.editDate ?? b.data.publishDate; // same for b
+  const aEdit = (a.data.editDate ?? a.data.publishDate).getTime();
+  const bEdit = (b.data.editDate ?? b.data.publishDate).getTime(); // same for b
   return bEdit - aEdit; // b - a on the edit dates
 });
 
@@ -19,34 +24,24 @@ const formatDate = (date: Date) =>
     month: "2-digit",
     year: "numeric",
   }).format(date);
-
-// Farge per standard-tag. Egendefinerte tagger faller tilbake på CUSTOM_TAG_COLOR
-// for nå; senere kan denne fallbacken byttes ut med en auto-generert farge.
-const STANDARD_TAG_COLORS: Record<string, string> = {
-  Reisebrev: "#c0563b",
-  Hverdag: "#3b6fc0",
-  Akademisk: "#2e7d4f",
-  Tøys: "#a8417f",
-  Fylla: "#9c5d1f",
-};
-const CUSTOM_TAG_COLOR = "#6b7280";
-
-const getTagColor = (tag: string) => STANDARD_TAG_COLORS[tag] ?? CUSTOM_TAG_COLOR;
 ---
 
 <div>
   {
     await Promise.all(
-      posts.map(async (post: any, i: number) => {
+      posts.map(async (post, i) => {
         const { Content } = await render(post);
         return (
           <PostWrapper>
             <div class="tags">
               {post.data.tags.length > 0
                 ? post.data.tags.map((tag: string) => (
-                    <button class="tag" style={`background-color: ${getTagColor(tag)}`}>
+                    <span
+                      class="tag"
+                      style={`background-color: ${getTagColor(tag)}`}
+                    >
                       {tag}
-                    </button>
+                    </span>
                   ))
                 : ""}
             </div>
@@ -77,5 +72,6 @@ const getTagColor = (tag: string) => STANDARD_TAG_COLORS[tag] ?? CUSTOM_TAG_COLO
     border: none;
     font-size: 0.7rem;
     color: white;
+    padding: 0.1rem 0.4rem;
   }
 </style>

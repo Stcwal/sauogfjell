@@ -163,7 +163,7 @@ If this system turns out to be annoying to work with, feel free to change it up.
 }
 
 #footer-inner {
-  background-color:color(from color srgb r g b);
+  background-color: var(--color-surface); /* fargen kan (bør?) endres */
 }
 
 .post-wrapper {
