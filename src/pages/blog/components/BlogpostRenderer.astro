@@ -36,12 +36,12 @@ const formatDate = (date: Date) =>
             <div class="tags">
               {post.data.tags.length > 0
                 ? post.data.tags.map((tag: string) => (
-                    <button
+                    <span
                       class="tag"
                       style={`background-color: ${getTagColor(tag)}`}
                     >
                       {tag}
-                    </button>
+                    </span>
                   ))
                 : ""}
             </div>
@@ -72,5 +72,6 @@ const formatDate = (date: Date) =>
     border: none;
     font-size: 0.7rem;
     color: white;
+    padding: 0.1rem 0.4rem;
   }
 </style>
