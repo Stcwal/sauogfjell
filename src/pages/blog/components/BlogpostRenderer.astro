@@ -3,15 +3,18 @@ import { getCollection, render } from "astro:content";
 import PostWrapper from "./BlogpostWrapper.astro";
 import { getTagColor } from "../../../lib/tags";
 
+interface Props {
+  collection: "dev" | "stian" | "anders";
+}
 const { collection } = Astro.props;
-const posts = await getCollection(collection as any);
+const posts = await getCollection(collection);
 
-posts.sort((a: any, b: any) => {
+posts.sort((a, b) => {
   //Sorterer først på publishDate, så editDate
-  const byPublish = b.data.publishDate - a.data.publishDate; // b - a on publishDate
+  const byPublish = b.data.publishDate.getTime() - a.data.publishDate.getTime(); // b - a on publishDate
   if (byPublish !== 0) return byPublish;
-  const aEdit = a.data.editDate ?? a.data.publishDate;
-  const bEdit = b.data.editDate ?? b.data.publishDate; // same for b
+  const aEdit = (a.data.editDate ?? a.data.publishDate).getTime();
+  const bEdit = (b.data.editDate ?? b.data.publishDate).getTime(); // same for b
   return bEdit - aEdit; // b - a on the edit dates
 });
 
@@ -21,20 +24,22 @@ const formatDate = (date: Date) =>
     month: "2-digit",
     year: "numeric",
   }).format(date);
-
 ---
 
 <div>
   {
     await Promise.all(
-      posts.map(async (post: any, i: number) => {
+      posts.map(async (post, i) => {
         const { Content } = await render(post);
         return (
           <PostWrapper>
             <div class="tags">
               {post.data.tags.length > 0
                 ? post.data.tags.map((tag: string) => (
-                    <button class="tag" style={`background-color: ${getTagColor(tag)}`}>
+                    <button
+                      class="tag"
+                      style={`background-color: ${getTagColor(tag)}`}
+                    >
                       {tag}
                     </button>
                   ))

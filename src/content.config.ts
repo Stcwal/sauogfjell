@@ -1,7 +1,6 @@
 import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
-import { boolean } from 'astro:schema';
 
 const blogpostSchema = z.object({
     title: z.string(),
