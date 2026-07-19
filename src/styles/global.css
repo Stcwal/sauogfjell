@@ -1,76 +1,117 @@
 /*
-Fill inn this as new CSS rules and practices are discovered.
-Also, if you make any special exceptions fo ahead and explain them here as well.
+Global styles and design tokens.
 
-CSS styling rules:
+DESIGN TOKENS (CSS custom properties)
+-------------------------------------
+Tokens are defined once in :root and consumed everywhere with var(--name).
+They inherit globally, so any element — including a component's scoped <style> —
+can read them.
 
-Different parts are prefaced with the following:
-  Content: "--c-"
-  Header: "--h-"
-  Footer: "--f-"
-  Layout: "--l-"
+Themes work by REDEFINING the same token names under a selector. The default theme
+lives in :root; alternate themes (e.g. [data-theme="floop"]) override the values.
+Component styles reference var(--...) and never change — only the values behind them do.
+  => To restyle the whole site (or adopt a CSS library's look later), change the token
+     VALUES here, not the components.
 
-Attributes to the content/page-part are defined with the following:
-  Border: "--x-b-"
-  Font: : "--x-f-"
+Tier 1 — Primitives (raw values, named after what they are):
+--color-pink-300: rgb(255, 158, 226);
+--space-4: 1rem;
+--radius-md: 16px;
+--font-mono: monospace;
+--border-2: 2px;
 
-Layout attributes are fomulated as this:
-  Margin: "--l-m-"
-  Padding: "--l-p-"
-  Height: "--l-h-"
-  Width: "--l-w-"
+Tier 2 — Semantic (named after their role, pointing at primitives):
+--color-background: var(--color-pink-300);
+--color-surface:    #1f5840;
+--color-text:       #000;
+--border-color:     var(--color-text);
 
+Tier 3 — Component (optional; named component-property):
+--button-bg:           var(--color-surface);
+--button-border-width: var(--border-2);
+--button-shadow:       4px 4px 0 var(--color-text);
 
-Would be cool if it was stackable, yes?
-  Imagine: --c-l-b-w for Content-layout-border-width
-But that is a great idea for another time...
+NAMING
+------
+Human-readable, kebab-case, grouped category-first, and named by ROLE (what it's for)
+rather than by raw value (so a theme can remap it without the name becoming a lie):
+  --color-*     colours (background, surface, header, footer, border-color, ...)
+  --font-*      typography
+  --radius, --border-width, --*-padding   shape / spacing
 
-If it turns out that this is shit to work with, please feel free to  gchange it up.
+Adding a token? Add it to BOTH :root and every [data-theme="..."] block, or it will be
+undefined under one of the themes.
 
-It is okay to define a couple of things directly, like the header being pos fixed and the page-height being full height.
+Component-level tokens (e.g. --button-bg, --tile-overlay-bg) belong here too, ideally
+pointing at the tokens above (--button-bg: var(--color-surface)) so they follow the theme.
 
+It's fine to set a few things directly (header being position: fixed, page full height).
+If this system turns out to be annoying to work with, feel free to change it up.
 */
+
+/* PRIMITIVES */
 :root {
-  --l-f: monospace;
-  --l-bg: #fff;
-  --l-p: 0px;
-  --h-c: rgb(255, 158, 226);
-  --b-r: 0px;
-  --b-c: none;
-  --b-w: 0px;
-  --f-c: azure;
-  --c-bg: #fdfdfd;
-  --c-p: 0px;
+  --color-white: #fff;
+  --color-pink-300: #ff9ee2;
 }
 
-[data-theme="floop"]{
-  --l-f: Arial;
-  --l-bg: #e1e1e1;
-  --l-p: 16px;
-  --h-c: rgb(46, 75, 47);
-  --b-r: 16px;
-  --b-c: #000;
-  --b-w: 2px;
-  --f-c: rgb(198, 198, 198);
-  --c-bg: #1f5840;
-  --c-p: 16px;
 
+:root {
+  --font-body: monospace;
+  --color-background: #fff; /*Alternativt: var(--color-white);*/
+  --color-header: rgb(255, 158, 226);
+  --color-footer: azure;
+  --color-surface: #fdfdfd;
+  --radius: 0px;
+  --border-color: none;
+  --border-width: 0px;
+  --layout-padding: 0px;
+  --surface-padding: 0px;
+  --btn-background: #02ff6b;
+  --btn-text: #000000;
+  --btn-border-width: 0px;
+  --btn-border-color: #000000;
+  --btn-radius: 0px;
+  --btn-shadow: none;
+  --tile-overlay-bg: #1bb3ff;
+  --tile-overlay-text: #000000;
+}
+
+[data-theme="floop"] {
+  --font-body: Arial;
+  --color-background: #e1e1e1;
+  --layout-padding: 16px;
+  --color-header: rgb(46, 75, 47);
+  --radius: 16px;
+  --border-color: #000;
+  --border-width: 2px;
+  --color-footer: rgb(198, 198, 198);
+  --color-surface: #1f5840;
+  --surface-padding: 16px;
+  --btn-background: #e6e60e;
+  --btn-text: #d5d5d5;
+  --btn-border-width: 0px;
+  --btn-border-color: #000000;
+  --btn-radius: 0px;
+  --btn-shadow: none;
+  --tile-overlay-bg: #3d88ae;
+  --tile-overlay-text: #b6b6b6;
 }
 
 
 .wrapper, html, body {
     height: 100%;
     margin: 0;
-    background-color: var(--l-bg);
+    background-color: var(--color-background);
 
 }
 
 .card {
-  border-color: var(--b-c);
-  border-radius: var(--b-r);
-  border-width: var(--b-w);
-  background: var(--c-bg);
-  padding: var(--c-p);
+  border-color: var(--border-color);
+  border-radius: var(--radius);
+  border-width: var(--border-width);
+  background: var(--color-surface);
+  padding: var(--surface-padding);
 }
 
 #outer {
@@ -81,38 +122,38 @@ It is okay to define a couple of things directly, like the header being pos fixe
 
 #header {
   min-height: 50px;
-  background-color: var(--h-c);
+  background-color: var(--color-header);
   width: 100%;
   position: fixed;
   border-bottom: 2px solid black;
-  font-family: var(--l-f);
+  font-family: var(--font-body);
 
 }
 
 #blog-content {
-  border-radius: var(--b-r);
+  border-radius: var(--radius);
   padding-top: 50px;
   display: flex;
-  font-family: var(--l-f);
+  font-family: var(--font-body);
 
 }
 
 #home-content {
   padding-top: 50px;
-  display: grid;
+  /* display: grid;
   grid-auto-columns: 33vw;
-  grid-template-columns: 33vw 33vw 33vw;
+  grid-template-columns: 33vw 33vw 33vw; */
   justify-content: center;
 }
 
 #footer {
   width: 100%;
   margin-top: auto;
-  font-family: var(--l-f);
+  font-family: var(--font-body);
 }
 
 #footer-outer {
-  background-color: var(--f-c);
+  background-color: var(--color-footer);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -127,12 +168,12 @@ It is okay to define a couple of things directly, like the header being pos fixe
 
 .post-wrapper {
   margin: 25px;
-  font-family: var(--l-f);
+  font-family: var(--font-body);
 
 }
 
 .post-subtext {
-  font-family: var(--l-f);
+  font-family: var(--font-body);
   font-size: xx-small;
   font-style: italic;
 }
