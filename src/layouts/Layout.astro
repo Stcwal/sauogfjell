@@ -1,40 +1,48 @@
 ---
-import '../styles/global.css';
-import { ClientRouter } from 'astro:transitions';
-
+import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
 ---
+
 <html lang="no" data-theme="auto">
   <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.svg"/>
+    <meta
+      charset="UTF-8"
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <link rel="icon" href="/favicon.svg" />
     <script is:inline>
-      const saved = localStorage.getItem('theme-preference');
-      if (saved) document.documentElement.setAttribute('data-theme', saved);
+      const saved = localStorage.getItem("theme-preference");
+      if (saved) document.documentElement.setAttribute("data-theme", saved);
     </script>
 
     <ClientRouter />
   </head>
-<body>
-  <slot/>
+  <body>
+    <slot />
     <script>
       function cycleTheme() {
-        const THEMES = ['light', 'floop'];
-        const current = document.documentElement.getAttribute('data-theme') || THEMES[0];
+        const THEMES = ["light", "floop"];
+        const current =
+          document.documentElement.getAttribute("data-theme") || THEMES[0];
         const next = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length];
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme-preference', next);
+        document.documentElement.setAttribute("data-theme", next);
+        localStorage.setItem("theme-preference", next);
       }
 
       // Re-attach listener after every navigation
-      document.addEventListener('astro:page-load', () => {
-        document.getElementById('theme-toggle')?.addEventListener('click', cycleTheme);
+      document.addEventListener("astro:page-load", () => {
+        document
+          .getElementById("theme-toggle")
+          ?.addEventListener("click", cycleTheme);
       });
 
       // Copy theme to incoming page before swap, prevents flicker
-      document.addEventListener('astro:before-swap', (e) => {
-        const theme = document.documentElement.getAttribute('data-theme');
-        if (theme) e.newDocument.documentElement.setAttribute('data-theme', theme);
+      document.addEventListener("astro:before-swap", (e) => {
+        const theme = document.documentElement.getAttribute("data-theme");
+        if (theme)
+          e.newDocument.documentElement.setAttribute("data-theme", theme);
       });
     </script>
-</body>
+  </body>
 </html>

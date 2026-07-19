@@ -88,7 +88,7 @@ If this system turns out to be annoying to work with, feel free to change it up.
   --color-footer: rgb(198, 198, 198);
   --color-surface: #1f5840;
   --surface-padding: 16px;
-  --btn-background: #0b883f;
+  --btn-background: #e6e60e;
   --btn-text: #d5d5d5;
   --btn-border-width: 0px;
   --btn-border-color: #000000;
@@ -140,9 +140,9 @@ If this system turns out to be annoying to work with, feel free to change it up.
 
 #home-content {
   padding-top: 50px;
-  display: grid;
+  /* display: grid;
   grid-auto-columns: 33vw;
-  grid-template-columns: 33vw 33vw 33vw;
+  grid-template-columns: 33vw 33vw 33vw; */
   justify-content: center;
 }
 
