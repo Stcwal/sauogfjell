@@ -169,8 +169,23 @@ If this system turns out to be annoying to work with, feel free to change it up.
 .post-wrapper {
   margin: 25px;
   font-family: var(--font-body);
-
 }
+
+.post-wrapper blockquote {
+  border-left: 4px solid #ccc;
+  margin-left: 0;
+  padding-left: 1rem;
+  color: #555;
+}
+
+.post-wrapper :not(pre) > code {
+  background: #f0f0f0;
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+
 
 .post-subtext {
   font-family: var(--font-body);
