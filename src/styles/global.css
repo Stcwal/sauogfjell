@@ -133,7 +133,9 @@ If this system turns out to be annoying to work with, feel free to change it up.
 #blog-content {
   border-radius: var(--radius);
   padding-top: 50px;
-  display: flex;
+  min-width: 0;
+  max-width: 800px;
+  /* display: flex; Må gjeninnføres (tror jeg) dersom det skal være en sidebar senere */
   font-family: var(--font-body);
 
 }
@@ -185,6 +187,25 @@ If this system turns out to be annoying to work with, feel free to change it up.
   font-family: monospace;
 }
 
+.post-wrapper img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Inline math: shrink toward the surrounding text so it reads as part of the sentence.
+   (KaTeX defaults inline math to 1.21em, which is why it looks oversized.) */
+.post-wrapper .katex {
+  font-size: 1.0em;
+}
+
+/* Block math: centered like LaTeX display equations, and larger so it stands out. */
+/* .post-wrapper .katex-display {
+  text-align: center;
+  margin: 1.2em 0;
+} */
+.post-wrapper .katex-display > .katex {
+  font-size: 1.3em;
+}
 
 
 .post-subtext {

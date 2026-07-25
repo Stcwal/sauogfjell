@@ -12,17 +12,17 @@ const blogpostSchema = z.object({
   })
 
 const dev = defineCollection({
-  loader: glob({ base: './src/content/dev', pattern: '**/*.{md,mdx}' }),
+  loader: glob({ base: './src/content/dev', pattern: '**/*.md' }),
   schema: blogpostSchema,
 });
 
 const stian = defineCollection({
-  loader: glob({ base: './src/content/stian', pattern: '**/*.{md,mdx}' }),
+  loader: glob({ base: './src/content/stian', pattern: '**/*.md' }),
   schema: blogpostSchema,
 });
 
 const anders = defineCollection({
-  loader: glob({ base: './src/content/anders', pattern: '**/*.{md,mdx}' }),
+  loader: glob({ base: './src/content/anders', pattern: '**/*.md' }),
   schema: blogpostSchema,
 });
 
