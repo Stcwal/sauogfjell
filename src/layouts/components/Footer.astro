@@ -1,5 +1,6 @@
 ---
 import FeedbackPanel from './FeedbackPanel.astro';
+import SubscribePanel from './SubscribePanel.astro';
 ---
 
 <footer id="footer-outer">
@@ -11,6 +12,8 @@ import FeedbackPanel from './FeedbackPanel.astro';
       </div>
       <div>
         <a href="https://www.linkedin.com/in/stian-closs-walmann/">Stian på linkedIn</a>
+      </div>
+      <div>
         <a href="https://www.linkedin.com/in/anders-fangel/">Anders på linkedIn</a>
       </div>
     </div>
@@ -24,11 +27,7 @@ import FeedbackPanel from './FeedbackPanel.astro';
         Ingen, all <a style="text-decoration: line-through;">me</a> us baby
       </div>
     </div>
-    <div>
-      <b>Tilbakemelding:</b>
-      <div>
-        <FeedbackPanel />
-      </div>
-    </div>
   </footer>
+  <FeedbackPanel />
+  <SubscribePanel/>
 </footer>

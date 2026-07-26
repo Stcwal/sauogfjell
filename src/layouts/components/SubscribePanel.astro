@@ -3,9 +3,7 @@ import { STANDARD_TAGS } from "../../lib/tags";
 const AUTHORS = ["stian", "anders"];
 ---
 
-<button id="subscribe-open" class="subscribe-fab" type="button"
-  >Få varsel om nye innlegg</button
->
+<button id="subscribe-open" class="subscribe-fab" type="button" aria-label="Få varsel om nye innlegg">🔔</button>
 
 <dialog id="subscribe-dialog" class="subscribe-dialog">
   <form id="subscribe-form" class="subscribe-form">
@@ -101,18 +99,22 @@ const AUTHORS = ["stian", "anders"];
 </script>
 
 <style>
+  /* icon-only floating button, bottom-right */
   .subscribe-fab {
     position: fixed;
-    bottom: 2rem;
-    right: 2rem;
+    bottom: 1.5rem;
+    right: 1.5rem;
     z-index: 10;
-    padding: 1.25rem 2.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 2px solid #222;
-    border-radius: 999px;
+    border-radius: 50%;
     background: white;
-    font: inherit;
-    font-size: 1.2rem;
-    font-weight: bold;
+    font-size: 1.8rem;
+    line-height: 1;
     cursor: pointer;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   }
