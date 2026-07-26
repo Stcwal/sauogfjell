@@ -23,7 +23,7 @@ export const POST: APIRoute = async ({ request }) => {
     // Tomt/manglende navn lagres som null (anonym tilbakemelding)
     const name = author?.trim() || null;
 
-    const feedbackId = await saveFeedback(name, feedbackText.trim(), location);
+    const feedbackId = await saveFeedback(name, feedbackText.trim(), path);
 
     return new Response(JSON.stringify({ feedbackId }), {
         status: 201,

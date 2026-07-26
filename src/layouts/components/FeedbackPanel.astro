@@ -1,0 +1,132 @@
+---
+---
+
+<button id="feedback-open" class="feedback-link" type="button">Gi tilbakemelding</button>
+
+<dialog id="feedback-dialog" class="feedback-dialog">
+  <form id="feedback-form" class="feedback-form">
+    <h2>Gi tilbakemelding</h2>
+
+    <label class="field">
+      Tilbakemelding
+      <textarea
+        id="feedback-text"
+        required
+        rows="5"
+        placeholder="Hva synes du om siden?"
+      ></textarea>
+    </label>
+
+    <label class="field">
+      Navn (valgfritt)
+      <input id="feedback-author" type="text" placeholder="Ditt navn" />
+    </label>
+
+    <p class="status" role="status"></p>
+
+    <div class="actions">
+      <button id="feedback-close" type="button">Lukk</button>
+      <button type="submit">Send</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+  const dialog = document.getElementById("feedback-dialog") as HTMLDialogElement;
+  const openBtn = document.getElementById("feedback-open");
+  const closeBtn = document.getElementById("feedback-close");
+  const form = document.getElementById("feedback-form") as HTMLFormElement;
+  const statusEl = form.querySelector(".status") as HTMLElement;
+  const textInput = document.getElementById("feedback-text") as HTMLTextAreaElement;
+  const authorInput = document.getElementById("feedback-author") as HTMLInputElement;
+
+  openBtn?.addEventListener("click", () => dialog.showModal());
+  closeBtn?.addEventListener("click", () => dialog.close());
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const feedbackText = textInput.value;
+    const author = authorInput.value;
+    // The page the user is on when submitting — e.g. "/blog/dev".
+    // window.location only exists in the browser, which is why this lives in the client script.
+    const location = window.location.pathname;
+
+    const res = await fetch("/api/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ author, feedbackText, location }),
+    });
+
+    if (res.ok) {
+      statusEl.textContent = "Takk for tilbakemeldingen!";
+      form.reset();
+    } else {
+      statusEl.textContent = "Noe gikk galt. Prøv igjen.";
+    }
+  });
+</script>
+
+<style>
+  .feedback-link {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .feedback-dialog {
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 1.5rem;
+    max-width: 420px;
+    width: 90%;
+  }
+
+  .feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .feedback-form h2 {
+    margin: 0;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .field textarea,
+  .field input {
+    font: inherit;
+    padding: 0.4rem;
+  }
+
+  .field textarea {
+    resize: vertical;
+  }
+
+  .status {
+    margin: 0;
+    min-height: 1.2em;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+
+  .actions button {
+    font: inherit;
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+  }
+</style>

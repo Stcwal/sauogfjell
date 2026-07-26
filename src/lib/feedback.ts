@@ -4,11 +4,11 @@ export interface Feedback {
     feedbackId: number;
     author: string | null;
     feedbackText: string;
-    location: string;
+    location: string | null;
     createdAt: string;
 }
 
-export async function saveFeedback(author: string | null,feedbackText: string, location: string): Promise<number | null> {
+export async function saveFeedback(author: string | null, feedbackText: string, location: string | null): Promise<number | null> {
     const db = getDb();
 
     const insertFeedback = db.prepare('INSERT INTO Feedback (author, feedbackText, location) VALUES (?, ?, ?) RETURNING feedbackId');
