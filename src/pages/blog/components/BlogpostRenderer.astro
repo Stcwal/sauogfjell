@@ -7,7 +7,12 @@ interface Props {
   collection: "dev" | "stian" | "anders";
 }
 const { collection } = Astro.props;
-const posts = await getCollection(collection);
+
+// Gjemmer drafts i prod, men viser dem på dev-serveren (npm run dev)
+const posts = await getCollection(collection, ({ data }) => {
+  return import.meta.env.DEV || !data.draft;
+});
+
 
 posts.sort((a, b) => {
   //Sorterer først på publishDate, så editDate
