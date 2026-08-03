@@ -5,12 +5,13 @@ interface Props {
     alt: string;
     label: string;
     variant?: "feature" | "tile";
+    fit?: "cover" | "contain";
 }
-const { href, src, alt, label, variant = "feature" } = Astro.props;
+const { href, src, alt, label, variant = "feature", fit = "cover" } = Astro.props;
 ---
 
 <a href={href} class={`image-link ${variant}`}>
-    <img src={src} alt={alt} />
+    <img src={src} alt={alt} style={`object-fit: ${fit};`} />
     <span class="label">{label}</span>
 </a>
 
@@ -32,7 +33,7 @@ const { href, src, alt, label, variant = "feature" } = Astro.props;
     .image-link img {
         width: 100%;
         aspect-ratio: 4 / 3;
-        object-fit: cover;
+        /* object-fit is set per-image via the `fit` prop (cover | contain) */
         /* img is inline by default, which leaves a small baseline gap under it */
         display: block;
     }

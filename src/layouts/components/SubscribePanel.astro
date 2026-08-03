@@ -3,9 +3,7 @@ import { STANDARD_TAGS } from "../../lib/tags";
 const AUTHORS = ["stian", "anders"];
 ---
 
-<button id="subscribe-open" class="subscribe-fab" type="button"
-  >Få varsel om nye innlegg</button
->
+<button id="subscribe-open" class="subscribe-fab" type="button" aria-label="Få varsel om nye innlegg">🔔</button>
 
 <dialog id="subscribe-dialog" class="subscribe-dialog">
   <form id="subscribe-form" class="subscribe-form">
@@ -51,68 +49,78 @@ const AUTHORS = ["stian", "anders"];
 </dialog>
 
 <script>
-  const dialog = document.getElementById(
-    "subscribe-dialog",
-  ) as HTMLDialogElement;
-  const openBtn = document.getElementById("subscribe-open");
-  const closeBtn = document.getElementById("subscribe-close");
-  const form = document.getElementById("subscribe-form") as HTMLFormElement;
-  const statusEl = form.querySelector(".status") as HTMLElement;
+  // Runs on the initial load AND after every client-side (ClientRouter) navigation,
+  // so the listeners get re-bound to the freshly-swapped DOM each time.
+  document.addEventListener("astro:page-load", () => {
+    const dialog = document.getElementById(
+      "subscribe-dialog",
+    ) as HTMLDialogElement;
+    const openBtn = document.getElementById("subscribe-open");
+    const closeBtn = document.getElementById("subscribe-close");
+    const form = document.getElementById("subscribe-form") as HTMLFormElement;
+    // This panel is only on the home page; bail on pages where it isn't rendered.
+    if (!dialog || !form) return;
+    const statusEl = form.querySelector(".status") as HTMLElement;
+    const emailInput = document.getElementById("sub-email") as HTMLInputElement;
+    const devUpdatesInput = document.getElementById(
+      "dev-updates",
+    ) as HTMLInputElement;
 
-  const emailInput = document.getElementById("sub-email") as HTMLInputElement;
+    openBtn?.addEventListener("click", () => dialog.showModal());
+    closeBtn?.addEventListener("click", () => dialog.close());
 
-  const devUpdatesInput = document.getElementById(
-    "dev-updates",
-  ) as HTMLInputElement;
-
-  openBtn?.addEventListener("click", () => dialog.showModal());
-  closeBtn?.addEventListener("click", () => dialog.close());
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    // #2 goes here:
-    const email = emailInput.value;
-    const devUpdates = devUpdatesInput.checked ? 1 : 0;
-
-    // #3 (tagsByAuthor) here,
-    const tagsByAuthor: Record<string, string[]> = {};
-    form
-      .querySelectorAll<HTMLInputElement>("input[data-author]:checked")
-      .forEach((el) => {
-        const author = el.dataset.author!;
-        (tagsByAuthor[author] ??= []).push(el.value);
-      });
-
-    // then the fetch (#4)
-    const res = await fetch("/api/subscribe", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, devUpdates, tagsByAuthor }),
+    // Close when clicking outside the form (a click whose target is the dialog itself
+    // is a click on the backdrop, since the form is a child element).
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog.close();
     });
 
-    if (res.ok){
-      statusEl.textContent = "Gratulerer! Du er påmeldt!";
-    
-    }
-    else {
-      statusEl.textContent = "Noe gikk galt. Prøv igjen."
-    }
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = emailInput.value;
+      const devUpdates = devUpdatesInput.checked ? 1 : 0;
+
+      const tagsByAuthor: Record<string, string[]> = {};
+      form
+        .querySelectorAll<HTMLInputElement>("input[data-author]:checked")
+        .forEach((el) => {
+          const author = el.dataset.author!;
+          (tagsByAuthor[author] ??= []).push(el.value);
+        });
+
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, devUpdates, tagsByAuthor }),
+      });
+
+      if (res.ok) {
+        statusEl.textContent = "Gratulerer! Du er påmeldt!";
+      } else {
+        statusEl.textContent = "Noe gikk galt. Prøv igjen.";
+      }
+    });
   });
 </script>
 
 <style>
+  /* icon-only floating button, bottom-right */
   .subscribe-fab {
     position: fixed;
-    bottom: 2rem;
-    right: 2rem;
+    bottom: 1.5rem;
+    right: 1.5rem;
     z-index: 10;
-    padding: 1.25rem 2.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 2px solid #222;
-    border-radius: 999px;
+    border-radius: 50%;
     background: white;
-    font: inherit;
-    font-size: 1.2rem;
-    font-weight: bold;
+    font-size: 1.8rem;
+    line-height: 1;
     cursor: pointer;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   }
