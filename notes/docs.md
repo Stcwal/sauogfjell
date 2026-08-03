@@ -141,7 +141,7 @@ Run ad-hoc SQL to check what's stored:
 
 ```
 npx wrangler d1 execute sauogfjell --local --command "SELECT * FROM Subscribers"
-npx wrangler d1 execute sauogfjell --local --command "SELECT * FROM Subscriptions"
+npx wrangler d1 execute sauogfjell --remote --command "SELECT * FROM Subscriptions"
 ```
 
 Swap `--local` for `--remote` to query production (read-only queries are safe; be careful with
