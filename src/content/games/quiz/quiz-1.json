@@ -1,7 +1,7 @@
 {
   "title": "Testquiz",
   "author": "stian",
-  "draft": true,
+  "draft": false,
   "publishDate": "2026-08-09",
   "preface": "Dette er egentlig bare for å teste quiz",
   "quiz": {
