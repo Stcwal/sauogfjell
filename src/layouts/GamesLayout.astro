@@ -5,13 +5,15 @@ import Header from "./components/Header.astro";
 ---
 
 <Layout>
-  <div class="header">
-    <Header/>
-  </div>
-  <div>
-
-  </div>
-  <div class="footer">
-    <Footer/>
+  <div id="outer">
+    <div id="header">
+      <Header/>
+    </div>
+    <div id="home-content">
+      <slot/>
+    </div>
+    <div id="footer">
+      <Footer/>
+    </div>
   </div>
 </Layout>
