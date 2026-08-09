@@ -1,55 +1,39 @@
 ---
-import HomeLayout from "../layouts/HomeLayout.astro";
-import ButtonWithImage from "../layouts/components/ButtonWithImage.astro";
+import ButtonWithImage from "../../layouts/components/ButtonWithImage.astro";
+import HomeLayout from "../../layouts/HomeLayout.astro";
 ---
 
 <HomeLayout>
   <section class="landing">
-    <div class="feature-row">
-      <ButtonWithImage
-        variant="feature"
-        href="/blog/stian"
-        src="/landingpage/stian-placeholder.jpg"
-        alt="Bilde av Stian"
-        label="Stian"
-      />
-      <ButtonWithImage
-        variant="feature"
-        href="/blog/anders"
-        src="/landingpage/anders-placeholder.jpg"
-        alt="Bilde av Anders"
-        label="Anders"
-      />
-    </div>
     <div class="tile-row">
       <ButtonWithImage
         variant="tile"
-        href="/blog/dev"
-        src="/landingpage/jan-thomas.jpg"
+        href="/elo/"
+        src="/games/noter.png"
         alt="Placeholder-bilde av Jan Thomas"
-        label="Dev-oppdateringer"
+        label="Musikkrangering"
+      />
+      <ButtonWithImage
+        variant="tile"
+        href="/games/quiz/"
+        src="/games/quiz.jpg"
+        alt="Retro Game Boy"
+        label="Quiz"
+        fit="contain"
       />
       <ButtonWithImage
         variant="tile"
         href="#"
         src="/landingpage/fisk.jpg"
         alt="Placeholder-bilde av en fisk"
-        label="Kommer snart"
+        label="Kommer kanskje snart?"
       />
       <ButtonWithImage
         variant="tile"
         href="#"
         src="/landingpage/oljeboringsplatform.jpg"
         alt="Placeholder-bilde av en oljeboringsplattform"
-        label="Kommer snart"
-      />
-      <ButtonWithImage
-        variant="tile"
-        href="/games/"
-        src="/landingpage/gameboy.gif"
-        alt="Retro Game Boy"
-        label="Spillsentral"
-        fit="contain"
+        label="Kommer kanskje snart?"
       />
     </div>
   </section>

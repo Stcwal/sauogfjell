@@ -1,0 +1,85 @@
+---
+import { getCollection } from "astro:content";
+
+interface Props {
+  collection: "quiz";
+}
+
+const { collection } = Astro.props;
+
+const quizzes = await getCollection(collection, ({ data }) => import.meta.env.DEV || !data.draft);
+---
+
+<div class="post-wrapper quiz-page">
+  {quizzes.map((quiz) => (
+    <section class="quiz-json">
+      <h1>{quiz.data.title}</h1>
+
+      <div class="quiz-meta">
+        <p class="post-subtext">Skrevet av {quiz.data.author}</p>
+        <p class="post-subtext">Publisert {quiz.data.publishDate.toLocaleDateString('nb-NO')}</p>
+        {quiz.data.preface ? <p>{quiz.data.preface}</p> : null}
+      </div>
+
+      <h2>Questions</h2>
+      <ol>
+        {Object.entries(quiz.data.quiz.questions).map(([questionId, question]) => (
+          <li data-question data-answer={question.a}>
+            <p><strong>{question.q}</strong></p>
+            <div class="quiz-options">
+              {question.o.map((option) => (
+                <label class="quiz-option" data-question-id={questionId} data-correct={option === question.a ? 'true' : 'false'}>
+                  <input type="radio" name={`question-${questionId}`} value={option} />
+                  <span>{option}</span>
+                </label>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  ))}
+</div>
+
+<style>
+  .quiz-page,
+  .quiz-page * {
+    font-family: var(--font-body);
+  }
+
+  .quiz-json {
+    margin-bottom: 2rem;
+  }
+
+  .quiz-option {
+    display: block;
+    width: fit-content;
+    min-width: 180px;
+    max-width: 240px;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid #000;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+    font: inherit;
+  }
+
+  .quiz-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .quiz-option span {
+    display: block;
+  }
+
+  .quiz-option:has(input:checked)[data-correct='true'] {
+    background: #c8f7c5;
+    border-color: #4b9447;
+  }
+
+  .quiz-option:has(input:checked)[data-correct='false'] {
+    background: #f7c5c5;
+    border-color: #b04b4b;
+  }
+</style>
