@@ -24,7 +24,7 @@ const quizzes = await getCollection(collection, ({ data }) => import.meta.env.DE
       <h2>Questions</h2>
       <ol>
         {Object.entries(quiz.data.quiz.questions).map(([questionId, question]) => (
-          <li data-question data-answer={question.a}>
+          <li data-question>
             <p><strong>{question.q}</strong></p>
             <div class="quiz-options">
               {question.o.map((option) => (
