@@ -3,7 +3,6 @@ title: Quizer!
 author: Stian
 draft: false
 publishDate: 2026-08-09
-#editDate: 2026-06-03
 ---
 
 # Jeg har laget quizer!
