@@ -172,14 +172,7 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
     color: var(--color-text);
 }
 
-.card {
-  border-color: var(--border-color);
-  border-radius: var(--radius);
-  border-width: var(--border-width);
-  border-style: var(--border-style);
-  background: var(--color-surface);
-  padding: var(--surface-padding);
-}
+
 
 #outer {
   height: 100vh;
