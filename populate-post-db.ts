@@ -4,6 +4,25 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { load } from "js-yaml";
 
+// `npx wrangler` cannot be spawned here on Windows: npm installs a `npx.cmd` batch
+// shim, and execFileSync launches executables directly, so it neither finds a bare
+// `npx` (ENOENT) nor is allowed to run the `.cmd` (EINVAL). Passing `shell: true`
+// would fix the lookup but hand our SQL to cmd.exe to re-parse, mangling quotes.
+// Instead run wrangler's own JS entrypoint with the Node binary we're already in:
+// no shell, no platform-specific shim, and no npx install prompt.
+const WRANGLER_BIN = path.join(
+  path.dirname(require.resolve("wrangler/package.json")),
+  "bin",
+  "wrangler.js",
+);
+
+function runWrangler(args: string[], options: { stdio?: "pipe" } = {}): string {
+  return execFileSync(process.execPath, [WRANGLER_BIN, ...args], {
+    encoding: "utf-8",
+    ...options,
+  });
+}
+
 interface Post {
   title: string;
   author: string;
@@ -184,7 +203,6 @@ function buildInsertSql(post: HashedPost): string {
 
 function readPostsTable(): { rows: PostRow[]; tableExists: boolean } {
   const command = [
-    "wrangler",
     "d1",
     "execute",
     "sauogfjell",
@@ -198,7 +216,7 @@ function readPostsTable(): { rows: PostRow[]; tableExists: boolean } {
   ];
 
   try {
-    const output = execFileSync("npx", command, { encoding: "utf-8" }).trim();
+    const output = runWrangler(command).trim();
 
     if (!output) {
       return { rows: [], tableExists: true };
@@ -256,7 +274,6 @@ function syncMissingPosts(contentPosts: HashedPost[], dbPosts: PostRow[]): void 
 
     for (const post of missingPosts) {
       const insertCommand = [
-        "wrangler",
         "d1",
         "execute",
         "sauogfjell",
@@ -270,7 +287,7 @@ function syncMissingPosts(contentPosts: HashedPost[], dbPosts: PostRow[]): void 
       ];
 
       try {
-        execFileSync("npx", insertCommand, { stdio: "pipe", encoding: "utf-8" });
+        runWrangler(insertCommand, { stdio: "pipe" });
         trackedHashes.add(post.hash);
         console.log(`- inserted ${post.source}`);
       } catch (error) {
