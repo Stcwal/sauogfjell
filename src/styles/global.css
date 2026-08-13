@@ -60,7 +60,7 @@ If this system turns out to be annoying to work with, feel free to change it up.
 
 /* 2. NON-THEMED SEMANTICS */
 :root {
-
+  --border-style: solid;
 }
 
 /* 3.1. THEMED SEMANTICS - default */
@@ -73,6 +73,8 @@ If this system turns out to be annoying to work with, feel free to change it up.
   --radius: 0px;
   --border-color: transparent;
   --border-width: 0px;
+  --border-color-strong: #000;
+  --border-width-strong: 2px;
   --layout-padding: 0px;
   --surface-padding: 0px;
   --btn-background: #02ff6b;
@@ -95,6 +97,8 @@ If this system turns out to be annoying to work with, feel free to change it up.
   --radius: 16px;
   --border-color: #000;
   --border-width: 2px;
+  --border-color-strong: #000;
+  --border-width-strong: 4px;
   --layout-padding: 16px;
   --surface-padding: 16px;
   --btn-background: #e6e60e;
@@ -123,6 +127,7 @@ If this system turns out to be annoying to work with, feel free to change it up.
   border-color: var(--border-color);
   border-radius: var(--radius);
   border-width: var(--border-width);
+  border-style: var(--border-style);
   background: var(--color-surface);
   padding: var(--surface-padding);
 }
@@ -138,7 +143,9 @@ If this system turns out to be annoying to work with, feel free to change it up.
   background-color: var(--color-header);
   width: 100%;
   position: fixed;
-  border-bottom: 2px solid black;
+  border-bottom-style: var(--border-style);
+  border-bottom-width: var(--border-width-strong);
+  border-bottom-color: var(--border-color-strong);
   font-family: var(--font-body);
 
 }
@@ -172,7 +179,9 @@ If this system turns out to be annoying to work with, feel free to change it up.
   display: flex;
   justify-content: center;
   align-items: center;
-  border-top: 2px solid black;
+  border-top-style: var(--border-style);
+  border-top-width: var(--border-width-strong);
+  border-top-color: var(--border-color-strong);
   padding-bottom: 20px;
   padding-top: 20px;
 }
