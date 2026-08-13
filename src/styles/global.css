@@ -120,8 +120,8 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
   --color-background: #222222;
   --color-text: #ffffff;
   --color-text-muted: #d4d4d4;
-  --color-danger: #cc0000;
-  --color-danger-bg: #f7c5c5;
+  --color-danger: #a40000;
+  --color-danger-bg: #400000;
   --color-danger-border: #b04b4b;
   --color-success: #1bdb24;
   --color-success-bg: #c8f7c5;
