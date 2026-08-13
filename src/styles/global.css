@@ -52,13 +52,15 @@ It's fine to set a few things directly (header being position: fixed, page full 
 If this system turns out to be annoying to work with, feel free to change it up.
 */
 
+/* TIER 1 */
 /* 1. PRIMITIVES */
 :root {
   --color-white: #fff;
   --color-pink-300: #ff9ee2;
 }
 
-/* 2. NON-THEMED SEMANTICS */
+/* TIER 2 */
+/* 2.0. NON-THEMED SEMANTICS */
 :root {
   --border-style: solid;
 
@@ -90,7 +92,7 @@ If this system turns out to be annoying to work with, feel free to change it up.
   --z-overlay: 10;
 }
 
-/* 3.1. THEMED SEMANTICS - default */
+/* 2.1. THEMED SEMANTICS - default */
 :root {
   --font-body: monospace;
   --color-background: #fff; /*Alternativt: var(--color-white);*/
@@ -108,6 +110,10 @@ If this system turns out to be annoying to work with, feel free to change it up.
   --color-surface-raised: #ffffff;
   --color-surface-hover: #f0f0f0;
   --color-code-bg: #f0f0f0;
+  --color-accent: #02ff6b;     
+  --color-on-accent: #000000; 
+  --color-accent-2: #1bb3ff;   
+  --color-on-accent-2: #000000; 
   --radius: 0px;
   --border-color: transparent;
   --border-color-subtle: #cccccc;
@@ -117,17 +123,9 @@ If this system turns out to be annoying to work with, feel free to change it up.
   --shadow-raised: 0 4px 16px rgba(0, 0, 0, 0.25);
   --layout-padding: 0px;
   --surface-padding: 0px;
-  --btn-background: #02ff6b;
-  --btn-text: #000000;
-  --btn-border-width: 0px;
-  --btn-border-color: #000000;
-  --btn-radius: 0px;
-  --btn-shadow: none;
-  --tile-overlay-bg: #1bb3ff;
-  --tile-overlay-text: #000000;
 }
 
-/* 3.2. THEMED SEMANTICS - floop */
+/* 2.2. THEMED SEMANTICS - floop */
 [data-theme="floop"] {
   --font-body: Arial;
   --color-background: #e1e1e1;
@@ -145,6 +143,9 @@ If this system turns out to be annoying to work with, feel free to change it up.
   --color-surface-raised: #ffffff;
   --color-surface-hover: #e0e0e0;
   --color-code-bg: #d0d0d0;
+  --color-accent: #e6e60e;      
+  --color-on-accent: #161616;   
+  --color-on-accent-2: #161616; 
   --radius: 16px;
   --border-color: #000;
   --border-color-subtle: #b0b0b0;
@@ -154,14 +155,19 @@ If this system turns out to be annoying to work with, feel free to change it up.
   --shadow-raised: 4px 4px 0 #000;
   --layout-padding: 16px;
   --surface-padding: 16px;
-  --btn-background: #e6e60e;
-  --btn-text: #d5d5d5;
-  --btn-border-width: 0px;
-  --btn-border-color: #000000;
-  --btn-radius: 0px;
-  --btn-shadow: none;
-  --tile-overlay-bg: #3d88ae;
-  --tile-overlay-text: #b6b6b6;
+}
+
+/* TIER 3 */
+/* 3. COMPONENT TOKENS (tier 3) */
+:root {
+  --btn-background: var(--color-accent);    
+  --btn-text: var(--color-on-accent);     
+  --btn-border-color: var(--border-color-strong); 
+  --btn-border-width: var(--border-width);      
+  --btn-radius: var(--radius);                    
+  --btn-shadow: none;                             
+  --tile-overlay-bg: var(--color-accent-2);      
+  --tile-overlay-text: var(--color-on-accent-2);
 }
 
 /* ============================================================ */
