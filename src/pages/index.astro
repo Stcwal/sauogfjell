@@ -2,20 +2,19 @@
 import HomeLayout from "../layouts/HomeLayout.astro";
 import ButtonWithImage from "../layouts/components/ButtonWithImage.astro";
 import Grid from "../components/ui/Grid.astro";
+import PictureCard from "../components/ui/PictureCard.astro";
 ---
 
 <HomeLayout>
   <section class="landing">
     <Grid minItemWidth="21rem">
-      <ButtonWithImage
-        variant="feature"
+      <PictureCard
         href="/blog/stian"
         src="/landingpage/stian-placeholder.jpg"
         alt="Bilde av Stian"
         label="Stian"
       />
-      <ButtonWithImage
-        variant="feature"
+      <PictureCard
         href="/blog/anders"
         src="/landingpage/anders-placeholder.jpg"
         alt="Bilde av Anders"
@@ -23,28 +22,28 @@ import Grid from "../components/ui/Grid.astro";
       />
     </Grid>
     <Grid minItemWidth="9rem">
-      <ButtonWithImage
+      <PictureCard
         variant="tile"
         href="/blog/dev"
         src="/landingpage/jan-thomas.jpg"
         alt="Placeholder-bilde av Jan Thomas"
         label="Dev-oppdateringer"
       />
-      <ButtonWithImage
+      <PictureCard
         variant="tile"
         href="#"
         src="/landingpage/fisk.jpg"
         alt="Placeholder-bilde av en fisk"
         label="Kommer snart"
       />
-      <ButtonWithImage
+      <PictureCard
         variant="tile"
         href="#"
         src="/landingpage/oljeboringsplatform.jpg"
         alt="Placeholder-bilde av en oljeboringsplattform"
         label="Kommer snart"
       />
-      <ButtonWithImage
+      <PictureCard
         variant="tile"
         href="/games/"
         src="/landingpage/gameboy.gif"

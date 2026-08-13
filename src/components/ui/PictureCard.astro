@@ -1,20 +1,92 @@
 ---
-import Card from './Card.astro';
+import Card from "./Card.astro";
 
 interface Props {
     href: string;
     src: string;
     alt: string;
     label: string;
+    /** feature = label in its own band under the image (default).
+        tile     = label overlaid across the bottom of the image. */
     variant?: "feature" | "tile";
     fit?: "cover" | "contain";
 }
-const { href, src, alt, label, variant = "feature", fit = "cover" } = Astro.props;
+const {
+    href,
+    src,
+    alt,
+    label,
+    variant = "feature",
+    fit = "cover",
+} = Astro.props;
 ---
 
 <a class="picture-card" href={href} data-variant={variant}>
     <Card>
-        <img src={src} alt={alt} data-fit={fit} />
-        <span class="label">{label}</span>
+        <div class="media">
+            <img src={src} alt={alt} data-fit={fit} />
+            <span class="label">{label}</span>
+        </div>
     </Card>
 </a>
+
+<style>
+    .picture-card {
+        --card-bg: var(--btn-background);
+        --card-radius: var(--btn-radius);
+        --card-shadow: var(--btn-shadow);
+        --card-border-color: var(--btn-border-color);
+        --card-border-width: var(--btn-border-width);
+        --card-padding: 0;
+
+        color: var(--btn-text);
+        text-decoration: none;
+        display: grid;
+    }
+
+    .picture-card img {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        display: block;
+    }
+
+    .picture-card img[data-fit="cover"] {
+        object-fit: cover;
+    }
+    .picture-card img[data-fit="contain"] {
+        object-fit: contain;
+    }
+
+    /* Base label = the "feature" layout: its own band under the image, drawn on
+       the card background with the inherited --btn-text colour. */
+    .picture-card .label {
+        display: block;
+        padding: var(--space-2) var(--space-3);
+        font-family: var(--font-body);
+        text-align: center;
+    }
+
+    /* tile: the label floats over the image instead of sitting below it.
+       The containing block is .media (inside Card), NOT the <a>. Anchoring to the
+       <a> would size the label to Card's BORDER box, and Card's overflow:hidden
+       clips to its PADDING box — so the border width got trimmed off the label. */
+    .picture-card[data-variant="tile"] .media {
+        position: relative;
+    }
+
+    .picture-card[data-variant="tile"] .label {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--tile-overlay-bg);
+        color: var(--tile-overlay-text);
+    }
+
+    .picture-card:focus-visible {
+        outline-style: var(--border-style);
+        outline-width: var(--border-width-strong);
+        outline-color: var(--btn-border-color);
+        outline-offset: var(--space-1);
+    }
+</style>
