@@ -73,8 +73,12 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
   --radius-pill: 999px;
   --radius-round: 50%;
 
-  /* Stacking order. */
-  --z-overlay: 10;
+  /* Stacking order. Gaps between layers so new ones can slot in without renumbering. */
+  --z-header: 100;
+  --z-overlay: 200;
+
+  /* Header height */
+  --header-height: 50px;
 }
 
 /* 2.1. THEMED SEMANTICS - default */
@@ -184,10 +188,11 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 }
 
 #header {
-  min-height: 50px;
+  min-height: var(--header-height);
   background-color: var(--color-header);
   width: 100%;
   position: fixed;
+  z-index: var(--z-header);
   border-bottom-style: var(--border-style);
   border-bottom-width: var(--border-width-strong);
   border-bottom-color: var(--border-color-strong);
@@ -197,7 +202,7 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 
 #blog-content {
   border-radius: var(--radius);
-  padding-top: 50px;
+  padding-top: var(--header-height);
   min-width: 0;
   max-width: 800px;
   /* display: flex; Må gjeninnføres (tror jeg) dersom det skal være en sidebar senere */
@@ -206,7 +211,7 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 }
 
 #home-content {
-  padding-top: 50px;
+  padding-top: var(--header-height);
   /* display: grid;
   grid-auto-columns: 33vw;
   grid-template-columns: 33vw 33vw 33vw; */
