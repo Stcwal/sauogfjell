@@ -114,7 +114,40 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
   --surface-padding: 0px;
 }
 
-/* 2.2. THEMED SEMANTICS - floop */
+/* 2.2. THEMED SEMANTICS - dark */
+[data-theme="dark"] {
+  --font-body: monospace;
+  --color-background: #222222;
+  --color-text: #ffffff;
+  --color-text-muted: #d4d4d4;
+  --color-danger: #cc0000;
+  --color-danger-bg: #f7c5c5;
+  --color-danger-border: #b04b4b;
+  --color-success: #1bdb24;
+  --color-success-bg: #c8f7c5;
+  --color-success-border: #459720;
+  --color-header: rgb(121, 3, 86);
+  --color-footer: rgb(2, 59, 59);
+  --color-surface: rgb(11, 42, 42);
+  --color-surface-raised: #020000;
+  --color-surface-hover: #252424;
+  --color-code-bg: #d9d9d9;
+  --color-accent: #006d2e;     
+  --color-on-accent: #ffffff; 
+  --color-accent-2: #023f5e;   
+  --color-on-accent-2: #ffffff; 
+  --radius: 0px;
+  --border-color: transparent;
+  --border-color-subtle: #cccccc;
+  --border-width: 0px;
+  --border-color-strong: #ffffff;
+  --border-width-strong: 2px;
+  --shadow-raised: 0 4px 16px rgba(242, 242, 242, 0.25);
+  --layout-padding: 0px;
+  --surface-padding: 0px;
+}
+
+/* 2.3. THEMED SEMANTICS - floop */
 [data-theme="floop"] {
   --font-body: Arial;
   --color-background: #e1e1e1;
