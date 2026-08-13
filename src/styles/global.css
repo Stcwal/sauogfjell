@@ -74,22 +74,47 @@ If this system turns out to be annoying to work with, feel free to change it up.
   --font-size-1: 0.8rem;
   --font-size-2: 1rem;
   --font-size-3: 1.25rem;
-  --font-size-3: 1.563rem;
-  --font-size-4: 1.953rem;
+  --font-size-4: 1.563rem;
+  --font-size-5: 1.953rem;
+
+  /* Radius scale for small components*/
+  --radius-1: 4px;
+  --radius-2: 8px;
+  --radius-3: 16px;
+
+  /* Fixed shapes, never themed */
+  --radius-pill: 999px;
+  --radius-round: 50%;
+
+  /* Stacking order. */
+  --z-overlay: 10;
 }
 
 /* 3.1. THEMED SEMANTICS - default */
 :root {
   --font-body: monospace;
   --color-background: #fff; /*Alternativt: var(--color-white);*/
+  --color-text: #000;
+  --color-text-muted: #525151;
+  --color-danger: #cc0000;
+  --color-danger-bg: #f7c5c5;
+  --color-danger-border: #b04b4b;
+  --color-success: #2e7d32;
+  --color-success-bg: #c8f7c5;
+  --color-success-border: #4b9447;
   --color-header: rgb(255, 158, 226);
   --color-footer: azure;
   --color-surface: rgb(155, 249, 249);
+  --color-surface-raised: #ffffff;
+  --color-surface-hover: #f0f0f0;
+  --color-code-bg: #f0f0f0;
   --radius: 0px;
   --border-color: transparent;
+  --border-color-subtle: #cccccc;
   --border-width: 0px;
   --border-color-strong: #000;
   --border-width-strong: 2px;
+  --shadow-raised: 0 4px 16px rgba(0, 0, 0, 0.25);
   --layout-padding: 0px;
   --surface-padding: 0px;
   --btn-background: #02ff6b;
@@ -106,14 +131,27 @@ If this system turns out to be annoying to work with, feel free to change it up.
 [data-theme="floop"] {
   --font-body: Arial;
   --color-background: #e1e1e1;
+  --color-text: #161616;
+  --color-text-muted: #452a2a;
+  --color-danger: #9b1c1c;
+  --color-danger-bg: #e0bcbc;
+  --color-danger-border: #8b3d3d;
+  --color-success: #1f5840;
+  --color-success-bg: #bcd9c4;
+  --color-success-border: #3d7a52;
   --color-header: rgb(46, 75, 47);
   --color-footer: rgb(198, 198, 198);
   --color-surface: #1f5840;
+  --color-surface-raised: #ffffff;
+  --color-surface-hover: #e0e0e0;
+  --color-code-bg: #d0d0d0;
   --radius: 16px;
   --border-color: #000;
+  --border-color-subtle: #b0b0b0;
   --border-width: 2px;
   --border-color-strong: #000;
   --border-width-strong: 4px;
+  --shadow-raised: 4px 4px 0 #000;
   --layout-padding: 16px;
   --surface-padding: 16px;
   --btn-background: #e6e60e;
@@ -135,7 +173,7 @@ If this system turns out to be annoying to work with, feel free to change it up.
     height: 100%;
     margin: 0;
     background-color: var(--color-background);
-
+    color: var(--color-text);
 }
 
 .card {
@@ -211,16 +249,19 @@ If this system turns out to be annoying to work with, feel free to change it up.
 }
 
 .post-wrapper blockquote {
-  border-left: 4px solid #ccc;
+  border-left-style: var(--border-style);
+  border-left-width: var(--border-width-strong);
+  border-left-color: var(--border-color-subtle);
   margin-left: 0;
   padding-left: 1rem;
-  color: #555;
+  color: var(--color-text-muted);
 }
 
 .post-wrapper :not(pre) > code {
-  background: #f0f0f0;
+  background: var(--color-code-bg);
   padding: 0.1em 0.3em;
-  border-radius: 4px;
+  border-radius: var(--radius-1);
+  /* font-family stays monospace on purpose: code should not follow --font-body */
   font-family: monospace;
 }
 
@@ -247,6 +288,6 @@ If this system turns out to be annoying to work with, feel free to change it up.
 
 .post-subtext {
   font-family: var(--font-body);
-  font-size: xx-small;
+  font-size: var(--font-size-1);
   font-style: italic;
 }
