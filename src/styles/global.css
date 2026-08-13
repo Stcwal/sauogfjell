@@ -1,4 +1,7 @@
 /*
+
+DENNE DELEN MÅ OPPDATERES. PER 2026-08-13 05:33Z
+
 Global styles and design tokens.
 
 DESIGN TOKENS (CSS custom properties)
@@ -49,21 +52,26 @@ It's fine to set a few things directly (header being position: fixed, page full 
 If this system turns out to be annoying to work with, feel free to change it up.
 */
 
-/* PRIMITIVES */
+/* 1. PRIMITIVES */
 :root {
   --color-white: #fff;
   --color-pink-300: #ff9ee2;
 }
 
+/* 2. NON-THEMED SEMANTICS */
+:root {
 
+}
+
+/* 3.1. THEMED SEMANTICS - default */
 :root {
   --font-body: monospace;
   --color-background: #fff; /*Alternativt: var(--color-white);*/
   --color-header: rgb(255, 158, 226);
   --color-footer: azure;
-  --color-surface: #fdfdfd;
+  --color-surface: rgb(155, 249, 249);
   --radius: 0px;
-  --border-color: none;
+  --border-color: transparent;
   --border-width: 0px;
   --layout-padding: 0px;
   --surface-padding: 0px;
@@ -77,16 +85,17 @@ If this system turns out to be annoying to work with, feel free to change it up.
   --tile-overlay-text: #000000;
 }
 
+/* 3.2. THEMED SEMANTICS - floop */
 [data-theme="floop"] {
   --font-body: Arial;
   --color-background: #e1e1e1;
-  --layout-padding: 16px;
   --color-header: rgb(46, 75, 47);
+  --color-footer: rgb(198, 198, 198);
+  --color-surface: #1f5840;
   --radius: 16px;
   --border-color: #000;
   --border-width: 2px;
-  --color-footer: rgb(198, 198, 198);
-  --color-surface: #1f5840;
+  --layout-padding: 16px;
   --surface-padding: 16px;
   --btn-background: #e6e60e;
   --btn-text: #d5d5d5;
@@ -97,6 +106,10 @@ If this system turns out to be annoying to work with, feel free to change it up.
   --tile-overlay-bg: #3d88ae;
   --tile-overlay-text: #b6b6b6;
 }
+
+/* ============================================================ */
+/* ============================================================ */
+/* ============================================================ */
 
 
 .wrapper, html, body {
