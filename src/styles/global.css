@@ -61,6 +61,21 @@ If this system turns out to be annoying to work with, feel free to change it up.
 /* 2. NON-THEMED SEMANTICS */
 :root {
   --border-style: solid;
+
+  /* Space scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+
+  /* Font scale */
+  --font-size-1: 0.8rem;
+  --font-size-2: 1rem;
+  --font-size-3: 1.25rem;
+  --font-size-3: 1.563rem;
+  --font-size-4: 1.953rem;
 }
 
 /* 3.1. THEMED SEMANTICS - default */
