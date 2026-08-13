@@ -1,55 +1,40 @@
 /*
-
-DENNE DELEN MÅ OPPDATERES. PER 2026-08-13 05:33Z
-
 Global styles and design tokens.
 
-DESIGN TOKENS (CSS custom properties)
--------------------------------------
-Tokens are defined once in :root and consumed everywhere with var(--name).
-They inherit globally, so any element — including a component's scoped <style> —
-can read them.
+HOW THEMING WORKS
+-----------------
+Custom properties inherit from <html>, so any rule — including a component's
+scoped <style> — can read them with var(--name). A theme is the SAME token names
+redefined under [data-theme="..."]. Components never change; only the values
+behind the tokens do.
 
-Themes work by REDEFINING the same token names under a selector. The default theme
-lives in :root; alternate themes (e.g. [data-theme="floop"]) override the values.
-Component styles reference var(--...) and never change — only the values behind them do.
-  => To restyle the whole site (or adopt a CSS library's look later), change the token
-     VALUES here, not the components.
+  => The rule that makes this work: a component's CSS may contain no literal
+     colour, radius, border, shadow or font. Only var(--token).
 
-Tier 1 — Primitives (raw values, named after what they are):
---color-pink-300: rgb(255, 158, 226);
---space-4: 1rem;
---radius-md: 16px;
---font-mono: monospace;
---border-2: 2px;
+BLOCK LAYOUT  (order matters — theme blocks must come after the default :root,
+               since :root and [data-theme] have equal specificity)
+  1    Primitives         raw values, named after what they are
+  2.0  Non-themed         identical under every theme (scales, shapes, z-index)
+  2.1  Themed, default    semantic roles
+  2.2  Themed, floop      must define the SAME keys, in the SAME order, as 2.1
+  3    Component tokens   --btn-*, --tile-overlay-*; each points at a tier-2 role
 
-Tier 2 — Semantic (named after their role, pointing at primitives):
---color-background: var(--color-pink-300);
---color-surface:    #1f5840;
---color-text:       #000;
---border-color:     var(--color-text);
+Tier 3 is deliberately theme-free: var() resolves on <html>, where the active
+theme has already won, so these follow the theme without being redefined per
+theme. This relies on data-theme living on the ROOT element — a theme scoped to
+an inner element would not reach them.
 
-Tier 3 — Component (optional; named component-property):
---button-bg:           var(--color-surface);
---button-border-width: var(--border-2);
---button-shadow:       4px 4px 0 var(--color-text);
+ADDING A TOKEN
+--------------
+- Name it by ROLE, not by value (--color-danger, not --color-red).
+- Test the name: could you give it a sensible value in a dark theme? If not,
+  it describes a value rather than a role — rename it.
+- Add it to 2.1 AND 2.2, at the same position. A token missing from a theme does
+  not error; it silently inherits the default, and you will not notice.
+- A background token that carries text needs a paired --color-on-* foreground.
+  The two must always be chosen together.
 
-NAMING
-------
-Human-readable, kebab-case, grouped category-first, and named by ROLE (what it's for)
-rather than by raw value (so a theme can remap it without the name becoming a lie):
-  --color-*     colours (background, surface, header, footer, border-color, ...)
-  --font-*      typography
-  --radius, --border-width, --*-padding   shape / spacing
-
-Adding a token? Add it to BOTH :root and every [data-theme="..."] block, or it will be
-undefined under one of the themes.
-
-Component-level tokens (e.g. --button-bg, --tile-overlay-bg) belong here too, ideally
-pointing at the tokens above (--button-bg: var(--color-surface)) so they follow the theme.
-
-It's fine to set a few things directly (header being position: fixed, page full height).
-If this system turns out to be annoying to work with, feel free to change it up.
+Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 */
 
 /* TIER 1 */
@@ -143,9 +128,10 @@ If this system turns out to be annoying to work with, feel free to change it up.
   --color-surface-raised: #ffffff;
   --color-surface-hover: #e0e0e0;
   --color-code-bg: #d0d0d0;
-  --color-accent: #e6e60e;      
-  --color-on-accent: #161616;   
-  --color-on-accent-2: #161616; 
+  --color-accent: #e6e60e;
+  --color-on-accent: #161616;
+  --color-accent-2: #3d88ae;
+  --color-on-accent-2: #161616;
   --radius: 16px;
   --border-color: #000;
   --border-color-subtle: #b0b0b0;
