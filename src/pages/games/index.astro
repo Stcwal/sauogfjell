@@ -1,35 +1,35 @@
 ---
-import ButtonWithImage from "../../layouts/components/ButtonWithImage.astro";
 import HomeLayout from "../../layouts/HomeLayout.astro";
 import Grid from "../../components/ui/Grid.astro";
+import PictureCard from "../../components/ui/PictureCard.astro";
 ---
 
 <HomeLayout>
   <section class="landing">
     <Grid>
-      <ButtonWithImage
+      <PictureCard
         variant="tile"
         href="/games/elo/"
         src="/games/noter.png"
         alt="Placeholder-bilde av Jan Thomas"
         label="Musikkrangering"
       />
-      <ButtonWithImage
+      <PictureCard
         variant="tile"
         href="/games/quiz/"
         src="/games/quiz.jpg"
         alt="Retro Game Boy"
         label="Quiz"
-        fit="contain"
+        fit="cover"
       />
-      <ButtonWithImage
+      <PictureCard
         variant="tile"
         href="#"
         src="/landingpage/fisk.jpg"
         alt="Placeholder-bilde av en fisk"
         label="Kommer kanskje snart?"
       />
-      <ButtonWithImage
+      <PictureCard
         variant="tile"
         href="#"
         src="/landingpage/oljeboringsplatform.jpg"
