@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
-import PostWrapper from "./BlogpostWrapper.astro";
-import { getTagColor } from "../../../lib/tags";
+import BlogPostWrapper from "./BlogPostWrapper.astro";
+import { getTagColor } from "../../lib/tags";
 
 interface Props {
   collection: "dev" | "stian" | "anders";
@@ -37,7 +37,7 @@ const formatDate = (date: Date) =>
       posts.map(async (post, i) => {
         const { Content } = await render(post);
         return (
-          <PostWrapper>
+          <BlogPostWrapper>
             <div class="tags">
               {post.data.tags.length > 0
                 ? post.data.tags.map((tag: string) => (
@@ -58,7 +58,7 @@ const formatDate = (date: Date) =>
                 : ""}
             </a>
             {i < posts.length - 1 ? <hr /> : null}
-          </PostWrapper>
+          </BlogPostWrapper>
         );
       }),
     )
