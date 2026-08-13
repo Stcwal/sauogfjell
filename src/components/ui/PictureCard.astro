@@ -1,0 +1,20 @@
+---
+import Card from './Card.astro';
+
+interface Props {
+    href: string;
+    src: string;
+    alt: string;
+    label: string;
+    variant?: "feature" | "tile";
+    fit?: "cover" | "contain";
+}
+const { href, src, alt, label, variant = "feature", fit = "cover" } = Astro.props;
+---
+
+<a class="picture-card" href={href} data-variant={variant}>
+    <Card>
+        <img src={src} alt={alt} data-fit={fit} />
+        <span class="label">{label}</span>
+    </Card>
+</a>

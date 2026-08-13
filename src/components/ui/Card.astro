@@ -8,9 +8,9 @@
 
 <style>
     .card {
-        border-color: var(--border-color);
+        border-color: var(--card-border-color, var(--border-color));
         border-radius: var(--card-radius, var(--radius));
-        border-width: var(--border-width);
+        border-width: var(--card-border-width, var(--border-width));
         border-style: var(--border-style);
         background: var(--card-bg, var(--color-surface));
         padding: var(--card-padding, var(--surface-padding));
