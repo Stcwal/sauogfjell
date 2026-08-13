@@ -20,10 +20,12 @@ const { minItemWidth = "14rem" } = Astro.props;
 </div>
 
 <style>
-    .grid {
+  .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(var(--grid-min-item), 100%), 1fr));
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(var(--grid-min-item), 100%), 1fr)
+    );
     gap: var(--space-4);
-    }
+  }
 </style>
-

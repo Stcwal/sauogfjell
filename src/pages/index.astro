@@ -1,11 +1,12 @@
 ---
 import HomeLayout from "../layouts/HomeLayout.astro";
 import ButtonWithImage from "../layouts/components/ButtonWithImage.astro";
+import Grid from "../components/ui/Grid.astro";
 ---
 
 <HomeLayout>
   <section class="landing">
-    <div class="feature-row">
+    <Grid minItemWidth="21rem">
       <ButtonWithImage
         variant="feature"
         href="/blog/stian"
@@ -20,8 +21,8 @@ import ButtonWithImage from "../layouts/components/ButtonWithImage.astro";
         alt="Bilde av Anders"
         label="Anders"
       />
-    </div>
-    <div class="tile-row">
+    </Grid>
+    <Grid minItemWidth="9rem">
       <ButtonWithImage
         variant="tile"
         href="/blog/dev"
@@ -51,7 +52,7 @@ import ButtonWithImage from "../layouts/components/ButtonWithImage.astro";
         label="Spillsentral"
         fit="contain"
       />
-    </div>
+    </Grid>
   </section>
 </HomeLayout>
 
@@ -60,33 +61,9 @@ import ButtonWithImage from "../layouts/components/ButtonWithImage.astro";
   .landing {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 1rem;
+    padding: var(--space-4);
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-  }
-
-  /* two equal columns for the big feature buttons */
-  .feature-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-
-  .tile-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem
-  }
-
-  /* on narrow screens, stack the two features instead of squishing them */
-  @media (max-width: 700px) {
-    .feature-row {
-      grid-template-columns: 1fr;
-    }
-
-    .tile-row {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    gap: var(--space-4);
   }
 </style>
