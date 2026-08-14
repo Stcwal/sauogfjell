@@ -133,7 +133,7 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
   --color-danger-bg: #400000;
   --color-danger-border: #b04b4b;
   --color-success: #1bdb24;
-  --color-success-bg: #c8f7c5;
+  --color-success-bg: #004000;
   --color-success-border: #459720;
   --color-header: rgb(121, 3, 86);
   --color-footer: rgb(2, 59, 59);
@@ -218,67 +218,12 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 
 
 
-#outer {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-#header {
-  min-height: var(--header-height);
-  background-color: var(--color-header);
-  width: 100%;
-  position: fixed;
-  z-index: var(--z-header);
-  border-bottom-style: var(--border-style);
-  border-bottom-width: var(--border-width-strong);
-  border-bottom-color: var(--border-color-strong);
-  font-family: var(--font-body);
-
-}
-
-#blog-content {
-  border-radius: var(--radius);
-  padding-top: var(--header-height);
-  min-width: 0;
-  max-width: 800px;
-  /* display: flex; Må gjeninnføres (tror jeg) dersom det skal være en sidebar senere */
-  font-family: var(--font-body);
-
-}
-
-#home-content {
-  padding-top: var(--header-height);
-  /* display: grid;
-  grid-auto-columns: 33vw;
-  grid-template-columns: 33vw 33vw 33vw; */
-  justify-content: center;
-}
-
-#footer {
-  width: 100%;
-  margin-top: auto;
-  font-family: var(--font-body);
-}
-
-#footer-outer {
-  background-color: var(--color-footer);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-top-style: var(--border-style);
-  border-top-width: var(--border-width-strong);
-  border-top-color: var(--border-color-strong);
-  padding-bottom: 20px;
-  padding-top: 20px;
-}
-
-#footer-inner {
-  background-color: var(--color-surface); /* fargen kan (bør?) endres */
-}
+/* Page shell (#outer/#header/#*-content/#footer) now lives in PageShell.astro,
+   and #footer-outer/#footer-inner in Footer.astro — scoped to the components
+   that own the markup, instead of as global id selectors. */
 
 .post-wrapper {
-  margin: 25px;
+  margin: var(--space-5);
   font-family: var(--font-body);
 }
 
@@ -287,7 +232,7 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
   border-left-width: var(--border-width-strong);
   border-left-color: var(--border-color-subtle);
   margin-left: 0;
-  padding-left: 1rem;
+  padding-left: var(--space-4);
   color: var(--color-text-muted);
 }
 

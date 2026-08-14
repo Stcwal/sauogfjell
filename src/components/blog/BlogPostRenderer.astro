@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from "astro:content";
 import BlogPostWrapper from "./BlogPostWrapper.astro";
+import Stack from "../ui/Stack.astro";
+import Tag from "../ui/Tag.astro";
 import { getTagColor } from "../../lib/tags";
 
 interface Props {
@@ -38,18 +40,11 @@ const formatDate = (date: Date) =>
         const { Content } = await render(post);
         return (
           <BlogPostWrapper>
-            <div class="tags">
-              {post.data.tags.length > 0
-                ? post.data.tags.map((tag: string) => (
-                    <span
-                      class="tag"
-                      style={`background-color: ${getTagColor(tag)}`}
-                    >
-                      {tag}
-                    </span>
-                  ))
-                : ""}
-            </div>
+            <Stack direction="row" wrap gap="var(--space-2)">
+              {post.data.tags.map((tag: string) => (
+                <Tag color={getTagColor(tag)}>{tag}</Tag>
+              ))}
+            </Stack>
             <Content />
             <a class="post-subtext">
               Skrevet av {post.data.author} {formatDate(post.data.publishDate)}
@@ -65,18 +60,3 @@ const formatDate = (date: Date) =>
   }
 </div>
 
-<style>
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .tag {
-    border-radius: 999px;
-    border: none;
-    font-size: 0.7rem;
-    color: white;
-    padding: 0.1rem 0.4rem;
-  }
-</style>

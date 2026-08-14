@@ -4,7 +4,7 @@ import SubscribePanel from "./SubscribePanel.astro";
 import Fab from "../../components/ui/Fab.astro";
 ---
 
-<footer id="footer-outer">
+<footer class="footer-outer">
   <div class="fab-stack">
     <Fab
       type="button"
@@ -18,7 +18,7 @@ import Fab from "../../components/ui/Fab.astro";
     >
   </div>
 
-  <footer id="footer-inner">
+  <footer class="footer-inner">
     <div>
       <b>links:</b>
       <div>
@@ -49,6 +49,22 @@ import Fab from "../../components/ui/Fab.astro";
 </footer>
 
 <style>
+  .footer-outer {
+    background-color: var(--color-footer);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-style: var(--border-style);
+    border-top-width: var(--border-width-strong);
+    border-top-color: var(--border-color-strong);
+    padding-bottom: var(--space-5);
+    padding-top: var(--space-5);
+  }
+
+  .footer-inner {
+    background-color: var(--color-surface); /* fargen kan (bør?) endres */
+  }
+
   .fab-stack {
     position: fixed;
     bottom: var(--space-5);

@@ -1,0 +1,69 @@
+---
+import Footer from "./components/Footer.astro";
+import Header from "./components/Header.astro";
+import Layout from "./Layout.astro";
+
+interface Props {
+  /** Which content pane to render:
+      home = grid pages, blog = prose column, elo = centred stack. */
+  variant?: "home" | "blog" | "elo";
+}
+
+const { variant = "home" } = Astro.props;
+---
+
+<Layout>
+  <div class="shell">
+    <div class="shell-header"><Header /></div>
+    <div class="shell-content" data-variant={variant}><slot /></div>
+    <div class="shell-footer"><Footer /></div>
+  </div>
+</Layout>
+
+<style>
+  .shell {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .shell-header {
+    min-height: var(--header-height);
+    background-color: var(--color-header);
+    width: 100%;
+    position: fixed;
+    z-index: var(--z-header);
+    border-bottom-style: var(--border-style);
+    border-bottom-width: var(--border-width-strong);
+    border-bottom-color: var(--border-color-strong);
+    font-family: var(--font-body);
+  }
+
+  .shell-footer {
+    width: 100%;
+    margin-top: auto;
+    font-family: var(--font-body);
+  }
+
+  /* every variant clears the fixed header */
+  .shell-content[data-variant="home"] {
+    padding-top: var(--header-height);
+  }
+
+  .shell-content[data-variant="blog"] {
+    border-radius: var(--radius);
+    padding-top: var(--header-height);
+    min-width: 0;
+    max-width: 800px;
+    /* display: flex; Må gjeninnføres (tror jeg) dersom det skal være en sidebar senere */
+    font-family: var(--font-body);
+  }
+
+  .shell-content[data-variant="elo"] {
+    padding: var(--header-height) var(--space-4) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+  }
+</style>

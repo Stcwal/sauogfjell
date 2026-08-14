@@ -1,4 +1,6 @@
 ---
+import Button from "../ui/Button.astro";
+
 interface Props {
   song1: { songID: number; songName: string; artistName: string; albumCoverLink: string } | null;
   song2: { songID: number; songName: string; artistName: string; albumCoverLink: string } | null;
@@ -15,17 +17,17 @@ const { song1, song2 } = Astro.props;
         <img class="album-cover" src={song1.albumCoverLink} alt={`Album cover for ${song1.songName}`} />
         <p class="song-name">{song1.songName}</p>
         <p class="artist-name">{song1.artistName}</p>
-        <button class="vote-btn" data-song-id={song1.songID}>Stem</button>
+        <Button variant="secondary" type="button" data-vote data-song-id={song1.songID}>Stem</Button>
       </div>
       <div class="voting-column" data-index="2">
         <img class="album-cover" src={song2.albumCoverLink} alt={`Album cover for ${song2.songName}`} />
         <p class="song-name">{song2.songName}</p>
         <p class="artist-name">{song2.artistName}</p>
-        <button class="vote-btn" data-song-id={song2.songID}>Stem</button>
+        <Button variant="secondary" type="button" data-vote data-song-id={song2.songID}>Stem</Button>
       </div>
     </div>
     <div class="actions">
-      <button class="skip-btn" type="button">Hopp over</button>
+      <Button variant="ghost" type="button" data-skip>Hopp over</Button>
     </div>
     <p class="vote-error" role="alert"></p>
   </>
@@ -43,9 +45,10 @@ const { song1, song2 } = Astro.props;
 
   const col1 = document.querySelector('.voting-column[data-index="1"]') as HTMLElement;
   const col2 = document.querySelector('.voting-column[data-index="2"]') as HTMLElement;
-  const btn1 = col1.querySelector('.vote-btn') as HTMLButtonElement;
-  const btn2 = col2.querySelector('.vote-btn') as HTMLButtonElement;
-  const skipBtn = document.querySelector('.skip-btn') as HTMLButtonElement;
+  // Queried by data-attribute, not class: <Button> renders its own class name.
+  const btn1 = col1.querySelector('[data-vote]') as HTMLButtonElement;
+  const btn2 = col2.querySelector('[data-vote]') as HTMLButtonElement;
+  const skipBtn = document.querySelector('[data-skip]') as HTMLButtonElement;
   const errorEl = document.querySelector('.vote-error') as HTMLElement;
 
   async function loadNewSongs() {
@@ -117,27 +120,32 @@ const { song1, song2 } = Astro.props;
 <style>
   h1 {
     text-align: center;
-    margin: 0 0 1rem;
+    margin: 0 0 var(--space-4);
   }
 
   .voting-container {
     display: flex;
-    gap: 2rem;
+    gap: var(--space-6);
     justify-content: center;
   }
 
   .actions {
     display: flex;
     justify-content: center;
-    margin-top: 1rem;
+    margin-top: var(--space-4);
   }
 
   .voting-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--space-3);
     width: 250px;
+
+    /* Button's styling hook — align-items:center would otherwise leave the vote
+       button at its natural width. Custom properties cross the component
+       boundary; a scoped selector could not. */
+    --button-width: 100%;
   }
 
   .album-cover {
@@ -155,37 +163,12 @@ const { song1, song2 } = Astro.props;
   .artist-name {
     text-align: center;
     margin: 0;
-    color: #555;
-  }
-
-  .vote-btn {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #222;
-    background: white;
-    font: inherit;
-    cursor: pointer;
-  }
-
-  .vote-btn:hover {
-    background: #f0f0f0;
-  }
-
-  .skip-btn {
-    padding: 0.5rem 1rem;
-    border: 1px solid #222;
-    background: transparent;
-    font: inherit;
-    cursor: pointer;
-  }
-
-  .skip-btn:hover {
-    background: #f0f0f0;
+    color: var(--color-text-muted);
   }
 
   .vote-error {
     text-align: center;
-    color: #c00;
+    color: var(--color-danger);
     margin: 0;
     min-height: 1.2em;
   }
