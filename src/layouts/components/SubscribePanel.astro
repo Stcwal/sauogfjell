@@ -1,23 +1,28 @@
 ---
 import { STANDARD_TAGS } from "../../lib/tags";
+import Field from "../../components/ui/Field.astro";
+import Button from "../../components/ui/Button.astro";
+
 const AUTHORS = ["stian", "anders"];
 ---
 
-<button id="subscribe-open" class="subscribe-fab" type="button" aria-label="Få varsel om nye innlegg">🔔</button>
+<button
+  id="subscribe-open"
+  class="subscribe-fab"
+  type="button"
+  aria-label="Få varsel om nye innlegg">🔔</button
+>
 
 <dialog id="subscribe-dialog" class="subscribe-dialog">
   <form id="subscribe-form" class="subscribe-form">
     <h2>Meld deg på nyhetsbrevet</h2>
 
-    <label class="field">
-      E-postadresse
-      <input
-        id="sub-email"
-        type="email"
-        required
-        placeholder="deg@eksempel.no"
-      />
-    </label>
+    <Field
+      label="E-postadresse"
+      id="sub-email"
+      type="email"
+      placeholder="deg@eksempel.no"
+    />
 
     {
       AUTHORS.map((author) => (
@@ -42,8 +47,10 @@ const AUTHORS = ["stian", "anders"];
     <p class="status" role="status"></p>
 
     <div class="actions">
-      <button id="subscribe-close" type="button">Lukk</button>
-      <button type="submit">Meld på</button>
+      <Button id="subscribe-close" type="button" variant="secondary"
+        >Lukk</Button
+      >
+      <Button type="submit" variant="primary"> Meld på </Button>
     </div>
   </form>
 </dialog>

@@ -83,6 +83,10 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 
 /* 2.1. THEMED SEMANTICS - default */
 :root {
+  /* Tells the browser which palette to use for the parts of a form control it
+     draws itself and CSS cannot reach: the caret, autofill background, date
+     pickers, scrollbars. Must match whether this theme is light or dark. */
+  --color-scheme: light;
   --font-body: monospace;
   --color-background: #fff; /*Alternativt: var(--color-white);*/
   --color-text: #000;
@@ -116,6 +120,7 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 
 /* 2.2. THEMED SEMANTICS - dark */
 [data-theme="dark"] {
+  --color-scheme: dark;
   --font-body: monospace;
   --color-background: #222222;
   --color-text: #ffffff;
@@ -149,6 +154,7 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 
 /* 2.3. THEMED SEMANTICS - floop */
 [data-theme="floop"] {
+  --color-scheme: light;
   --font-body: Arial;
   --color-background: #e1e1e1;
   --color-text: #161616;
@@ -203,6 +209,7 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
     margin: 0;
     background-color: var(--color-background);
     color: var(--color-text);
+    color-scheme: var(--color-scheme);
 }
 
 
