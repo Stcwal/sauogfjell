@@ -92,6 +92,9 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
      pickers, scrollbars. Must match whether this theme is light or dark. */
   --color-scheme: light;
   --font-body: monospace;
+  /* Display face for h1-h6. Themes without a distinct heading face point this
+     at the body font, which makes the global heading rule a no-op for them. */
+  --font-heading: var(--font-body);
   --color-background: #fff; /*Alternativt: var(--color-white);*/
   --color-text: #000;
   --color-text-muted: #525151;
@@ -107,7 +110,10 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
   --color-surface-raised: #ffffff;
   --color-surface-hover: #f0f0f0;
   --color-code-bg: #f0f0f0;
-  --color-accent: #02ff6b;     
+  /* Dim layer behind an open <dialog>. Matches the UA default so the default
+     theme is visually unchanged. */
+  --color-backdrop: rgba(0, 0, 0, 0.1);
+  --color-accent: #02ff6b;
   --color-on-accent: #000000; 
   --color-accent-2: #1bb3ff;   
   --color-on-accent-2: #000000; 
@@ -118,6 +124,18 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
   --border-color-strong: #000;
   --border-width-strong: 2px;
   --shadow-raised: 0 4px 16px rgba(0, 0, 0, 0.25);
+  /* Shadow while a raised element is hovered. Themes with a "press" interaction
+     set it to none; others point it at --shadow-raised so hover changes nothing. */
+  --shadow-raised-hover: var(--shadow-raised);
+  /* Hard offset "pop" shadow on interactive surfaces (buttons, cards, dialogs).
+     none = the theme opts out. */
+  --shadow-pop: none;
+  /* What --shadow-pop becomes while hovered: none = collapse (floop's press),
+     a bigger value = intensify (ai's glow). */
+  --shadow-pop-hover: none;
+  /* How far a popped element travels on hover, pairing with --shadow-pop's
+     offset so it lands where its shadow was. 0px = no press interaction. */
+  --press-offset: 0px;
   --layout-padding: 0px;
   --surface-padding: 0px;
 }
@@ -126,6 +144,7 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 [data-theme="dark"] {
   --color-scheme: dark;
   --font-body: monospace;
+  --font-heading: var(--font-body);
   --color-background: #222222;
   --color-text: #ffffff;
   --color-text-muted: #d4d4d4;
@@ -141,7 +160,8 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
   --color-surface-raised: #020000;
   --color-surface-hover: #252424;
   --color-code-bg: #d9d9d9;
-  --color-accent: #006d2e;     
+  --color-backdrop: rgba(0, 0, 0, 0.1);
+  --color-accent: #006d2e;
   --color-on-accent: #ffffff; 
   --color-accent-2: #023f5e;   
   --color-on-accent-2: #ffffff; 
@@ -152,40 +172,100 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
   --border-color-strong: #ffffff;
   --border-width-strong: 2px;
   --shadow-raised: 0 4px 16px rgba(242, 242, 242, 0.25);
+  --shadow-raised-hover: var(--shadow-raised);
+  --shadow-pop: none;
+  --shadow-pop-hover: none;
+  --press-offset: 0px;
   --layout-padding: 0px;
   --surface-padding: 0px;
 }
 
-/* 2.3. THEMED SEMANTICS - floop */
+/* 2.3. THEMED SEMANTICS - floop
+   Identity: neubrutalism. Warm cream paper, flat candy colours (lavender /
+   yellow / cyan / mint / pink), black outlines on everything, hard offset
+   shadows, and a "press into the page" hover (see --shadow-pop/--press-offset). */
 [data-theme="floop"] {
   --color-scheme: light;
-  --font-body: Arial;
-  --color-background: #e1e1e1;
-  --color-text: #161616;
-  --color-text-muted: #452a2a;
-  --color-danger: #9b1c1c;
-  --color-danger-bg: #e0bcbc;
-  --color-danger-border: #8b3d3d;
-  --color-success: #1f5840;
-  --color-success-bg: #bcd9c4;
-  --color-success-border: #3d7a52;
-  --color-header: rgb(46, 75, 47);
-  --color-footer: rgb(198, 198, 198);
-  --color-surface: #1f5840;
+  --font-body: "Trebuchet MS", Verdana, sans-serif;
+  --font-heading: "Arial Black", "Arial Bold", Arial, sans-serif;
+  --color-background: #f5efdf;
+  --color-text: #141414;
+  --color-text-muted: #6b6353;
+  --color-danger: #c1121f;
+  --color-danger-bg: #ffb3b3;
+  --color-danger-border: #7a0f0f;
+  --color-success: #0c7a43;
+  --color-success-bg: #8fe3ae;
+  --color-success-border: #0a5d33;
+  --color-header: #a388ee;
+  --color-footer: #90eeba;
+  --color-surface: #fffef7;
   --color-surface-raised: #ffffff;
-  --color-surface-hover: #e0e0e0;
-  --color-code-bg: #d0d0d0;
-  --color-accent: #e6e60e;
-  --color-on-accent: #161616;
-  --color-accent-2: #3d88ae;
-  --color-on-accent-2: #161616;
-  --radius: 16px;
+  --color-surface-hover: #ffddf4;
+  --color-code-bg: #ebe3cd;
+  --color-backdrop: rgba(255, 144, 232, 0.45);
+  --color-accent: #ffdc58;
+  --color-on-accent: #141414;
+  --color-accent-2: #53d5fd;
+  --color-on-accent-2: #141414;
+  --radius: 12px;
   --border-color: #000;
-  --border-color-subtle: #b0b0b0;
-  --border-width: 2px;
+  --border-color-subtle: #8f8a7a;
+  --border-width: 3px;
   --border-color-strong: #000;
   --border-width-strong: 4px;
   --shadow-raised: 4px 4px 0 #000;
+  --shadow-raised-hover: none;
+  --shadow-pop: 4px 4px 0 #000;
+  --shadow-pop-hover: none;
+  --press-offset: 4px;
+  --layout-padding: 16px;
+  --surface-padding: 16px;
+}
+
+/* 2.4. THEMED SEMANTICS - ai
+   Identity: looks as AI-generated as possible, on purpose. Deep space indigo,
+   violet-fuchsia-cyan gradients on everything clickable, glowing shadows
+   instead of real ones, glassy hairline borders, everything maximally rounded.
+   NOTE: gradients are only valid in the `background` SHORTHAND. Tokens consumed
+   as background-color (--color-background/-header/-footer/-surface) must stay
+   solid colours or the declaration is silently dropped. */
+[data-theme="ai"] {
+  --color-scheme: dark;
+  --font-body: "Segoe UI", system-ui, sans-serif;
+  --font-heading: var(--font-body);
+  --color-background: #0d0b1e;
+  --color-text: #e8e6f5;
+  --color-text-muted: #9d98c4;
+  --color-danger: #ff6b81;
+  --color-danger-bg: #3d1230;
+  --color-danger-border: #ff4d6d;
+  --color-success: #34d399;
+  --color-success-bg: #0b2e26;
+  --color-success-border: #10b981;
+  --color-header: #151038;
+  --color-footer: #120e2c;
+  --color-surface: #1a1633;
+  --color-surface-raised: #201a40;
+  --color-surface-hover: #2c2456;
+  --color-code-bg: #241e4a;
+  --color-backdrop: rgba(76, 29, 149, 0.5);
+  /* the obligatory gradient — dark enough at every stop to carry white text */
+  --color-accent: linear-gradient(135deg, #7c3aed 0%, #c026d3 50%, #0e7490 100%);
+  --color-on-accent: #ffffff;
+  --color-accent-2: linear-gradient(90deg, rgba(124, 58, 237, 0.92), rgba(8, 145, 178, 0.92));
+  --color-on-accent-2: #ffffff;
+  --radius: 24px;
+  --border-color: rgba(255, 255, 255, 0.14);
+  --border-color-subtle: #3f3a66;
+  --border-width: 1px;
+  --border-color-strong: #8b5cf6;
+  --border-width-strong: 1px;
+  --shadow-raised: 0 0 20px rgba(139, 92, 246, 0.45);
+  --shadow-raised-hover: 0 0 32px rgba(139, 92, 246, 0.75);
+  --shadow-pop: 0 0 24px rgba(139, 92, 246, 0.35);
+  --shadow-pop-hover: 0 0 36px rgba(217, 70, 239, 0.6);
+  --press-offset: 0px;
   --layout-padding: 16px;
   --surface-padding: 16px;
 }
@@ -198,7 +278,7 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
   --btn-border-color: var(--border-color-strong); 
   --btn-border-width: var(--border-width);      
   --btn-radius: var(--radius);                    
-  --btn-shadow: none;                             
+  --btn-shadow: var(--shadow-pop);
   --tile-overlay-bg: var(--color-accent-2);      
   --tile-overlay-text: var(--color-on-accent-2);
 }
@@ -221,6 +301,12 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 /* Page shell (#outer/#header/#*-content/#footer) now lives in PageShell.astro,
    and #footer-outer/#footer-inner in Footer.astro — scoped to the components
    that own the markup, instead of as global id selectors. */
+
+/* Headings take the theme's display face. Default and dark point --font-heading
+   at --font-body, so this only does something in themes that want one. */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
 
 .post-wrapper {
   margin: var(--space-5);
@@ -247,6 +333,12 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 .post-wrapper img {
   max-width: 100%;
   height: auto;
+  /* decorative border tokens: 0/transparent in default and dark (no change),
+     3px black + rounding in floop */
+  border-style: var(--border-style);
+  border-width: var(--border-width);
+  border-color: var(--border-color);
+  border-radius: var(--radius);
 }
 
 /* Inline math: shrink toward the surrounding text so it reads as part of the sentence.

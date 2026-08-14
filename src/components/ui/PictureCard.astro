@@ -42,6 +42,16 @@ const {
         color: var(--btn-text);
         text-decoration: none;
         display: grid;
+        transition: translate 100ms ease;
+    }
+
+    /* Hover, token-directed per theme: floop presses (travels by the shadow
+       offset while the hover shadow — reaching the Card below through the
+       --card-shadow hook — is none), ai glows brighter instead. Default/dark:
+       offset 0, both shadows none — a complete no-op. */
+    .picture-card:hover {
+        translate: var(--press-offset) var(--press-offset);
+        --card-shadow: var(--shadow-pop-hover);
     }
 
     .picture-card img {

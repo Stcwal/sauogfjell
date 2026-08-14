@@ -63,6 +63,14 @@ import Fab from "../../components/ui/Fab.astro";
 
   .footer-inner {
     background-color: var(--color-surface); /* fargen kan (bør?) endres */
+    /* decorative tokens: 0-width/transparent/none in default and dark, so this
+       block renders identically there; floop turns it into an outlined card */
+    border-style: var(--border-style);
+    border-width: var(--border-width);
+    border-color: var(--border-color);
+    border-radius: var(--radius);
+    padding: var(--surface-padding);
+    box-shadow: var(--shadow-pop);
   }
 
   .fab-stack {
