@@ -36,11 +36,16 @@ const { ...rest } = Astro.props;
         border-radius: var(--radius-round); 
 
         box-shadow: var(--shadow-raised);
-
+        transition: translate 100ms ease, box-shadow 100ms ease;
     }
 
     .fab:hover {
         background: var(--color-surface-hover);
+        /* floop press: travel by the shadow offset, shadow collapses. Default and
+           dark set --press-offset 0 and point --shadow-raised-hover back at
+           --shadow-raised, so nothing moves or changes there. */
+        translate: var(--press-offset) var(--press-offset);
+        box-shadow: var(--shadow-raised-hover);
     }
 
     .fab:focus-visible {

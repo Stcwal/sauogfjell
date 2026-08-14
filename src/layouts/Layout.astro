@@ -23,7 +23,7 @@ import { ClientRouter } from "astro:transitions";
     <slot />
     <script>
       function cycleTheme() {
-        const THEMES = ["light", "dark", "floop"];
+        const THEMES = ["light", "dark", "floop", "ai"];
         const current =
           document.documentElement.getAttribute("data-theme") || THEMES[0];
         const next = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length];

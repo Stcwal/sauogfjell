@@ -29,6 +29,12 @@ const { variant = "secondary", ...rest } = Astro.props;
 
     border-style: var(--border-style);
     border-radius: var(--btn-radius);
+    /* --btn-shadow resolves to --shadow-pop: none in default/dark, a hard offset
+       shadow in floop. On the base rule so every variant can pop. */
+    box-shadow: var(--btn-shadow);
+    /* Animates the floop press; both values are static in default/dark, so this
+       transitions nothing there. */
+    transition: translate 100ms ease, box-shadow 100ms ease;
   }
 
   /* primary: the accent-filled action. Deliberately the same tokens PictureCard
@@ -38,7 +44,6 @@ const { variant = "secondary", ...rest } = Astro.props;
     color: var(--btn-text);
     border-color: var(--btn-border-color);
     border-width: var(--btn-border-width);
-    box-shadow: var(--btn-shadow);
   }
 
   /* secondary: the default. Needs an always-visible border, so --border-width-strong
@@ -55,6 +60,9 @@ const { variant = "secondary", ...rest } = Astro.props;
     color: var(--color-text);
     border-color: var(--border-color-strong);
     border-width: var(--border-width-strong);
+    /* ghost is flat by definition — a hard offset shadow would show straight
+       through the transparent background */
+    box-shadow: none;
   }
 
   .btn[data-variant="secondary"]:not(:disabled):hover,
@@ -67,6 +75,16 @@ const { variant = "secondary", ...rest } = Astro.props;
      three more values to maintain. Deliberate exception to the no-literals rule. */
   .btn[data-variant="primary"]:not(:disabled):hover {
     filter: brightness(0.92);
+  }
+
+  /* Hover, token-directed per theme: floop presses (travel by the shadow offset
+     while --shadow-pop-hover: none collapses the shadow), ai glows brighter
+     (offset 0, hover shadow bigger than rest). Default/dark: everything 0/none —
+     a complete no-op. Ghost is excluded: flat by definition. */
+  .btn[data-variant="primary"]:not(:disabled):hover,
+  .btn[data-variant="secondary"]:not(:disabled):hover {
+    translate: var(--press-offset) var(--press-offset);
+    box-shadow: var(--shadow-pop-hover);
   }
 
   .btn:disabled {

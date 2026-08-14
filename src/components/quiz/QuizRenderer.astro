@@ -42,8 +42,9 @@ const quizzes = await getCollection(collection, ({ data }) => import.meta.env.DE
 </div>
 
 <style>
-  .quiz-page,
-  .quiz-page * {
+  /* font set on the wrapper and inherited — the old `.quiz-page *` variant
+     out-specified the global h1-h6 rule and pinned headings to the body font */
+  .quiz-page {
     font-family: var(--font-body);
   }
 

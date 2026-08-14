@@ -73,6 +73,19 @@ const { id, title, submitLabel, closeLabel = "Lukk" } = Astro.props;
         padding: var(--space-5);
         max-width: 420px;
         width: 90%;
+        background: var(--color-surface-raised);
+        color: var(--color-text);
+        /* a <dialog> doesn't inherit from <body>; without this the heading and
+           status text fell back to the UA serif in every theme */
+        font-family: var(--font-body);
+        /* --shadow-pop is none outside floop */
+        box-shadow: var(--shadow-pop);
+    }
+
+    /* ::backdrop inherits custom properties from the dialog in modern browsers;
+       the fallback matches the UA default for anything older. */
+    .modal::backdrop {
+        background: var(--color-backdrop, rgba(0, 0, 0, 0.1));
     }
 
     /* The form lays out whatever the panel slots in: scoped SELECTORS cannot cross
