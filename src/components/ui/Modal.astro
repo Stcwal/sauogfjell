@@ -1,0 +1,111 @@
+---
+import Button from "./Button.astro";
+
+interface Props {
+    /** DOM id of the <dialog>. A trigger opens it with data-opens="<this id>".
+        The inner <form> gets "<id>-form" so panels can find it. */
+    id: string;
+    title: string;
+    submitLabel: string;
+    closeLabel?: string;
+}
+
+const { id, title, submitLabel, closeLabel = "Lukk" } = Astro.props;
+---
+
+<dialog id={id} class="modal">
+    <form id={`${id}-form`} class="modal-form">
+        <h2>{title}</h2>
+
+        <slot />
+
+        <p class="status" role="status"></p>
+
+        <div class="actions">
+            <!-- type="button" is load-bearing: a <button> inside a <form> defaults
+                 to type="submit", so without it "Lukk" would submit the form. -->
+            <Button type="button" data-modal-close variant="secondary"
+                >{closeLabel}</Button
+            >
+            <Button type="submit" variant="primary">{submitLabel}</Button>
+        </div>
+    </form>
+</dialog>
+
+<script>
+    // ONE delegated listener handles every <Modal> on the page.
+    //
+    // An Astro <script> is hoisted and bundled, so it runs once per PAGE, not once
+    // per component instance — binding by getElementById would only ever wire up a
+    // single modal. Delegating on `document` also means this survives ClientRouter
+    // navigation, so unlike direct element listeners it never needs re-binding on
+    // astro:page-load.
+    document.addEventListener("click", (e) => {
+        const target = e.target as HTMLElement | null;
+        if (!target?.closest) return;
+
+        const opener = target.closest<HTMLElement>("[data-opens]");
+        if (opener?.dataset.opens) {
+            const dialog = document.getElementById(
+                opener.dataset.opens,
+            ) as HTMLDialogElement | null;
+            dialog?.showModal();
+            return;
+        }
+
+        if (target.closest("[data-modal-close]")) {
+            target.closest("dialog")?.close();
+            return;
+        }
+
+        // A click whose target IS the dialog landed on the backdrop, since the
+        // form covers the dialog's own box.
+        if (target instanceof HTMLDialogElement) target.close();
+    });
+</script>
+
+<style>
+    .modal {
+        border-style: var(--border-style);
+        border-width: var(--border-width-strong);
+        border-color: var(--border-color-strong);
+        border-radius: var(--radius-2);
+        padding: var(--space-5);
+        max-width: 420px;
+        width: 90%;
+    }
+
+    /* The form lays out whatever the panel slots in: scoped SELECTORS cannot cross
+       a slot, but flex layout applies to any child regardless of who authored it. */
+    .modal-form {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+        margin: 0;
+    }
+
+    .modal-form h2 {
+        margin: 0;
+    }
+
+    .status {
+        margin: 0;
+        min-height: 1.2em;
+    }
+
+    /* Panels set statusEl.dataset.state, so one element can show both outcomes.
+       Previously SubscribePanel hardcoded red and showed success messages in it. */
+    .status[data-state="ok"] {
+        color: var(--color-success);
+    }
+
+    .status[data-state="error"] {
+        color: var(--color-danger);
+    }
+
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--space-2);
+    }
+</style>

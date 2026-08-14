@@ -1,189 +1,246 @@
 /*
 Global styles and design tokens.
 
-DESIGN TOKENS (CSS custom properties)
--------------------------------------
-Tokens are defined once in :root and consumed everywhere with var(--name).
-They inherit globally, so any element — including a component's scoped <style> —
-can read them.
+HOW THEMING WORKS
+-----------------
+Custom properties inherit from <html>, so any rule — including a component's
+scoped <style> — can read them with var(--name). A theme is the SAME token names
+redefined under [data-theme="..."]. Components never change; only the values
+behind the tokens do.
 
-Themes work by REDEFINING the same token names under a selector. The default theme
-lives in :root; alternate themes (e.g. [data-theme="floop"]) override the values.
-Component styles reference var(--...) and never change — only the values behind them do.
-  => To restyle the whole site (or adopt a CSS library's look later), change the token
-     VALUES here, not the components.
+  => The rule that makes this work: a component's CSS may contain no literal
+     colour, radius, border, shadow or font. Only var(--token).
 
-Tier 1 — Primitives (raw values, named after what they are):
---color-pink-300: rgb(255, 158, 226);
---space-4: 1rem;
---radius-md: 16px;
---font-mono: monospace;
---border-2: 2px;
+BLOCK LAYOUT  (order matters — theme blocks must come after the default :root,
+               since :root and [data-theme] have equal specificity)
+  1    Primitives         raw values, named after what they are
+  2.0  Non-themed         identical under every theme (scales, shapes, z-index)
+  2.1  Themed, default    semantic roles
+  2.2  Themed, dark       must define the SAME keys, in the SAME order, as 2.1
+  2.3  Themed, floop      must define the SAME keys, in the SAME order, as 2.1
+  3    Component tokens   --btn-*, --tile-overlay-*; each points at a tier-2 role
 
-Tier 2 — Semantic (named after their role, pointing at primitives):
---color-background: var(--color-pink-300);
---color-surface:    #1f5840;
---color-text:       #000;
---border-color:     var(--color-text);
+Tier 3 is deliberately theme-free: var() resolves on <html>, where the active
+theme has already won, so these follow the theme without being redefined per
+theme. This relies on data-theme living on the ROOT element — a theme scoped to
+an inner element would not reach them.
 
-Tier 3 — Component (optional; named component-property):
---button-bg:           var(--color-surface);
---button-border-width: var(--border-2);
---button-shadow:       4px 4px 0 var(--color-text);
+ADDING A TOKEN
+--------------
+- Name it by ROLE, not by value (--color-danger, not --color-red).
+- Test the name: could you give it a sensible value in a dark theme? If not,
+  it describes a value rather than a role — rename it.
+- Add it to 2.1 AND 2.2, at the same position. A token missing from a theme does
+  not error; it silently inherits the default, and you will not notice.
+- A background token that carries text needs a paired --color-on-* foreground.
+  The two must always be chosen together.
 
-NAMING
-------
-Human-readable, kebab-case, grouped category-first, and named by ROLE (what it's for)
-rather than by raw value (so a theme can remap it without the name becoming a lie):
-  --color-*     colours (background, surface, header, footer, border-color, ...)
-  --font-*      typography
-  --radius, --border-width, --*-padding   shape / spacing
-
-Adding a token? Add it to BOTH :root and every [data-theme="..."] block, or it will be
-undefined under one of the themes.
-
-Component-level tokens (e.g. --button-bg, --tile-overlay-bg) belong here too, ideally
-pointing at the tokens above (--button-bg: var(--color-surface)) so they follow the theme.
-
-It's fine to set a few things directly (header being position: fixed, page full height).
-If this system turns out to be annoying to work with, feel free to change it up.
+Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 */
 
-/* PRIMITIVES */
+/* TIER 1 */
+/* 1. PRIMITIVES */
 :root {
   --color-white: #fff;
   --color-pink-300: #ff9ee2;
 }
 
-
+/* TIER 2 */
+/* 2.0. NON-THEMED SEMANTICS */
 :root {
+  --border-style: solid;
+
+  /* Space scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+
+  /* Font scale */
+  --font-size-1: 0.8rem;
+  --font-size-2: 1rem;
+  --font-size-3: 1.25rem;
+  --font-size-4: 1.563rem;
+  --font-size-5: 1.953rem;
+
+  /* Radius scale for small components*/
+  --radius-1: 4px;
+  --radius-2: 8px;
+  --radius-3: 16px;
+
+  /* Fixed shapes, never themed */
+  --radius-pill: 999px;
+  --radius-round: 50%;
+
+  /* Stacking order. Gaps between layers so new ones can slot in without renumbering. */
+  --z-header: 100;
+  --z-overlay: 200;
+
+  /* Header height */
+  --header-height: 50px;
+
+  /* Fab diameter */
+  --fab-size: 3.5rem;
+}
+
+/* 2.1. THEMED SEMANTICS - default */
+:root {
+  /* Tells the browser which palette to use for the parts of a form control it
+     draws itself and CSS cannot reach: the caret, autofill background, date
+     pickers, scrollbars. Must match whether this theme is light or dark. */
+  --color-scheme: light;
   --font-body: monospace;
   --color-background: #fff; /*Alternativt: var(--color-white);*/
+  --color-text: #000;
+  --color-text-muted: #525151;
+  --color-danger: #cc0000;
+  --color-danger-bg: #f7c5c5;
+  --color-danger-border: #b04b4b;
+  --color-success: #2e7d32;
+  --color-success-bg: #c8f7c5;
+  --color-success-border: #4b9447;
   --color-header: rgb(255, 158, 226);
   --color-footer: azure;
-  --color-surface: #fdfdfd;
+  --color-surface: rgb(155, 249, 249);
+  --color-surface-raised: #ffffff;
+  --color-surface-hover: #f0f0f0;
+  --color-code-bg: #f0f0f0;
+  --color-accent: #02ff6b;     
+  --color-on-accent: #000000; 
+  --color-accent-2: #1bb3ff;   
+  --color-on-accent-2: #000000; 
   --radius: 0px;
-  --border-color: none;
+  --border-color: transparent;
+  --border-color-subtle: #cccccc;
   --border-width: 0px;
+  --border-color-strong: #000;
+  --border-width-strong: 2px;
+  --shadow-raised: 0 4px 16px rgba(0, 0, 0, 0.25);
   --layout-padding: 0px;
   --surface-padding: 0px;
-  --btn-background: #02ff6b;
-  --btn-text: #000000;
-  --btn-border-width: 0px;
-  --btn-border-color: #000000;
-  --btn-radius: 0px;
-  --btn-shadow: none;
-  --tile-overlay-bg: #1bb3ff;
-  --tile-overlay-text: #000000;
 }
 
+/* 2.2. THEMED SEMANTICS - dark */
+[data-theme="dark"] {
+  --color-scheme: dark;
+  --font-body: monospace;
+  --color-background: #222222;
+  --color-text: #ffffff;
+  --color-text-muted: #d4d4d4;
+  --color-danger: #a40000;
+  --color-danger-bg: #400000;
+  --color-danger-border: #b04b4b;
+  --color-success: #1bdb24;
+  --color-success-bg: #004000;
+  --color-success-border: #459720;
+  --color-header: rgb(121, 3, 86);
+  --color-footer: rgb(2, 59, 59);
+  --color-surface: rgb(11, 42, 42);
+  --color-surface-raised: #020000;
+  --color-surface-hover: #252424;
+  --color-code-bg: #d9d9d9;
+  --color-accent: #006d2e;     
+  --color-on-accent: #ffffff; 
+  --color-accent-2: #023f5e;   
+  --color-on-accent-2: #ffffff; 
+  --radius: 0px;
+  --border-color: transparent;
+  --border-color-subtle: #cccccc;
+  --border-width: 0px;
+  --border-color-strong: #ffffff;
+  --border-width-strong: 2px;
+  --shadow-raised: 0 4px 16px rgba(242, 242, 242, 0.25);
+  --layout-padding: 0px;
+  --surface-padding: 0px;
+}
+
+/* 2.3. THEMED SEMANTICS - floop */
 [data-theme="floop"] {
+  --color-scheme: light;
   --font-body: Arial;
   --color-background: #e1e1e1;
-  --layout-padding: 16px;
+  --color-text: #161616;
+  --color-text-muted: #452a2a;
+  --color-danger: #9b1c1c;
+  --color-danger-bg: #e0bcbc;
+  --color-danger-border: #8b3d3d;
+  --color-success: #1f5840;
+  --color-success-bg: #bcd9c4;
+  --color-success-border: #3d7a52;
   --color-header: rgb(46, 75, 47);
-  --radius: 16px;
-  --border-color: #000;
-  --border-width: 2px;
   --color-footer: rgb(198, 198, 198);
   --color-surface: #1f5840;
+  --color-surface-raised: #ffffff;
+  --color-surface-hover: #e0e0e0;
+  --color-code-bg: #d0d0d0;
+  --color-accent: #e6e60e;
+  --color-on-accent: #161616;
+  --color-accent-2: #3d88ae;
+  --color-on-accent-2: #161616;
+  --radius: 16px;
+  --border-color: #000;
+  --border-color-subtle: #b0b0b0;
+  --border-width: 2px;
+  --border-color-strong: #000;
+  --border-width-strong: 4px;
+  --shadow-raised: 4px 4px 0 #000;
+  --layout-padding: 16px;
   --surface-padding: 16px;
-  --btn-background: #e6e60e;
-  --btn-text: #d5d5d5;
-  --btn-border-width: 0px;
-  --btn-border-color: #000000;
-  --btn-radius: 0px;
-  --btn-shadow: none;
-  --tile-overlay-bg: #3d88ae;
-  --tile-overlay-text: #b6b6b6;
 }
+
+/* TIER 3 */
+/* 3. COMPONENT TOKENS (tier 3) */
+:root {
+  --btn-background: var(--color-accent);    
+  --btn-text: var(--color-on-accent);     
+  --btn-border-color: var(--border-color-strong); 
+  --btn-border-width: var(--border-width);      
+  --btn-radius: var(--radius);                    
+  --btn-shadow: none;                             
+  --tile-overlay-bg: var(--color-accent-2);      
+  --tile-overlay-text: var(--color-on-accent-2);
+}
+
+/* ============================================================ */
+/* ============================================================ */
+/* ============================================================ */
 
 
 .wrapper, html, body {
     height: 100%;
     margin: 0;
     background-color: var(--color-background);
-
+    color: var(--color-text);
+    color-scheme: var(--color-scheme);
 }
 
-.card {
-  border-color: var(--border-color);
-  border-radius: var(--radius);
-  border-width: var(--border-width);
-  background: var(--color-surface);
-  padding: var(--surface-padding);
-}
 
-#outer {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
 
-#header {
-  min-height: 50px;
-  background-color: var(--color-header);
-  width: 100%;
-  position: fixed;
-  border-bottom: 2px solid black;
-  font-family: var(--font-body);
-
-}
-
-#blog-content {
-  border-radius: var(--radius);
-  padding-top: 50px;
-  min-width: 0;
-  max-width: 800px;
-  /* display: flex; Må gjeninnføres (tror jeg) dersom det skal være en sidebar senere */
-  font-family: var(--font-body);
-
-}
-
-#home-content {
-  padding-top: 50px;
-  /* display: grid;
-  grid-auto-columns: 33vw;
-  grid-template-columns: 33vw 33vw 33vw; */
-  justify-content: center;
-}
-
-#footer {
-  width: 100%;
-  margin-top: auto;
-  font-family: var(--font-body);
-}
-
-#footer-outer {
-  background-color: var(--color-footer);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-top: 2px solid black;
-  padding-bottom: 20px;
-  padding-top: 20px;
-}
-
-#footer-inner {
-  background-color: var(--color-surface); /* fargen kan (bør?) endres */
-}
+/* Page shell (#outer/#header/#*-content/#footer) now lives in PageShell.astro,
+   and #footer-outer/#footer-inner in Footer.astro — scoped to the components
+   that own the markup, instead of as global id selectors. */
 
 .post-wrapper {
-  margin: 25px;
+  margin: var(--space-5);
   font-family: var(--font-body);
 }
 
 .post-wrapper blockquote {
-  border-left: 4px solid #ccc;
+  border-left-style: var(--border-style);
+  border-left-width: var(--border-width-strong);
+  border-left-color: var(--border-color-subtle);
   margin-left: 0;
-  padding-left: 1rem;
-  color: #555;
+  padding-left: var(--space-4);
+  color: var(--color-text-muted);
 }
 
 .post-wrapper :not(pre) > code {
-  background: #f0f0f0;
+  background: var(--color-code-bg);
   padding: 0.1em 0.3em;
-  border-radius: 4px;
+  border-radius: var(--radius-1);
+  /* font-family stays monospace on purpose: code should not follow --font-body */
   font-family: monospace;
 }
 
@@ -210,6 +267,6 @@ If this system turns out to be annoying to work with, feel free to change it up.
 
 .post-subtext {
   font-family: var(--font-body);
-  font-size: xx-small;
+  font-size: var(--font-size-1);
   font-style: italic;
 }

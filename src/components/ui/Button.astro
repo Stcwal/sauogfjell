@@ -1,0 +1,84 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"button"> {
+  variant?: "primary" | "secondary" | "ghost";
+}
+
+const { variant = "secondary", ...rest } = Astro.props;
+---
+
+<button class="btn" data-variant={variant} {...rest}>
+  <slot />
+</button>
+
+<style>
+  .btn {
+    /* Buttons do NOT inherit font-family/size from their parent — that's a browser
+       default. Without these two, every button silently drops to the system font
+       and stops following the theme. */
+    font-family: var(--font-body);
+    font-size: var(--font-size-2);
+
+    padding: var(--space-2) var(--space-3);
+    cursor: pointer;
+
+    /* Styling hook: a parent can set --button-width to stretch the button, since
+       scoped selectors can't reach into this component. Custom properties can. */
+    width: var(--button-width, auto);
+
+    border-style: var(--border-style);
+    border-radius: var(--btn-radius);
+  }
+
+  /* primary: the accent-filled action. Deliberately the same tokens PictureCard
+     uses — a picture card is a big link-shaped primary action. */
+  .btn[data-variant="primary"] {
+    background: var(--btn-background);
+    color: var(--btn-text);
+    border-color: var(--btn-border-color);
+    border-width: var(--btn-border-width);
+    box-shadow: var(--btn-shadow);
+  }
+
+  /* secondary: the default. Needs an always-visible border, so --border-width-strong
+     rather than --border-width (which is 0 in two of the three themes). */
+  .btn[data-variant="secondary"] {
+    background: var(--color-surface-raised);
+    color: var(--color-text);
+    border-color: var(--border-color-strong);
+    border-width: var(--border-width-strong);
+  }
+
+  .btn[data-variant="ghost"] {
+    background: transparent;
+    color: var(--color-text);
+    border-color: var(--border-color-strong);
+    border-width: var(--border-width-strong);
+  }
+
+  .btn[data-variant="secondary"]:not(:disabled):hover,
+  .btn[data-variant="ghost"]:not(:disabled):hover {
+    background: var(--color-surface-hover);
+  }
+
+  /* No --color-accent-hover token exists. brightness() derives the hover shade from
+     whatever accent the active theme sets, so it works in all three without adding
+     three more values to maintain. Deliberate exception to the no-literals rule. */
+  .btn[data-variant="primary"]:not(:disabled):hover {
+    filter: brightness(0.92);
+  }
+
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .btn:focus-visible {
+    outline-style: var(--border-style);
+    outline-width: var(--border-width-strong);
+    outline-color: var(--border-color-strong);
+    outline-offset: var(--space-1);
+  }
+</style>
+

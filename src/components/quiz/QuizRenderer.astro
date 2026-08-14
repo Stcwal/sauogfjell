@@ -48,7 +48,7 @@ const quizzes = await getCollection(collection, ({ data }) => import.meta.env.DE
   }
 
   .quiz-json {
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-6);
   }
 
   .quiz-option {
@@ -56,11 +56,14 @@ const quizzes = await getCollection(collection, ({ data }) => import.meta.env.DE
     width: fit-content;
     min-width: 180px;
     max-width: 240px;
-    padding: 0.45rem 0.7rem;
-    border: 1px solid #000;
+    padding: var(--space-2) var(--space-3);
+    border-style: var(--border-style);
+    border-width: var(--border-width-strong);
+    border-color: var(--border-color-strong);
     cursor: pointer;
-    margin-bottom: 0.5rem;
-    font: inherit;
+    margin-bottom: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--font-size-2);
   }
 
   .quiz-option input {
@@ -74,12 +77,12 @@ const quizzes = await getCollection(collection, ({ data }) => import.meta.env.DE
   }
 
   .quiz-option:has(input:checked)[data-correct='true'] {
-    background: #c8f7c5;
-    border-color: #4b9447;
+    background: var(--color-success-bg);
+    border-color: var(--color-success-border);
   }
 
   .quiz-option:has(input:checked)[data-correct='false'] {
-    background: #f7c5c5;
-    border-color: #b04b4b;
+    background: var(--color-danger-bg);
+    border-color: var(--color-danger-border);
   }
 </style>

@@ -23,7 +23,7 @@ Rough layout: SQL schema in `migrations/*.sql`; typed data-access helpers (prepa
 ## How I want Claude to help (teach, don't solve)
 When I ask for a feature, change, or fix, **guide me to the answer instead of handing it over**:
 
-1. **Make a plan first.** Lay out the steps needed and how they fit together before any code.
+1. **Make a plan first.** Lay out the steps needed and how they fit together before any code. At the end, make a short list of all the steps needed to fulfull the plan without all the prose. Don't hide tasks in prose without listing them later.
 2. **Point me to the right place.** Name the file(s) and the rough location/section I should be
    working in, and explain *why* that's where this logic belongs in Astro.
 3. **Hint, don't write the solution.** Describe what I need to do and the concepts involved, but let

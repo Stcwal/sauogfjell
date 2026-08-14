@@ -1,0 +1,26 @@
+---
+interface Props {
+    /** Runtime colour from getTagColor(). Passed in as a custom property rather
+        than a raw background-color, so the stylesheet stays the only place that
+        decides WHICH property the colour lands on. */
+    color: string;
+}
+
+const { color } = Astro.props;
+---
+
+<span class="tag" style={`--tag-bg: ${color}`}><slot /></span>
+
+<style>
+    .tag {
+        background: var(--tag-bg);
+        /* Tier-1 primitive on purpose: tag colours come from getTagColor() at
+           runtime and are all chosen to carry white text, so this must NOT
+           follow the theme. */
+        color: var(--color-white);
+        border: none;
+        border-radius: var(--radius-pill);
+        font-size: var(--font-size-1);
+        padding: var(--space-1) var(--space-2);
+    }
+</style>
