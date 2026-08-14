@@ -1,9 +1,18 @@
 ---
-import FeedbackPanel from './FeedbackPanel.astro';
-import SubscribePanel from './SubscribePanel.astro';
+import FeedbackPanel from "./FeedbackPanel.astro";
+import SubscribePanel from "./SubscribePanel.astro";
+import Fab from "../../components/ui/Fab.astro";
 ---
 
 <footer id="footer-outer">
+  <div class="fab-stack">
+    <Fab id="feedback-open" type="button" aria-label="Gi tilbakemelding">💬</Fab
+    >
+    <Fab id="subscribe-open" type="button" aria-label="Få varsel om nye innlegg"
+      >🔔</Fab
+    >
+  </div>
+
   <footer id="footer-inner">
     <div>
       <b>links:</b>
@@ -11,10 +20,14 @@ import SubscribePanel from './SubscribePanel.astro';
         <a href="https://github.com/Stcwal/sauogfjell/">sauogfjell på github</a>
       </div>
       <div>
-        <a href="https://www.linkedin.com/in/stian-closs-walmann/">Stian på linkedIn</a>
+        <a href="https://www.linkedin.com/in/stian-closs-walmann/"
+          >Stian på linkedIn</a
+        >
       </div>
       <div>
-        <a href="https://www.linkedin.com/in/anders-fangel/">Anders på linkedIn</a>
+        <a href="https://www.linkedin.com/in/anders-fangel/"
+          >Anders på linkedIn</a
+        >
       </div>
     </div>
     <div>
@@ -23,11 +36,22 @@ import SubscribePanel from './SubscribePanel.astro';
     </div>
     <div>
       <b>Takk til:</b>
-      <div>
-        Claude
-      </div>
+      <div>Claude</div>
     </div>
   </footer>
   <FeedbackPanel />
-  <SubscribePanel/>
+  <SubscribePanel />
 </footer>
+
+<style>
+  .fab-stack {
+    position: fixed;
+    bottom: var(--space-5);
+    right: var(--space-5);
+    z-index: var(--z-overlay);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+</style>

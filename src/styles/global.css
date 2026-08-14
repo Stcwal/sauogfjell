@@ -16,7 +16,8 @@ BLOCK LAYOUT  (order matters — theme blocks must come after the default :root,
   1    Primitives         raw values, named after what they are
   2.0  Non-themed         identical under every theme (scales, shapes, z-index)
   2.1  Themed, default    semantic roles
-  2.2  Themed, floop      must define the SAME keys, in the SAME order, as 2.1
+  2.2  Themed, dark       must define the SAME keys, in the SAME order, as 2.1
+  2.3  Themed, floop      must define the SAME keys, in the SAME order, as 2.1
   3    Component tokens   --btn-*, --tile-overlay-*; each points at a tier-2 role
 
 Tier 3 is deliberately theme-free: var() resolves on <html>, where the active
@@ -79,6 +80,9 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 
   /* Header height */
   --header-height: 50px;
+
+  /* Fab diameter */
+  --fab-size: 3.5rem;
 }
 
 /* 2.1. THEMED SEMANTICS - default */

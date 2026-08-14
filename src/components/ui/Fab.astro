@@ -1,0 +1,52 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"button">;
+
+const { ...rest } = Astro.props;
+---
+
+<!-- FAB = Floating Action Button -->
+<button class="fab" {...rest}>
+    <slot />
+</button>
+
+<style>
+    .fab {
+        width: var(--fab-size); 
+        height: var(--fab-size);
+        padding: 0;
+
+        display: flex; /* centres the emoji in the circle */
+        align-items: center;
+        justify-content: center;
+
+        font-family: var(--font-body);
+        font-size: var(--font-size-4); 
+        line-height: 1; /* stops the line box off-centring the glyph */
+
+        cursor: pointer;
+
+        background: var(--color-surface-raised);
+        color: var(--color-text);
+
+        border-style: var(--border-style);
+        border-width: var(--border-width-strong);
+        border-color: var(--border-color-strong);
+        border-radius: var(--radius-round); 
+
+        box-shadow: var(--shadow-raised);
+
+    }
+
+    .fab:hover {
+        background: var(--color-surface-hover);
+    }
+
+    .fab:focus-visible {
+        outline-style: var(--border-style);
+        outline-width: var(--border-width-strong);
+        outline-color: var(--border-color-strong);
+        outline-offset: var(--space-1);
+    }
+</style>

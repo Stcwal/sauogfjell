@@ -3,13 +3,6 @@ import Field from "../../components/ui/Field.astro";
 import Button from "../../components/ui/Button.astro";
 ---
 
-<button
-  id="feedback-open"
-  class="feedback-fab"
-  type="button"
-  aria-label="Gi tilbakemelding">💬</button
->
-
 <dialog id="feedback-dialog" class="feedback-dialog">
   <form id="feedback-form" class="feedback-form">
     <h2>Gi tilbakemelding</h2>
@@ -94,30 +87,6 @@ import Button from "../../components/ui/Button.astro";
 </script>
 
 <style>
-  /* icon-only floating button, stacked above the subscribe FAB */
-  .feedback-fab {
-    position: fixed;
-    bottom: 5.5rem;
-    right: 1.5rem;
-    z-index: 10;
-    width: 3.5rem;
-    height: 3.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #222;
-    border-radius: 50%;
-    background: white;
-    font-size: 1.8rem;
-    line-height: 1;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-  }
-
-  .feedback-fab:hover {
-    background: #f0f0f0;
-  }
-
   .feedback-dialog {
     border: 1px solid #222;
     border-radius: 8px;
