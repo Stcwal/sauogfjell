@@ -1,49 +1,35 @@
 ---
 import Field from "../../components/ui/Field.astro";
-import Button from "../../components/ui/Button.astro";
+import Modal from "../../components/ui/Modal.astro";
 ---
 
-<dialog id="feedback-dialog" class="feedback-dialog">
-  <form id="feedback-form" class="feedback-form">
-    <h2>Gi tilbakemelding</h2>
+<Modal id="feedback-dialog" title="Gi tilbakemelding" submitLabel="Send">
+  <Field
+    label="Tilbakemelding"
+    as="textarea"
+    id="feedback-text"
+    required
+    rows={5}
+    placeholder="Skriv ris og/eller ros her"
+  />
 
-    <Field
-      label="Tilbakemelding"
-      as="textarea"
-      id="feedback-text"
-      required
-      rows={5}
-      placeholder="Skriv ris og/eller ros her"
-    />
-
-    <Field
-      label="Navn (valgfritt)"
-      id="feedback-author"
-      type="text"
-      placeholder="Ditt navn"
-    />
-
-    <p class="status" role="status"></p>
-
-    <div class="actions">
-      <Button id="feedback-close" type="button" variant="secondary">Lukk</Button
-      >
-      <Button type="submit" variant="primary"> Send </Button>
-    </div>
-  </form>
-</dialog>
+  <Field
+    label="Navn (valgfritt)"
+    id="feedback-author"
+    type="text"
+    placeholder="Ditt navn"
+  />
+</Modal>
 
 <script>
-  // Runs on the initial load AND after every client-side (ClientRouter) navigation,
-  // so the listeners get re-bound to the freshly-swapped DOM each time.
+  // Only the submit handler lives here now — open/close/backdrop are handled once,
+  // generically, by Modal. This still needs astro:page-load because it binds
+  // directly to the form element, which ClientRouter replaces on navigation.
   document.addEventListener("astro:page-load", () => {
-    const dialog = document.getElementById(
-      "feedback-dialog",
-    ) as HTMLDialogElement;
-    const openBtn = document.getElementById("feedback-open");
-    const closeBtn = document.getElementById("feedback-close");
-    const form = document.getElementById("feedback-form") as HTMLFormElement;
-    if (!dialog || !form) return;
+    const form = document.getElementById(
+      "feedback-dialog-form",
+    ) as HTMLFormElement;
+    if (!form) return;
     const statusEl = form.querySelector(".status") as HTMLElement;
     const textInput = document.getElementById(
       "feedback-text",
@@ -51,15 +37,6 @@ import Button from "../../components/ui/Button.astro";
     const authorInput = document.getElementById(
       "feedback-author",
     ) as HTMLInputElement;
-
-    openBtn?.addEventListener("click", () => dialog.showModal());
-    closeBtn?.addEventListener("click", () => dialog.close());
-
-    // Close when clicking outside the form (a click whose target is the dialog itself
-    // is a click on the backdrop, since the form is a child element).
-    dialog.addEventListener("click", (e) => {
-      if (e.target === dialog) dialog.close();
-    });
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -78,42 +55,12 @@ import Button from "../../components/ui/Button.astro";
 
       if (res.ok) {
         statusEl.textContent = "Takk for tilbakemeldingen!";
+        statusEl.dataset.state = "ok";
         form.reset();
       } else {
         statusEl.textContent = "Noe gikk galt. Prøv igjen.";
+        statusEl.dataset.state = "error";
       }
     });
   });
 </script>
-
-<style>
-  .feedback-dialog {
-    border: 1px solid #222;
-    border-radius: 8px;
-    padding: 1.5rem;
-    max-width: 420px;
-    width: 90%;
-  }
-
-  .feedback-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin: 0;
-  }
-
-  .feedback-form h2 {
-    margin: 0;
-  }
-
-  .status {
-    margin: 0;
-    min-height: 1.2em;
-  }
-
-  .actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-  }
-</style>

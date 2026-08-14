@@ -6,10 +6,15 @@ import Fab from "../../components/ui/Fab.astro";
 
 <footer id="footer-outer">
   <div class="fab-stack">
-    <Fab id="feedback-open" type="button" aria-label="Gi tilbakemelding">💬</Fab
+    <Fab
+      type="button"
+      data-opens="feedback-dialog"
+      aria-label="Gi tilbakemelding">💬</Fab
     >
-    <Fab id="subscribe-open" type="button" aria-label="Få varsel om nye innlegg"
-      >🔔</Fab
+    <Fab
+      type="button"
+      data-opens="subscribe-dialog"
+      aria-label="Få varsel om nye innlegg">🔔</Fab
     >
   </div>
 
