@@ -311,6 +311,17 @@ h1, h2, h3, h4, h5, h6 {
 .post-wrapper {
   margin: var(--space-5);
   font-family: var(--font-body);
+  /* Markdown content is user input — a pasted URL has no break opportunities and
+     would otherwise stretch the page sideways. break-word splits a word only
+     when it alone overflows the line; normal prose is unaffected. */
+  overflow-wrap: break-word;
+}
+
+/* Code blocks scroll internally instead of stretching the page: <pre> refuses
+   to wrap (white-space: pre), so a long code line is the same page-widening
+   hazard as an unbroken URL. */
+.post-wrapper pre {
+  overflow-x: auto;
 }
 
 .post-wrapper blockquote {
