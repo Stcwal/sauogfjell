@@ -1,0 +1,40 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+    direction?: "column" | "row";
+    /** Any CSS length — pass a --space-* token value. */
+    gap?: string;
+    align?: string;
+    justify?: string;
+    wrap?: boolean;
+}
+
+const {
+    direction = "column",
+    gap = "var(--space-4)",
+    align = "stretch",
+    justify = "flex-start",
+    wrap = false,
+    ...rest
+} = Astro.props;
+---
+
+<div
+    {...rest}
+    class="stack"
+    style={`--stack-direction:${direction};--stack-gap:${gap};--stack-align:${align};--stack-justify:${justify};--stack-wrap:${wrap ? "wrap" : "nowrap"}`}
+>
+    <slot />
+</div>
+
+<style>
+    .stack {
+        display: flex;
+        flex-direction: var(--stack-direction);
+        gap: var(--stack-gap);
+        align-items: var(--stack-align);
+        justify-content: var(--stack-justify);
+        flex-wrap: var(--stack-wrap);
+    }
+</style>

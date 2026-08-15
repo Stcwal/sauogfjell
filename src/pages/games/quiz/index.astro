@@ -1,0 +1,10 @@
+---
+import GamesLayout from "../../../layouts/GamesLayout.astro"
+import QuizRenderer from "../../../components/quiz/QuizRenderer.astro";
+
+const gameType = 'quiz'; 
+---
+
+<GamesLayout>
+  <QuizRenderer collection={gameType}/>
+</GamesLayout>

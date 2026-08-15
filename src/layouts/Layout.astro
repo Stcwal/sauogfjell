@@ -4,7 +4,7 @@ import 'katex/dist/katex.min.css';
 import { ClientRouter } from "astro:transitions";
 ---
 
-<html lang="no" data-theme="auto">
+<html lang="no" data-theme="light">
   <head>
     <meta
       charset="UTF-8"
@@ -23,7 +23,7 @@ import { ClientRouter } from "astro:transitions";
     <slot />
     <script>
       function cycleTheme() {
-        const THEMES = ["light", "floop"];
+        const THEMES = ["light", "dark", "floop", "ai"];
         const current =
           document.documentElement.getAttribute("data-theme") || THEMES[0];
         const next = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length];

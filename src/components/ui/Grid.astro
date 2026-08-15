@@ -1,0 +1,31 @@
+---
+interface Props {
+  /**
+   * Minimum width of a single item. The grid fits as many equal columns as it
+   * can hold at this width, so the column count follows the container width on
+   * its own — no media queries, no separate mobile prop.
+   *
+   * Rough guide at the current 1000px page container:
+   *   14rem -> 4 columns, collapsing to 2 around 700px
+   *   21rem -> 2 columns, collapsing to 1 around 700px
+   */
+  minItemWidth?: string;
+}
+
+const { minItemWidth = "14rem" } = Astro.props;
+---
+
+<div class="grid" style={`--grid-min-item: ${minItemWidth}`}>
+  <slot />
+</div>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(var(--grid-min-item), 100%), 1fr)
+    );
+    gap: var(--space-4);
+  }
+</style>

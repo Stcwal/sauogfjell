@@ -1,6 +1,40 @@
+---
+import Button from "../../components/ui/Button.astro";
+---
+
 <nav aria-label="Hovedmeny">
   <a href="/">Home</a>
   <a href="/blog/">Blog</a>
-  <a href="/elo/">Elo</a>
-  <button id="theme-toggle">Toggle theme</button>
+  <a href="/games/elo/">Elo</a>
+  <span class="toggle-slot">
+    <Button id="theme-toggle">Toggle theme</Button>
+  </span>
 </nav>
+
+<style>
+  nav {
+    min-height: var(--header-height);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding-inline: var(--space-4);
+    font-family: var(--font-body);
+  }
+
+  /* inherit = the theme's text colour, so links work on any --color-header */
+  nav a {
+    color: inherit;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    text-decoration: underline;
+  }
+
+  /* pushes the theme toggle to the far edge; the Button itself can't be
+     selected from here (it carries its own scope), so its wrapper does it */
+  .toggle-slot {
+    margin-left: auto;
+  }
+</style>

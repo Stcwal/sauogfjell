@@ -1,0 +1,22 @@
+---
+
+---
+
+<div class="card">
+    <slot />
+</div>
+
+<style>
+    .card {
+        border-color: var(--card-border-color, var(--border-color));
+        border-radius: var(--card-radius, var(--radius));
+        border-width: var(--card-border-width, var(--border-width));
+        border-style: var(--border-style);
+        background: var(--card-bg, var(--color-surface));
+        padding: var(--card-padding, var(--surface-padding));
+        box-shadow: var(--card-shadow, none);
+        /* lets a parent (PictureCard) animate --card-shadow for the floop press */
+        transition: box-shadow 100ms ease;
+        overflow: hidden;
+    }
+</style>

@@ -1,20 +1,38 @@
 ---
-import FeedbackPanel from './FeedbackPanel.astro';
-import SubscribePanel from './SubscribePanel.astro';
+import FeedbackPanel from "./FeedbackPanel.astro";
+import SubscribePanel from "./SubscribePanel.astro";
+import Fab from "../../components/ui/Fab.astro";
 ---
 
-<footer id="footer-outer">
-  <footer id="footer-inner">
+<footer class="footer-outer">
+  <div class="fab-stack">
+    <Fab
+      type="button"
+      data-opens="feedback-dialog"
+      aria-label="Gi tilbakemelding">💬</Fab
+    >
+    <Fab
+      type="button"
+      data-opens="subscribe-dialog"
+      aria-label="Få varsel om nye innlegg">🔔</Fab
+    >
+  </div>
+
+  <footer class="footer-inner">
     <div>
       <b>links:</b>
       <div>
         <a href="https://github.com/Stcwal/sauogfjell/">sauogfjell på github</a>
       </div>
       <div>
-        <a href="https://www.linkedin.com/in/stian-closs-walmann/">Stian på linkedIn</a>
+        <a href="https://www.linkedin.com/in/stian-closs-walmann/"
+          >Stian på linkedIn</a
+        >
       </div>
       <div>
-        <a href="https://www.linkedin.com/in/anders-fangel/">Anders på linkedIn</a>
+        <a href="https://www.linkedin.com/in/anders-fangel/"
+          >Anders på linkedIn</a
+        >
       </div>
     </div>
     <div>
@@ -23,11 +41,46 @@ import SubscribePanel from './SubscribePanel.astro';
     </div>
     <div>
       <b>Takk til:</b>
-      <div>
-        Ingen, all <a style="text-decoration: line-through;">me</a> us baby
-      </div>
+      <div>Claude</div>
     </div>
   </footer>
   <FeedbackPanel />
-  <SubscribePanel/>
+  <SubscribePanel />
 </footer>
+
+<style>
+  .footer-outer {
+    background-color: var(--color-footer);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-style: var(--border-style);
+    border-top-width: var(--border-width-strong);
+    border-top-color: var(--border-color-strong);
+    padding-bottom: var(--space-5);
+    padding-top: var(--space-5);
+  }
+
+  .footer-inner {
+    background-color: var(--color-surface); /* fargen kan (bør?) endres */
+    /* decorative tokens: 0-width/transparent/none in default and dark, so this
+       block renders identically there; floop turns it into an outlined card */
+    border-style: var(--border-style);
+    border-width: var(--border-width);
+    border-color: var(--border-color);
+    border-radius: var(--radius);
+    padding: var(--surface-padding);
+    box-shadow: var(--shadow-pop);
+  }
+
+  .fab-stack {
+    position: fixed;
+    bottom: var(--space-5);
+    right: var(--space-5);
+    z-index: var(--z-overlay);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+</style>

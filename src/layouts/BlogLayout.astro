@@ -1,18 +1,5 @@
 ---
-import Footer from './components/Footer.astro';
-import Header from './components/Header.astro';
-import Layout from './Layout.astro';
+import PageShell from "./PageShell.astro";
 ---
-<Layout>
-  <div id="outer">
-    <div id="header">
-      <Header/>
-    </div>
-    <div id="blog-content">
-      <slot/>
-    </div>
-    <div id="footer">
-      <Footer/>
-    </div>
-  </div>
-</Layout>
+
+<PageShell variant="blog"><slot /></PageShell>

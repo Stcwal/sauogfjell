@@ -1,0 +1,60 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"input"> {
+    label: string;
+    as?: "input" | "textarea";
+    rows?: number;
+}
+
+const { label, as: Tag = "input", ...rest } = Astro.props;
+---
+
+<label class="field">
+    {label}
+    <Tag {...rest} />
+</label>
+
+<style>
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-1);
+
+        font-family: var(--font-body);
+        font-size: var(--font-size-2);
+    }
+
+    /* The control needs its own font: form elements do NOT inherit font-family or
+       font-size from their parent, so without this they drop to the system font. */
+    .field input,
+    .field textarea {
+        font-family: var(--font-body);
+        font-size: var(--font-size-2);
+        padding: var(--space-2);
+
+        color: var(--color-text);
+        background: var(--color-surface-raised);
+
+        border-style: var(--border-style);
+        border-width: var(--border-width-strong);
+        border-color: var(--border-color-strong);
+        border-radius: var(--radius-1);
+
+        /* keep padding + border inside the stretched width rather than adding to it */
+        box-sizing: border-box;
+    }
+
+    /* grow-only: users can make the textarea taller without breaking the layout sideways */
+    .field textarea {
+        resize: vertical;
+    }
+
+    .field input:focus-visible,
+    .field textarea:focus-visible {
+        outline-style: var(--border-style);
+        outline-width: var(--border-width-strong);
+        outline-color: var(--border-color-strong);
+        outline-offset: var(--space-1);
+    }
+</style>

@@ -1,18 +1,27 @@
 {
   "scripts": {
+    "predev": "npm run check:posts",
     "dev": "npx astro dev",
+    "prebuild": "npm run check:posts",
     "build": "npx astro build",
+    "prepreview": "npm run check:posts",
     "preview": "npx astro preview",
-    "start": "npx astro preview"
+    "prestart": "npm run check:posts",
+    "start": "npx astro preview",
+    "check:posts": "npx tsx populate-post-db.ts"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.7.0",
     "astro": "^6.4.6",
+    "js-yaml": "^5.2.3",
     "rehype-katex": "^7.0.1",
-    "remark-math": "^6.0.0"
+    "remark-math": "^6.0.0",
+    "tsx": "^4.23.12"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
-    "typescript": "^6.0.3"
+    "@types/node": "^26.2.0",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.103.0"
   }
 }

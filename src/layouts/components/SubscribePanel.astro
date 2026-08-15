@@ -1,79 +1,60 @@
 ---
 import { STANDARD_TAGS } from "../../lib/tags";
+import Field from "../../components/ui/Field.astro";
+import Modal from "../../components/ui/Modal.astro";
+
 const AUTHORS = ["stian", "anders"];
 ---
 
-<button id="subscribe-open" class="subscribe-fab" type="button" aria-label="Få varsel om nye innlegg">🔔</button>
+<Modal
+  id="subscribe-dialog"
+  title="Meld deg på nyhetsbrevet"
+  submitLabel="Meld på"
+>
+  <Field
+    label="E-postadresse"
+    id="sub-email"
+    type="email"
+    required
+    placeholder="deg@eksempel.no"
+  />
 
-<dialog id="subscribe-dialog" class="subscribe-dialog">
-  <form id="subscribe-form" class="subscribe-form">
-    <h2>Meld deg på nyhetsbrevet</h2>
-
-    <label class="field">
-      E-postadresse
-      <input
-        id="sub-email"
-        type="email"
-        required
-        placeholder="deg@eksempel.no"
-      />
-    </label>
-
-    {
-      AUTHORS.map((author) => (
-        <fieldset class="author-group">
-          <legend>{author.charAt(0).toUpperCase() + author.slice(1)}</legend>
+  {
+    AUTHORS.map((author) => (
+      <fieldset class="author-group">
+        <legend>{author.charAt(0).toUpperCase() + author.slice(1)}</legend>
+        <label>
+          <input type="checkbox" data-author={author} value="alle" /> Alle
+        </label>
+        {STANDARD_TAGS.map((tag) => (
           <label>
-            <input type="checkbox" data-author={author} value="alle" /> Alle
+            <input type="checkbox" data-author={author} value={tag} /> {tag}
           </label>
-          {STANDARD_TAGS.map((tag) => (
-            <label>
-              <input type="checkbox" data-author={author} value={tag} /> {tag}
-            </label>
-          ))}
-        </fieldset>
-      ))
-    }
+        ))}
+      </fieldset>
+    ))
+  }
 
-    <label class="dev-updates">
-      <input id="dev-updates" type="checkbox" /> Dev-oppdateringer
-    </label>
-
-    <p class="status" role="status"></p>
-
-    <div class="actions">
-      <button id="subscribe-close" type="button">Lukk</button>
-      <button type="submit">Meld på</button>
-    </div>
-  </form>
-</dialog>
+  <label class="dev-updates">
+    <input id="dev-updates" type="checkbox" /> Dev-oppdateringer
+  </label>
+</Modal>
 
 <script>
-  // Runs on the initial load AND after every client-side (ClientRouter) navigation,
-  // so the listeners get re-bound to the freshly-swapped DOM each time.
+  // Only the submit handler lives here now — open/close/backdrop are handled once,
+  // generically, by Modal. This still needs astro:page-load because it binds
+  // directly to the form element, which ClientRouter replaces on navigation.
   document.addEventListener("astro:page-load", () => {
-    const dialog = document.getElementById(
-      "subscribe-dialog",
-    ) as HTMLDialogElement;
-    const openBtn = document.getElementById("subscribe-open");
-    const closeBtn = document.getElementById("subscribe-close");
-    const form = document.getElementById("subscribe-form") as HTMLFormElement;
+    const form = document.getElementById(
+      "subscribe-dialog-form",
+    ) as HTMLFormElement;
     // This panel is only on the home page; bail on pages where it isn't rendered.
-    if (!dialog || !form) return;
+    if (!form) return;
     const statusEl = form.querySelector(".status") as HTMLElement;
     const emailInput = document.getElementById("sub-email") as HTMLInputElement;
     const devUpdatesInput = document.getElementById(
       "dev-updates",
     ) as HTMLInputElement;
-
-    openBtn?.addEventListener("click", () => dialog.showModal());
-    closeBtn?.addEventListener("click", () => dialog.close());
-
-    // Close when clicking outside the form (a click whose target is the dialog itself
-    // is a click on the backdrop, since the form is a child element).
-    dialog.addEventListener("click", (e) => {
-      if (e.target === dialog) dialog.close();
-    });
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -97,97 +78,30 @@ const AUTHORS = ["stian", "anders"];
 
       if (res.ok) {
         statusEl.textContent = "Gratulerer! Du er påmeldt!";
+        statusEl.dataset.state = "ok";
       } else {
         statusEl.textContent = "Noe gikk galt. Prøv igjen.";
+        statusEl.dataset.state = "error";
       }
     });
   });
 </script>
 
 <style>
-  /* icon-only floating button, bottom-right */
-  .subscribe-fab {
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    z-index: 10;
-    width: 3.5rem;
-    height: 3.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #222;
-    border-radius: 50%;
-    background: white;
-    font-size: 1.8rem;
-    line-height: 1;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-  }
-
-  .subscribe-fab:hover {
-    background: #f0f0f0;
-  }
-
-  .subscribe-dialog {
-    border: 1px solid #222;
-    border-radius: 8px;
-    padding: 1.5rem;
-    max-width: 420px;
-  }
-
-  .subscribe-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin: 0;
-  }
-
-  .subscribe-form h2 {
-    margin: 0;
-  }
-
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .field input {
-    font: inherit;
-    padding: 0.4rem;
-  }
-
   .author-group {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    gap: var(--space-1);
+    border-style: var(--border-style);
+    border-width: var(--border-width-strong);
+    border-color: var(--border-color-subtle);
+    border-radius: var(--radius-1);
   }
 
   .author-group label,
   .dev-updates {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-  }
-
-  .status {
-    margin: 0;
-    min-height: 1.2em;
-    color: #c00;
-  }
-
-  .actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-  }
-
-  .actions button {
-    font: inherit;
-    padding: 0.4rem 0.9rem;
-    cursor: pointer;
+    gap: var(--space-2);
   }
 </style>

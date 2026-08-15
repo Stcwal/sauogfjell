@@ -1,4 +1,6 @@
 ---
+import Button from "../ui/Button.astro";
+
 interface Props {
   song1: { songID: number; songName: string; artistName: string; albumCoverLink: string } | null;
   song2: { songID: number; songName: string; artistName: string; albumCoverLink: string } | null;
@@ -15,14 +17,17 @@ const { song1, song2 } = Astro.props;
         <img class="album-cover" src={song1.albumCoverLink} alt={`Album cover for ${song1.songName}`} />
         <p class="song-name">{song1.songName}</p>
         <p class="artist-name">{song1.artistName}</p>
-        <button class="vote-btn" data-song-id={song1.songID}>Stem</button>
+        <Button variant="secondary" type="button" data-vote data-song-id={song1.songID}>Stem</Button>
       </div>
       <div class="voting-column" data-index="2">
         <img class="album-cover" src={song2.albumCoverLink} alt={`Album cover for ${song2.songName}`} />
         <p class="song-name">{song2.songName}</p>
         <p class="artist-name">{song2.artistName}</p>
-        <button class="vote-btn" data-song-id={song2.songID}>Stem</button>
+        <Button variant="secondary" type="button" data-vote data-song-id={song2.songID}>Stem</Button>
       </div>
+    </div>
+    <div class="actions">
+      <Button variant="ghost" type="button" data-skip>Hopp over</Button>
     </div>
     <p class="vote-error" role="alert"></p>
   </>
@@ -40,11 +45,30 @@ const { song1, song2 } = Astro.props;
 
   const col1 = document.querySelector('.voting-column[data-index="1"]') as HTMLElement;
   const col2 = document.querySelector('.voting-column[data-index="2"]') as HTMLElement;
-  const btn1 = col1.querySelector('.vote-btn') as HTMLButtonElement;
-  const btn2 = col2.querySelector('.vote-btn') as HTMLButtonElement;
+  // Queried by data-attribute, not class: <Button> renders its own class name.
+  const btn1 = col1.querySelector('[data-vote]') as HTMLButtonElement;
+  const btn2 = col2.querySelector('[data-vote]') as HTMLButtonElement;
+  const skipBtn = document.querySelector('[data-skip]') as HTMLButtonElement;
   const errorEl = document.querySelector('.vote-error') as HTMLElement;
 
+  async function loadNewSongs() {
+    const res = await fetch('/api/random-pair');
+    if (!res.ok) throw new Error('Could not load new songs');
+
+    const { song1, song2 }: { song1: Song; song2: Song } = await res.json();
+
+    updateColumn(col1, btn1, song1);
+    updateColumn(col2, btn2, song2);
+  }
+
+  async function setLoading(isLoading: boolean) {
+    btn1.disabled = isLoading;
+    btn2.disabled = isLoading;
+    skipBtn.disabled = isLoading;
+  }
+
   async function vote(winnerId: number, loserId: number) {
+    await setLoading(true);
     btn1.disabled = true;
     btn2.disabled = true;
     errorEl.textContent = '';
@@ -57,18 +81,26 @@ const { song1, song2 } = Astro.props;
       });
       if (!voteRes.ok) throw new Error('Vote failed');
 
-      const res = await fetch('/api/random-pair');
-      if (!res.ok) throw new Error('Could not load new songs');
-      const { song1, song2 }: { song1: Song; song2: Song } = await res.json();
-
-      updateColumn(col1, btn1, song1);
-      updateColumn(col2, btn2, song2);
+      await loadNewSongs();
     } catch (err) {
       errorEl.textContent = 'Noe gikk galt. Prøv igjen.';
       console.error(err);
     } finally {
-      btn1.disabled = false;
-      btn2.disabled = false;
+      await setLoading(false);
+    }
+  }
+
+  async function skip() {
+    await setLoading(true);
+    errorEl.textContent = '';
+
+    try {
+      await loadNewSongs();
+    } catch (err) {
+      errorEl.textContent = 'Noe gikk galt. Prøv igjen.';
+      console.error(err);
+    } finally {
+      await setLoading(false);
     }
   }
 
@@ -82,32 +114,49 @@ const { song1, song2 } = Astro.props;
 
   btn1.addEventListener('click', () => vote(Number(btn1.dataset.songId), Number(btn2.dataset.songId)));
   btn2.addEventListener('click', () => vote(Number(btn2.dataset.songId), Number(btn1.dataset.songId)));
+  skipBtn.addEventListener('click', () => skip());
 </script>
 
 <style>
   h1 {
     text-align: center;
-    margin: 0 0 1rem;
+    margin: 0 0 var(--space-4);
   }
 
   .voting-container {
     display: flex;
-    gap: 2rem;
+    gap: var(--space-6);
     justify-content: center;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-4);
   }
 
   .voting-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--space-3);
     width: 250px;
+
+    /* Button's styling hook — align-items:center would otherwise leave the vote
+       button at its natural width. Custom properties cross the component
+       boundary; a scoped selector could not. */
+    --button-width: 100%;
   }
 
   .album-cover {
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
+    /* decorative tokens — invisible in default/dark, 3px black + rounding in floop */
+    border-style: var(--border-style);
+    border-width: var(--border-width);
+    border-color: var(--border-color);
+    border-radius: var(--radius);
   }
 
   .song-name {
@@ -119,25 +168,12 @@ const { song1, song2 } = Astro.props;
   .artist-name {
     text-align: center;
     margin: 0;
-    color: #555;
-  }
-
-  .vote-btn {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #222;
-    background: white;
-    font: inherit;
-    cursor: pointer;
-  }
-
-  .vote-btn:hover {
-    background: #f0f0f0;
+    color: var(--color-text-muted);
   }
 
   .vote-error {
     text-align: center;
-    color: #c00;
+    color: var(--color-danger);
     margin: 0;
     min-height: 1.2em;
   }

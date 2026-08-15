@@ -1,0 +1,42 @@
+---
+import HomeLayout from "../../layouts/HomeLayout.astro";
+import Grid from "../../components/ui/Grid.astro";
+import PictureCard from "../../components/ui/PictureCard.astro";
+import Container from "../../components/ui/Container.astro";
+---
+
+<HomeLayout>
+  <Container>
+    <Grid>
+      <PictureCard
+        variant="tile"
+        href="/games/elo/"
+        src="/games/noter.png"
+        alt="Placeholder-bilde av Jan Thomas"
+        label="Musikkrangering"
+      />
+      <PictureCard
+        variant="tile"
+        href="/games/quiz/"
+        src="/games/quiz.jpg"
+        alt="Retro Game Boy"
+        label="Quiz"
+        fit="cover"
+      />
+      <PictureCard
+        variant="tile"
+        href="#"
+        src="/landingpage/fisk.jpg"
+        alt="Placeholder-bilde av en fisk"
+        label="Kommer kanskje snart?"
+      />
+      <PictureCard
+        variant="tile"
+        href="#"
+        src="/landingpage/oljeboringsplatform.jpg"
+        alt="Placeholder-bilde av en oljeboringsplattform"
+        label="Kommer kanskje snart?"
+      />
+    </Grid>
+  </Container>
+</HomeLayout>
