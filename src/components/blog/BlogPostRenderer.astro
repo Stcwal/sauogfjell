@@ -4,17 +4,22 @@ import BlogPostWrapper from "./BlogPostWrapper.astro";
 import Stack from "../ui/Stack.astro";
 import Tag from "../ui/Tag.astro";
 import { getTagColor } from "../../lib/tags";
+import { LanguageServiceMode } from "typescript";
 
 interface Props {
   collection: "dev" | "stian" | "anders";
+  language: "norwegian" | "english";
 }
-const { collection } = Astro.props;
+
+const { collection, language } = Astro.props;
 
 // Gjemmer drafts i prod, men viser dem på dev-serveren (npm run dev)
 const posts = await getCollection(collection, ({ data }) => {
-  return import.meta.env.DEV || !data.draft;
-});
 
+  const isVisible = import.meta.env.DEV || !data.draft;
+  const matchesLanguage = data.language == language;
+  return isVisible && matchesLanguage
+});
 
 posts.sort((a, b) => {
   //Sorterer først på publishDate, så editDate
