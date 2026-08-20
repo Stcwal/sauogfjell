@@ -17,7 +17,7 @@ BLOCK LAYOUT  (order matters — theme blocks must come after the default :root,
   2.0  Non-themed         identical under every theme (scales, shapes, z-index)
   2.1  Themed, default    semantic roles
   2.2  Themed, dark       must define the SAME keys, in the SAME order, as 2.1
-  2.3  Themed, floop      must define the SAME keys, in the SAME order, as 2.1
+  2.3  Themed, neobrutalism      must define the SAME keys, in the SAME order, as 2.1
   3    Component tokens   --btn-*, --tile-overlay-*; each points at a tier-2 role
 
 Tier 3 is deliberately theme-free: var() resolves on <html>, where the active
@@ -95,7 +95,8 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
   /* Display face for h1-h6. Themes without a distinct heading face point this
      at the body font, which makes the global heading rule a no-op for them. */
   --font-heading: var(--font-body);
-  --color-background: #fff; /*Alternativt: var(--color-white);*/
+  --color-background: #fff;
+  /*Alternativt: var(--color-white);*/
   --color-text: #000;
   --color-text-muted: #525151;
   --color-danger: #cc0000;
@@ -114,9 +115,9 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
      theme is visually unchanged. */
   --color-backdrop: rgba(0, 0, 0, 0.1);
   --color-accent: #02ff6b;
-  --color-on-accent: #000000; 
-  --color-accent-2: #1bb3ff;   
-  --color-on-accent-2: #000000; 
+  --color-on-accent: #000000;
+  --color-accent-2: #1bb3ff;
+  --color-on-accent-2: #000000;
   --radius: 0px;
   --border-color: transparent;
   --border-color-subtle: #cccccc;
@@ -162,9 +163,9 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
   --color-code-bg: #d9d9d9;
   --color-backdrop: rgba(0, 0, 0, 0.1);
   --color-accent: #006d2e;
-  --color-on-accent: #ffffff; 
-  --color-accent-2: #023f5e;   
-  --color-on-accent-2: #ffffff; 
+  --color-on-accent: #ffffff;
+  --color-accent-2: #023f5e;
+  --color-on-accent-2: #ffffff;
   --radius: 0px;
   --border-color: transparent;
   --border-color-subtle: #cccccc;
@@ -180,11 +181,11 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
   --surface-padding: 0px;
 }
 
-/* 2.3. THEMED SEMANTICS - floop
+/* 2.3. THEMED SEMANTICS - neobrutalism
    Identity: neubrutalism. Warm cream paper, flat candy colours (lavender /
    yellow / cyan / mint / pink), black outlines on everything, hard offset
    shadows, and a "press into the page" hover (see --shadow-pop/--press-offset). */
-[data-theme="floop"] {
+[data-theme="neobrutalism"] {
   --color-scheme: light;
   --font-body: "Trebuchet MS", Verdana, sans-serif;
   --font-heading: "Arial Black", "Arial Bold", Arial, sans-serif;
@@ -273,13 +274,13 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 /* TIER 3 */
 /* 3. COMPONENT TOKENS (tier 3) */
 :root {
-  --btn-background: var(--color-accent);    
-  --btn-text: var(--color-on-accent);     
-  --btn-border-color: var(--border-color-strong); 
-  --btn-border-width: var(--border-width);      
-  --btn-radius: var(--radius);                    
+  --btn-background: var(--color-accent);
+  --btn-text: var(--color-on-accent);
+  --btn-border-color: var(--border-color-strong);
+  --btn-border-width: var(--border-width);
+  --btn-radius: var(--radius);
   --btn-shadow: var(--shadow-pop);
-  --tile-overlay-bg: var(--color-accent-2);      
+  --tile-overlay-bg: var(--color-accent-2);
   --tile-overlay-text: var(--color-on-accent-2);
 }
 
@@ -288,12 +289,14 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 /* ============================================================ */
 
 
-.wrapper, html, body {
-    height: 100%;
-    margin: 0;
-    background-color: var(--color-background);
-    color: var(--color-text);
-    color-scheme: var(--color-scheme);
+.wrapper,
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  color-scheme: var(--color-scheme);
 }
 
 
@@ -304,7 +307,12 @@ Layout that isn't thematic (position: fixed, page height) can stay hardcoded.
 
 /* Headings take the theme's display face. Default and dark point --font-heading
    at --font-body, so this only does something in themes that want one. */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
 }
 
@@ -333,7 +341,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-text-muted);
 }
 
-.post-wrapper :not(pre) > code {
+.post-wrapper :not(pre)>code {
   background: var(--color-code-bg);
   padding: 0.1em 0.3em;
   border-radius: var(--radius-1);
@@ -363,7 +371,7 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
   margin: 1.2em 0;
 } */
-.post-wrapper .katex-display > .katex {
+.post-wrapper .katex-display>.katex {
   font-size: 1em;
 }
 
@@ -372,4 +380,13 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-body);
   font-size: var(--font-size-1);
   font-style: italic;
+}
+
+/* SPRÅK-GREIER. Setter preferanse for språk. Takk til Claude for denne. */
+[data-language="norwegian"] [data-language]:not([data-language="norwegian"]) {
+  display: none;  
+}
+
+[data-language="english"] [data-language]:not([data-language="english"]) {
+  display: none;
 }
