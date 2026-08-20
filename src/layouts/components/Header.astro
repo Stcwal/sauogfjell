@@ -7,7 +7,7 @@ import Button from "../../components/ui/Button.astro";
   <a href="/blog/">Blog</a>
   <a href="/games/elo/">Elo</a>
   <span class="toggle-slot">
-    <Button id="language-toggle">Toggle language</Button>
+    <Button id="language-toggle">Walla</Button>
     <Button id="theme-toggle">Toggle theme</Button>
   </span>
 </nav>
@@ -37,5 +37,20 @@ import Button from "../../components/ui/Button.astro";
      selected from here (it carries its own scope), so its wrapper does it */
   .toggle-slot {
     margin-left: auto;
+  }
+
+  #language-toggle {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    color: transparent;
+  }
+
+  html[data-language="norwegian"] #language-toggle {
+    background-image: url(/public/flags/standard_norges_flagg.png);
+  }
+
+  html[data-language="english"] #language-toggle {
+    background-image: url(/public/flags/standard_storbritannia-flagg.png);
   }
 </style>
