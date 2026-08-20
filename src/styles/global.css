@@ -390,3 +390,7 @@ h6 {
 [data-language="english"] [data-language]:not([data-language="english"]) {
   display: none;
 }
+
+[data-language="german"] [data-language]:not([data-language="german"]) {
+  display: none;
+}

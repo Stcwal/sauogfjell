@@ -9,7 +9,7 @@ const blogpostSchema = z.object({
   publishDate: z.date(),
   editDate: z.date().optional(),
   tags: z.array(z.string()).default([]),
-  language: z.enum(["norwegian", "english"]).default("norwegian"),
+  language: z.enum(["norwegian", "english", "german"]).default("norwegian"),
 })
 
 const quizSchema = z.object({
