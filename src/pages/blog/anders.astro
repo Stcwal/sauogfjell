@@ -3,9 +3,8 @@ import BlogLayout from "../../layouts/BlogLayout.astro";
 import BlogPostRenderer from "../../components/blog/BlogPostRenderer.astro";
 
 const blog = "anders";
-const language = "norwegian";
 ---
 
 <BlogLayout>
-  <BlogPostRenderer collection={blog} , language={language} />
+  <BlogPostRenderer collection={blog} />
 </BlogLayout>

@@ -383,10 +383,10 @@ h6 {
 }
 
 /* SPRÅK-GREIER. Setter preferanse for språk. Takk til Claude for denne. */
-[data-language-pref="norwegian"] [data-language]:not([data-language="norwegian"]) {
-  display: none;
+[data-language="norwegian"] [data-language]:not([data-language="norwegian"]) {
+  display: none;  
 }
 
-[data-language-pref="english"] [data-language]:not([data-language="english"]) {
+[data-language="english"] [data-language]:not([data-language="english"]) {
   display: none;
 }

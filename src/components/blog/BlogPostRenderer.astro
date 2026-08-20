@@ -4,21 +4,17 @@ import BlogPostWrapper from "./BlogPostWrapper.astro";
 import Stack from "../ui/Stack.astro";
 import Tag from "../ui/Tag.astro";
 import { getTagColor } from "../../lib/tags";
-import { LanguageServiceMode } from "typescript";
 
 interface Props {
   collection: "dev" | "stian" | "anders";
-  language: "norwegian" | "english";
 }
 
-const { collection, language } = Astro.props;
+const { collection } = Astro.props;
 
 // Gjemmer drafts i prod, men viser dem på dev-serveren (npm run dev)
 const posts = await getCollection(collection, ({ data }) => {
-
   const isVisible = import.meta.env.DEV || !data.draft;
-  const matchesLanguage = data.language == language;
-  return isVisible && matchesLanguage
+  return isVisible;
 });
 
 posts.sort((a, b) => {
@@ -44,7 +40,7 @@ const formatDate = (date: Date) =>
       posts.map(async (post, i) => {
         const { Content } = await render(post);
         return (
-          <BlogPostWrapper>
+          <BlogPostWrapper data-language={post.data.language}>
             <Stack direction="row" wrap gap="var(--space-2)">
               {post.data.tags.map((tag: string) => (
                 <Tag color={getTagColor(tag)}>{tag}</Tag>
@@ -54,7 +50,7 @@ const formatDate = (date: Date) =>
             <a class="post-subtext">
               Skrevet av {post.data.author} {formatDate(post.data.publishDate)}
               {post.data.editDate
-                ? `, sist endret ${formatDate(post.data.editDate)} av ${post.data.author}`
+                ? `, sist endret ${formatDate(post.data.editDate)}`
                 : ""}
             </a>
             {i < posts.length - 1 ? <hr /> : null}
@@ -64,4 +60,3 @@ const formatDate = (date: Date) =>
     )
   }
 </div>
-

@@ -4,7 +4,7 @@ import "katex/dist/katex.min.css";
 import { ClientRouter } from "astro:transitions";
 ---
 
-<html lang="no" data-theme="light">
+<html lang="no" data-theme="light" data-language="norwegian">
   <head>
     <meta
       charset="UTF-8"
@@ -13,8 +13,13 @@ import { ClientRouter } from "astro:transitions";
     />
     <link rel="icon" href="/favicon.svg" />
     <script is:inline>
-      const saved = localStorage.getItem("theme-preference");
-      if (saved) document.documentElement.setAttribute("data-theme", saved);
+      const savedDataTheme = localStorage.getItem("theme-preference");
+      if (savedDataTheme)
+        document.documentElement.setAttribute("data-theme", savedDataTheme);
+
+      const savedLanguage = localStorage.getItem("language-preference");
+      if (savedLanguage)
+        document.documentElement.setAttribute("data-language", savedLanguage);
     </script>
 
     <ClientRouter />
@@ -47,6 +52,34 @@ import { ClientRouter } from "astro:transitions";
     </script>
     <script>
       // Function to cycle language
+      function cycleLanguage() {
+        const LANGUAGES = ["norwegian", "english"];
+        const current =
+          document.documentElement.getAttribute("data-language") ||
+          LANGUAGES[0];
+        const next =
+          LANGUAGES[(LANGUAGES.indexOf(current) + 1) % LANGUAGES.length];
+        document.documentElement.setAttribute("data-language", next);
+        localStorage.setItem("language-preference", next);
+      }
+
+      // Re-attach listener after every navigation
+      document.addEventListener("astro:page-load", () => {
+        document
+          .getElementById("language-toggle")
+          ?.addEventListener("click", cycleLanguage);
+      });
+
+      // Copy language to incoming page before swap, prevents flicker
+      document.addEventListener("astro:before-swap", (e) => {
+        const language =
+          document.documentElement.getAttribute("data-language");
+        if (language)
+          e.newDocument.documentElement.setAttribute(
+            "data-language",
+            language,
+          );
+      });
     </script>
   </body>
 </html>
