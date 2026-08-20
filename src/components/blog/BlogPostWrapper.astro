@@ -1,3 +1,7 @@
-<div class="post-wrapper">
-  <slot/>
+---
+const { ...rest } = Astro.props;
+---
+
+<div class="post-wrapper" {...rest}>
+  <slot />
 </div>

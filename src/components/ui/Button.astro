@@ -30,9 +30,9 @@ const { variant = "secondary", ...rest } = Astro.props;
     border-style: var(--border-style);
     border-radius: var(--btn-radius);
     /* --btn-shadow resolves to --shadow-pop: none in default/dark, a hard offset
-       shadow in floop. On the base rule so every variant can pop. */
+       shadow in neobrutalism. On the base rule so every variant can pop. */
     box-shadow: var(--btn-shadow);
-    /* Animates the floop press; both values are static in default/dark, so this
+    /* Animates the neobrutalism press; both values are static in default/dark, so this
        transitions nothing there. */
     transition: translate 100ms ease, box-shadow 100ms ease;
   }
@@ -77,7 +77,7 @@ const { variant = "secondary", ...rest } = Astro.props;
     filter: brightness(0.92);
   }
 
-  /* Hover, token-directed per theme: floop presses (travel by the shadow offset
+  /* Hover, token-directed per theme: neobrutalism presses (travel by the shadow offset
      while --shadow-pop-hover: none collapses the shadow), ai glows brighter
      (offset 0, hover shadow bigger than rest). Default/dark: everything 0/none —
      a complete no-op. Ghost is excluded: flat by definition. */
