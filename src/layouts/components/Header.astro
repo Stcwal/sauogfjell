@@ -4,12 +4,12 @@ import Button from "../../components/ui/Button.astro";
 
 <nav aria-label="Hovedmeny">
   <a href="/">Home</a>
+  <a href="/blog/dev">Dev</a>
   <a href="/blog/stian">Stian</a>
   <a href="/blog/anders">Anders</a>
-  <a href="/blog/dev">Dev</a>
   <span class="toggle-slot">
-    <Button id="theme-toggle">Toggle theme</Button>
-    <Button id="language-toggle">Walla</Button>
+    <Button id="theme-toggle">Theme</Button>
+    <Button id="language-toggle">wal</Button>
   </span>
 </nav>
 
@@ -18,8 +18,8 @@ import Button from "../../components/ui/Button.astro";
     min-height: var(--header-height);
     display: flex;
     align-items: center;
-    gap: var(--space-4);
-    padding-inline: var(--space-4);
+    gap: var(--space-3);
+    padding-inline: var(--space-3);
     font-family: var(--font-body);
   }
 
