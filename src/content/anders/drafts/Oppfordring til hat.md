@@ -9,4 +9,4 @@ tags: [Tøys] #Format [X, Y, Z], optional
 
 # Hat mer!
 
-Det er for få hatmeldinger i innboksen. Hat mer. Det er antakelig gjennomtenkt og fortjent hat. Vi pleier å si at dersom du ikke har noe fint å si, send inn tilbakemelding med å bruke tilbakemeldingsknappen nede til høyre.
+Taggen sier tøys, men dette er seriøst. Det er for lite hat i innboksen. Utvikler-teamet i sauogfjell.no sier alltid at hvis du ikke har noe fint å si, send inn anonym hatmelding ved å trykke på tilbakemeldingsknappen nede til høyre. Hvis du tenker det, er det antakelig riktig. Og hvis du føler du må strekke deg litt for å hate tilstrekkelig hardt, har du antakelig strukket deg akkurat passe langt. Vi trenger ikke hatmeldinger i Gaute Skjervø-klassen, men INGEN hatmeldinger gir ikke mening gitt innholdet i bloggen og hvem som leser disse greiene (Einar for eksempel). 
