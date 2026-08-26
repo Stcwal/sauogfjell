@@ -5,6 +5,7 @@ draft: false #true/false
 publishDate: 2026-08-22 #Format 2026-05-24
 #editDate: #Format 2026-05-24, denne er optional
 tags: [Reisebrev] #Format [X, Y, Z], optional
+language: english #english eller german #norwegian er default
 ---
 
 # Climbed outside
