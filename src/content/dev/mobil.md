@@ -10,4 +10,4 @@ publishDate: 2026-08-27 #Format 2026-05-24
 
 # Dette er skrevet på mobil
 
-Dette innlegget er skrevet på mobilen. ikke at det er noen stor ny feature eller noe sånt, men det er jo greit å vite at det går an. jeg brukte bare github-appen og lagde kopi av en gammel fil, så lett var det visst
+Dette innlegget er skrevet på mobilen. ikke at det er noen stor ny feature eller noe sånt, men det er jo greit å vite at det går an. jeg brukte bare github-appen og lagde en ny markdown-fil inni der. så lett var det visst
