@@ -1,0 +1,214 @@
+---
+import type { Comment } from "../../lib/comments";
+import Button from "../ui/Button.astro";
+import Field from "../ui/Field.astro";
+
+interface Props {
+  /** The D1 postId this section's comments attach to. */
+  postId: number;
+  /** Pre-fetched comments — the renderer batches one query for the whole page. */
+  comments: Comment[];
+}
+
+const { postId, comments } = Astro.props;
+
+// SQLite's CURRENT_TIMESTAMP stores UTC as "YYYY-MM-DD HH:MM:SS". JS needs a
+// "T" between date and time and a trailing "Z" to read that as UTC — without
+// them the string parses as *local* time and the clock time drifts.
+const formatDate = (value: string) =>
+  new Intl.DateTimeFormat("nb-NO", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date(`${value.replace(" ", "T")}Z`));
+---
+
+<section class="comments" data-post-id={postId}>
+  <h3>Kommentarer</h3>
+
+  <ul class="comment-list">
+    {
+      comments.length === 0 ? (
+        <li class="empty">Ingen kommentarer ennå — bli den første!</li>
+      ) : (
+        comments.map((comment) => (
+          <li class="comment">
+            <p class="comment-meta">
+              <span class="comment-author">{comment.author}</span>
+              <span class="comment-date">{formatDate(comment.createdAt)}</span>
+            </p>
+            {/* Astro escapes {comment.commentText} automatically, so user text
+                can't inject HTML here. */}
+            <p class="comment-text">{comment.commentText}</p>
+          </li>
+        ))
+      )
+    }
+  </ul>
+
+  <form class="comment-form">
+    <Field
+      label="Kommentar"
+      as="textarea"
+      name="comment-text"
+      rows={3}
+      required
+      placeholder="Skriv en kommentar"
+    />
+    <Field
+      label="Navn (valgfritt)"
+      name="comment-author"
+      type="text"
+      placeholder="Ditt navn"
+    />
+    <p class="status" role="status"></p>
+    <div class="actions">
+      <Button type="submit" variant="primary">Kommenter</Button>
+    </div>
+  </form>
+</section>
+
+<script>
+  // Submit binds DIRECTLY on each form element, not delegated on document —
+  // the FeedbackPanel pattern. ClientRouter also listens for submit on
+  // document (ClientRouter.astro), and it registers first (it lives in <head>).
+  // A document-level listener would therefore run AFTER it and lose the race:
+  // ClientRouter would see defaultPrevented === false and navigate the form as a
+  // GET to the current page with the fields as query params. Binding on the form
+  // runs in the target phase, before anything bubbles to document, so our
+  // preventDefault() wins and ClientRouter's defaultPrevented check bails out.
+  //
+  // astro:page-load re-binds after every ClientRouter navigation, since the
+  // swapped DOM takes the old form elements (and their listeners) with it.
+  import type { Comment } from "../../lib/comments";
+
+  // Duplicated from the frontmatter on purpose: frontmatter code runs on the
+  // server only and does not cross into the client bundle.
+  const formatDate = (value: string) =>
+    new Intl.DateTimeFormat("nb-NO", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(new Date(`${value.replace(" ", "T")}Z`));
+
+  // Rebuilt comment items are created with createElement, so they never get
+  // Astro's scoping attributes — their styling must come from global.css.
+  // textContent (never innerHTML) is what keeps user text from injecting HTML.
+  //
+  // NB: appendChild, ikke append — worker-configuration.d.ts erklærer en global
+  // Element-interface (for HTMLRewriter) med append(string | ReadableStream |
+  // Response). Den skygger DOM-append(...nodes) i dette prosjektet, så
+  // el.append(node) blir typefeil. appendChild er ikke skyggelagt.
+  function renderComments(list: HTMLElement, comments: Comment[]) {
+    list.replaceChildren();
+
+    if (comments.length === 0) {
+      const empty = document.createElement("li");
+      empty.className = "empty";
+      empty.textContent = "Ingen kommentarer ennå — bli den første!";
+      list.appendChild(empty);
+      return;
+    }
+
+    for (const comment of comments) {
+      const item = document.createElement("li");
+      item.className = "comment";
+
+      const meta = document.createElement("p");
+      meta.className = "comment-meta";
+
+      const author = document.createElement("span");
+      author.className = "comment-author";
+      author.textContent = comment.author;
+
+      const date = document.createElement("span");
+      date.className = "comment-date";
+      date.textContent = formatDate(comment.createdAt);
+
+      meta.appendChild(author);
+      meta.appendChild(date);
+
+      const text = document.createElement("p");
+      text.className = "comment-text";
+      text.textContent = comment.commentText;
+
+      item.appendChild(meta);
+      item.appendChild(text);
+      list.appendChild(item);
+    }
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    // Én listener per skjema — se kommentaren øverst om hvorfor dette ikke
+    // kan delegeres på document.
+    const forms = document.querySelectorAll<HTMLFormElement>(".comment-form");
+
+    for (const form of forms) {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const section = form.closest<HTMLElement>(".comments");
+        const list = section?.querySelector<HTMLElement>(".comment-list") ?? null;
+        const statusEl = form.querySelector<HTMLElement>(".status");
+        const textInput = form.querySelector<HTMLTextAreaElement>(
+          'textarea[name="comment-text"]',
+        );
+        const authorInput = form.querySelector<HTMLInputElement>(
+          'input[name="comment-author"]',
+        );
+        const submitButton = form.querySelector<HTMLButtonElement>(
+          'button[type="submit"]',
+        );
+        if (!section || !list || !statusEl || !textInput) return;
+
+        const postId = Number(section.dataset.postId);
+        const commentText = textInput.value;
+
+        if (commentText.trim().length === 0) {
+          statusEl.textContent = "Kommentaren kan ikke være tom.";
+          statusEl.dataset.state = "error";
+          return;
+        }
+
+        // Hindrer dobbeltposting hvis noen trykker "Kommenter" flere ganger
+        // mens forespørselen fortsatt er i flight.
+        if (submitButton) submitButton.disabled = true;
+
+        try {
+          const res = await fetch("/api/comments", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              postId,
+              author: authorInput?.value ?? "",
+              commentText,
+            }),
+          });
+
+          if (!res.ok) {
+            statusEl.textContent = "Noe gikk galt. Prøv igjen.";
+            statusEl.dataset.state = "error";
+            return;
+          }
+
+          statusEl.textContent = "Takk for kommentaren!";
+          statusEl.dataset.state = "ok";
+          form.reset();
+
+          // Hent listen på nytt så den nye kommentaren vises uten side-reload.
+          const refresh = await fetch(`/api/comments?postId=${postId}`);
+          if (refresh.ok) {
+            const data = (await refresh.json()) as { comments: Comment[] };
+            renderComments(list, data.comments);
+          }
+        } finally {
+          if (submitButton) submitButton.disabled = false;
+        }
+      });
+    }
+  });
+</script>
