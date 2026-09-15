@@ -22,6 +22,31 @@ export async function getCommentsForPost(postId: number) {
 
 }
 
+// Henter ALLE kommentarer i én spørring og grupperer dem på postId. Bloggsidene
+// rendrer alle innlegg på én side, så getCommentsForPost per innlegg ville blitt
+// N+1 (én D1-rundtur per innlegg, og Workers har grense på antall subrequests).
+// Hele tabellen er liten på en personblogg; bytt til WHERE postId IN (...) her
+// hvis den noen gang vokser.
+export async function getAllComments(): Promise<Map<number, Comment[]>> {
+    const db = getDb();
+
+    const comments = await db
+        .prepare('SELECT * FROM Comments ORDER BY createdAt DESC, commentId')
+        .all<Comment>();
+
+    const byPost = new Map<number, Comment[]>();
+    for (const comment of comments.results) {
+        const list = byPost.get(comment.postId);
+        if (list) {
+            list.push(comment);
+        } else {
+            byPost.set(comment.postId, [comment]);
+        }
+    }
+
+    return byPost;
+}
+
 export async function saveComment(postId: number, author: string, commentText: string): Promise<number | null> {
     const db = getDb();
 
