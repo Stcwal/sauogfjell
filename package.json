@@ -8,7 +8,8 @@
     "preview": "npx astro preview",
     "prestart": "npm run check:posts",
     "start": "npx astro preview",
-    "check:posts": "npx tsx populate-post-db.ts"
+    "check:posts": "npx tsx populate-post-db.ts",
+    "check:posts:remote": "npx tsx populate-post-db.ts --remote"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.7.0",
