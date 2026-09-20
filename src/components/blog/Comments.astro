@@ -142,14 +142,36 @@ const formatDate = (value: string) =>
     }
   }
 
-  document.addEventListener("astro:page-load", () => {
-    // Én listener per skjema — se kommentaren øverst om hvorfor dette ikke
-    // kan delegeres på document.
+  // astro:page-load listeners live on document, which survives ClientRouter
+  // navigations. If this script ever executes twice (inline scripts can be
+  // re-run after a swap), a second document-level listener would stack on top
+  // of the first and every form would get TWO submit listeners — one tap, two
+  // POSTs. The flag keeps the registration idempotent.
+  if (!document.documentElement.dataset.commentsPageLoadBound) {
+    document.documentElement.dataset.commentsPageLoadBound = "1";
+    document.addEventListener("astro:page-load", onPageLoad);
+  }
+
+  function onPageLoad() {
     const forms = document.querySelectorAll<HTMLFormElement>(".comment-form");
 
     for (const form of forms) {
+      // Same idea per form: astro:page-load fires on every navigation, and a
+      // form that survives a swap (or a re-run of this handler) must not
+      // accumulate a second submit listener.
+      if (form.dataset.commentsBound) continue;
+      form.dataset.commentsBound = "1";
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        // In-flight guard checked BEFORE anything else: on mobile, two submit
+        // events can arrive back-to-back (double-tap on the virtual
+        // keyboard's send key, iOS autofill) before the disabled button
+        // stops the second one. Disabling the button alone doesn't help —
+        // this handler never looked at the button state, so both events
+        // POSTed. The dataset flag is checked synchronously by both runs.
+        if (form.dataset.submitting) return;
+        form.dataset.submitting = "1";
 
         const section = form.closest<HTMLElement>(".comments");
         const list = section?.querySelector<HTMLElement>(".comment-list") ?? null;
@@ -163,7 +185,10 @@ const formatDate = (value: string) =>
         const submitButton = form.querySelector<HTMLButtonElement>(
           'button[type="submit"]',
         );
-        if (!section || !list || !statusEl || !textInput) return;
+        if (!section || !list || !statusEl || !textInput) {
+          delete form.dataset.submitting;
+          return;
+        }
 
         const postId = Number(section.dataset.postId);
         const commentText = textInput.value;
@@ -171,13 +196,13 @@ const formatDate = (value: string) =>
         if (commentText.trim().length === 0) {
           statusEl.textContent = "Kommentaren kan ikke være tom.";
           statusEl.dataset.state = "error";
+          delete form.dataset.submitting;
           return;
         }
 
         // Hindrer dobbeltposting hvis noen trykker "Kommenter" flere ganger
         // mens forespørselen fortsatt er i flight.
         if (submitButton) submitButton.disabled = true;
-
         try {
           const res = await fetch("/api/comments", {
             method: "POST",
@@ -207,8 +232,9 @@ const formatDate = (value: string) =>
           }
         } finally {
           if (submitButton) submitButton.disabled = false;
+          delete form.dataset.submitting;
         }
       });
     }
-  });
+  }
 </script>
