@@ -51,6 +51,11 @@ interface HashedPost {
 const CONTENT_DIRECTORIES = ["dev", "stian", "anders"];
 const LOCAL_D1_PERSIST_TO = ".wrangler/state";
 
+// `--remote` targets the production D1 database instead of the local dev one.
+// Without it every wrangler call hits the local SQLite state under .wrangler/,
+// which is why deploys ended up with an empty Posts table.
+const REMOTE = process.argv.includes("--remote");
+
 function normalizeDate(value: string | Date | null | undefined): string {
   if (!value) return "";
 
@@ -171,9 +176,7 @@ function readPostsTable(): { rows: PostRow[]; tableExists: boolean } {
     "d1",
     "execute",
     "sauogfjell",
-    "--local",
-    "--persist-to",
-    LOCAL_D1_PERSIST_TO,
+    ...(REMOTE ? ["--remote"] : ["--local", "--persist-to", LOCAL_D1_PERSIST_TO]),
     "--command",
     "SELECT postId, title, author, publishDate FROM Posts",
     "--json",
@@ -242,9 +245,7 @@ function syncMissingPosts(contentPosts: HashedPost[], dbPosts: PostRow[]): void 
         "d1",
         "execute",
         "sauogfjell",
-        "--local",
-        "--persist-to",
-        LOCAL_D1_PERSIST_TO,
+        ...(REMOTE ? ["--remote"] : ["--local", "--persist-to", LOCAL_D1_PERSIST_TO]),
         "--command",
         buildInsertSql(post),
         "--json",
@@ -274,6 +275,7 @@ function syncMissingPosts(contentPosts: HashedPost[], dbPosts: PostRow[]): void 
 }
 
 async function populatePostDb(): Promise<void> {
+  console.log(REMOTE ? "Targeting the remote (production) D1 database." : "Targeting the local D1 database.");
   const contentPosts = collectContentPosts();
 
   if (contentPosts.length === 0) {
