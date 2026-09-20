@@ -38,7 +38,6 @@ interface PostRow {
   title: string;
   author: string | null;
   publishDate: string | null;
-  draft: number | boolean | null;
 }
 
 interface HashedPost {
@@ -46,15 +45,16 @@ interface HashedPost {
   title: string;
   author: string;
   publishDate: string;
-  draft: boolean;
-  editDate: string | null;
-  tags: string;
-  bodytext: string;
   source: string;
 }
 
 const CONTENT_DIRECTORIES = ["dev", "stian", "anders"];
 const LOCAL_D1_PERSIST_TO = ".wrangler/state";
+
+// `--remote` targets the production D1 database instead of the local dev one.
+// Without it every wrangler call hits the local SQLite state under .wrangler/,
+// which is why deploys ended up with an empty Posts table.
+const REMOTE = process.argv.includes("--remote");
 
 function normalizeDate(value: string | Date | null | undefined): string {
   if (!value) return "";
@@ -70,14 +70,6 @@ function normalizeText(value: string | null | undefined): string {
   return value ? String(value).trim() : "";
 }
 
-function normalizeTags(value: unknown): string {
-  if (!Array.isArray(value) || value.length === 0) {
-    return "[]";
-  }
-
-  return JSON.stringify(value.map((tag) => normalizeText(tag).replaceAll("'", "''")).filter(Boolean));
-}
-
 function generateHash(title: string, author: string, publishDate: string): string {
   const content = `${title}${author}${publishDate}`;
   return crypto.createHash("sha256").update(content).digest("hex");
@@ -91,16 +83,6 @@ function parseFrontmatter(fileContent: string): Post | null {
   }
 
   return load(parts[1]) as Post;
-}
-
-function extractBodyText(fileContent: string): string {
-  const parts = fileContent.split("---");
-
-  if (parts.length < 3) {
-    return "";
-  }
-
-  return parts.slice(2).join("---").trim();
 }
 
 function collectMarkdownFiles(directory: string): string[] {
@@ -146,10 +128,6 @@ function collectContentPosts(): HashedPost[] {
         const title = normalizeText(frontmatter.title);
         const author = normalizeText(frontmatter.author);
         const publishDate = normalizeDate(frontmatter.publishDate);
-        const draft = Boolean(frontmatter.draft);
-        const editDate = frontmatter.editDate ? normalizeDate(frontmatter.editDate) : null;
-        const tags = normalizeTags(frontmatter.tags);
-        const bodytext = extractBodyText(fileContent);
 
         if (!title || !author || !publishDate) {
           console.warn(`Skipping ${filePath} because title, author, or publishDate is missing.`);
@@ -161,10 +139,6 @@ function collectContentPosts(): HashedPost[] {
           title,
           author,
           publishDate,
-          draft,
-          editDate,
-          tags,
-          bodytext,
           source: path.relative(process.cwd(), filePath),
         });
       } catch (error) {
@@ -186,16 +160,12 @@ function sqlString(value: string | null | undefined): string {
 
 function buildInsertSql(post: HashedPost): string {
   return [
-    "INSERT INTO Posts (title, author, draft, publishDate, editDate, tags, bodytext)",
+    "INSERT INTO Posts (title, author, publishDate)",
     "VALUES (",
     [
       sqlString(post.title),
       sqlString(post.author),
-      post.draft ? "1" : "0",
       sqlString(post.publishDate),
-      sqlString(post.editDate),
-      sqlString(post.tags),
-      sqlString(post.bodytext),
     ].join(", "),
     ")",
   ].join(" ");
@@ -206,11 +176,9 @@ function readPostsTable(): { rows: PostRow[]; tableExists: boolean } {
     "d1",
     "execute",
     "sauogfjell",
-    "--local",
-    "--persist-to",
-    LOCAL_D1_PERSIST_TO,
+    ...(REMOTE ? ["--remote"] : ["--local", "--persist-to", LOCAL_D1_PERSIST_TO]),
     "--command",
-    "SELECT postId, title, author, publishDate, draft FROM Posts",
+    "SELECT postId, title, author, publishDate FROM Posts",
     "--json",
     "--yes",
   ];
@@ -277,9 +245,7 @@ function syncMissingPosts(contentPosts: HashedPost[], dbPosts: PostRow[]): void 
         "d1",
         "execute",
         "sauogfjell",
-        "--local",
-        "--persist-to",
-        LOCAL_D1_PERSIST_TO,
+        ...(REMOTE ? ["--remote"] : ["--local", "--persist-to", LOCAL_D1_PERSIST_TO]),
         "--command",
         buildInsertSql(post),
         "--json",
@@ -309,6 +275,7 @@ function syncMissingPosts(contentPosts: HashedPost[], dbPosts: PostRow[]): void 
 }
 
 async function populatePostDb(): Promise<void> {
+  console.log(REMOTE ? "Targeting the remote (production) D1 database." : "Targeting the local D1 database.");
   const contentPosts = collectContentPosts();
 
   if (contentPosts.length === 0) {

@@ -1,9 +1,12 @@
 ---
 import { getCollection, render } from "astro:content";
 import BlogPostWrapper from "./BlogPostWrapper.astro";
+import Comments from "./Comments.astro";
 import Stack from "../ui/Stack.astro";
 import Tag from "../ui/Tag.astro";
 import { getTagColor } from "../../lib/tags";
+import { getAllComments } from "../../lib/comments";
+import { getPostIdMap, postIdentityKey } from "../../lib/posts";
 
 interface Props {
   collection: "dev" | "stian" | "anders";
@@ -16,6 +19,12 @@ const posts = await getCollection(collection, ({ data }) => {
   const isVisible = import.meta.env.DEV || !data.draft;
   return isVisible;
 });
+
+// postId-lookup og kommentarer hentes ÉN gang for hele siden, ikke per innlegg
+// (N+1). Drafts er aldri synket til Posts-tabellen, så de får ingen postId og
+// dermed ingen kommentarseksjon — se oppslaget i render-loopen under.
+const postIdMap = await getPostIdMap();
+const commentsByPost = await getAllComments();
 
 posts.sort((a, b) => {
   //Sorterer først på publishDate, så editDate
@@ -39,6 +48,16 @@ const formatDate = (date: Date) =>
     await Promise.all(
       posts.map(async (post, i) => {
         const { Content } = await render(post);
+        // Samme identitet som populate-post-db.ts synker på (title, author,
+        // publishDate). Mangler oppslaget finnes innlegget ikke i Posts ennå
+        // (f.eks. drafts) — da rendres ingen kommentarseksjon.
+        const postId = postIdMap.get(
+          postIdentityKey(
+            post.data.title,
+            post.data.author,
+            post.data.publishDate,
+          ),
+        );
         return (
           <BlogPostWrapper data-language={post.data.language}>
             <Stack direction="row" wrap gap="var(--space-2)">
@@ -53,6 +72,12 @@ const formatDate = (date: Date) =>
                 ? `, sist endret ${formatDate(post.data.editDate)}`
                 : ""}
             </a>
+            {postId !== undefined ? (
+              <Comments
+                postId={postId}
+                comments={commentsByPost.get(postId) ?? []}
+              />
+            ) : null}
             {i < posts.length - 1 ? <hr /> : null}
           </BlogPostWrapper>
         );

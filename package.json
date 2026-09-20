@@ -2,13 +2,14 @@
   "scripts": {
     "predev": "npm run check:posts",
     "dev": "npx astro dev",
-    "prebuild": "npm run check:posts",
+    "prebuild": "npm run check:posts:remote",
     "build": "npx astro build",
     "prepreview": "npm run check:posts",
     "preview": "npx astro preview",
     "prestart": "npm run check:posts",
     "start": "npx astro preview",
-    "check:posts": "npx tsx populate-post-db.ts"
+    "check:posts": "npx tsx populate-post-db.ts",
+    "check:posts:remote": "npx tsx populate-post-db.ts --remote"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.7.0",
