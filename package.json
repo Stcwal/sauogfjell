@@ -2,7 +2,7 @@
   "scripts": {
     "predev": "npm run check:posts",
     "dev": "npx astro dev",
-    "prebuild": "npm run check:posts",
+    "prebuild": "npm run check:posts:remote",
     "build": "npx astro build",
     "prepreview": "npm run check:posts",
     "preview": "npx astro preview",
