@@ -5,6 +5,7 @@ draft: true #true/false
 publishDate: 2026-09-11 #Format 2026-05-24
 #editDate: #Format 2026-05-24, denne er optional
 tags: [Akademisk] #Format [X, Y, Z], optional
+# language: english #english eller german #norwegian er default
 ---
 
 # Vil ikke jobbe med deg heller

@@ -5,6 +5,7 @@ draft: true #true/false
 publishDate: 2026-08-29 #Format 2026-05-24
 #editDate: #Format 2026-05-24, denne er optional
 tags: [Tøys] #Format [X, Y, Z], optional
+# language: english #english eller german #norwegian er default
 ---
 
 # Hat mer!
