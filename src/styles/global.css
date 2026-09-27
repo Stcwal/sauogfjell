@@ -399,7 +399,13 @@ h6 {
 .comment-list {
   list-style: none;
   margin: 0 0 var(--space-4);
-  padding: 0;
+  /* boksen rundt hele listen: padding + kant her i stedet for per kommentar */
+  padding: var(--space-2);
+  background: var(--color-surface-raised);
+  border-style: var(--border-style);
+  border-width: var(--border-width-strong);
+  border-color: var(--border-color-strong);
+  border-radius: var(--radius-1);
   display: flex;
   flex-direction: column;
   /* tettere mellomrom mellom kommentarene */
@@ -411,14 +417,17 @@ h6 {
   font-style: italic;
 }
 
+/* Hver kommentar er bare en rad i boksen, skilt med en tynn linje — ingen egen
+   bakgrunn/kant per kommentar lenger. :not(:last-child) slipper linjen etter
+   den siste, så den ikke henger dobbelt opp mot boksens egen kant.
+   NB: fast 1px, ikke var(--border-width) — den er 0px i vanlig og dark tema
+   (dekorativ token), som gjorde skillelinjen usynlig der. */
 .comment {
-  /* tettere indre padding enn før (--space-3) */
-  padding: var(--space-2);
-  background: var(--color-surface-raised);
-  border-style: var(--border-style);
-  border-width: var(--border-width-strong);
-  border-color: var(--border-color-strong);
-  border-radius: var(--radius-1);
+  padding: var(--space-2) 0;
+}
+
+.comment:not(:last-child) {
+  border-bottom: 1px solid var(--border-color-subtle);
 }
 
 .comment-meta {
@@ -439,7 +448,8 @@ h6 {
 
 .comment-text {
   margin: 0;
-  font-size: var(--font-size-2);
+  /* enda mindre enn brødteksten (--font-size-2) */
+  font-size: var(--font-size-1);
   /* bevarer linjeskift i kommentaren uten at HTML kan snike seg inn */
   white-space: pre-line;
   overflow-wrap: break-word;
@@ -451,14 +461,12 @@ h6 {
   gap: var(--space-3);
 }
 
-/* Ulik utforming av skrivefeltet vs. kommentarkortene: gjennomsiktig bakgrunn
-   og stiplet kant gir en "fyll inn her"-følelse, i motsetning til de hevede
-   kortene over. Trenger høyere spesifisitet enn Field.astro sine scoped styles
-   — Astros scoping bruker :where() (null spesifisitet), så denne vinner. */
+/* Skrivefeltet beholder Field.astro sin utforming (solid kant, hevet bakgrunn),
+   men med en litt gråere farge enn --color-surface-raised. --color-surface-hover
+   er allerede en nøytral gråtone i hvert tema, så den følger med temaene. */
 .comments .comment-form .field input,
 .comments .comment-form .field textarea {
-  background: transparent;
-  border-style: dashed;
+  background: var(--color-surface-hover);
 }
 
 .comment-form .actions {
