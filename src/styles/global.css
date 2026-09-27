@@ -392,7 +392,8 @@ h6 {
 
 .comments h3 {
   margin: 0 0 var(--space-2);
-  font-size: var(--font-size-3);
+  /* samme størrelse som brødteksten i innlegget (--font-size-2) */
+  font-size: var(--font-size-2);
 }
 
 .comment-list {
@@ -401,7 +402,8 @@ h6 {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  /* tettere mellomrom mellom kommentarene */
+  gap: var(--space-2);
 }
 
 .comment-list .empty {
@@ -410,7 +412,8 @@ h6 {
 }
 
 .comment {
-  padding: var(--space-3);
+  /* tettere indre padding enn før (--space-3) */
+  padding: var(--space-2);
   background: var(--color-surface-raised);
   border-style: var(--border-style);
   border-width: var(--border-width-strong);
@@ -446,6 +449,16 @@ h6 {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+}
+
+/* Ulik utforming av skrivefeltet vs. kommentarkortene: gjennomsiktig bakgrunn
+   og stiplet kant gir en "fyll inn her"-følelse, i motsetning til de hevede
+   kortene over. Trenger høyere spesifisitet enn Field.astro sine scoped styles
+   — Astros scoping bruker :where() (null spesifisitet), så denne vinner. */
+.comments .comment-form .field input,
+.comments .comment-form .field textarea {
+  background: transparent;
+  border-style: dashed;
 }
 
 .comment-form .actions {
