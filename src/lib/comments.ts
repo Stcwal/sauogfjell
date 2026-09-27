@@ -14,7 +14,7 @@ export async function getCommentsForPost(postId: number) {
     const db = getDb(); 
 
     const comments = await db
-        .prepare('SELECT * FROM Comments WHERE postId = ? ORDER BY createdAt DESC, commentId')
+        .prepare('SELECT * FROM Comments WHERE postId = ? ORDER BY createdAt ASC, commentId')
         .bind(postId)
         .all<Comment>();
 
@@ -31,7 +31,7 @@ export async function getAllComments(): Promise<Map<number, Comment[]>> {
     const db = getDb();
 
     const comments = await db
-        .prepare('SELECT * FROM Comments ORDER BY createdAt DESC, commentId')
+        .prepare('SELECT * FROM Comments ORDER BY createdAt ASC, commentId')
         .all<Comment>();
 
     const byPost = new Map<number, Comment[]>();
