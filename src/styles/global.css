@@ -392,16 +392,24 @@ h6 {
 
 .comments h3 {
   margin: 0 0 var(--space-2);
-  font-size: var(--font-size-3);
+  /* samme størrelse som brødteksten i innlegget (--font-size-2) */
+  font-size: var(--font-size-2);
 }
 
 .comment-list {
   list-style: none;
   margin: 0 0 var(--space-4);
-  padding: 0;
+  /* boksen rundt hele listen: padding + kant her i stedet for per kommentar */
+  padding: var(--space-2);
+  background: var(--color-surface-raised);
+  border-style: var(--border-style);
+  border-width: var(--border-width-strong);
+  border-color: var(--border-color-strong);
+  border-radius: var(--radius-1);
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  /* tettere mellomrom mellom kommentarene */
+  gap: var(--space-2);
 }
 
 .comment-list .empty {
@@ -409,13 +417,17 @@ h6 {
   font-style: italic;
 }
 
+/* Hver kommentar er bare en rad i boksen, skilt med en tynn linje — ingen egen
+   bakgrunn/kant per kommentar lenger. :not(:last-child) slipper linjen etter
+   den siste, så den ikke henger dobbelt opp mot boksens egen kant.
+   NB: fast 1px, ikke var(--border-width) — den er 0px i vanlig og dark tema
+   (dekorativ token), som gjorde skillelinjen usynlig der. */
 .comment {
-  padding: var(--space-3);
-  background: var(--color-surface-raised);
-  border-style: var(--border-style);
-  border-width: var(--border-width-strong);
-  border-color: var(--border-color-strong);
-  border-radius: var(--radius-1);
+  padding: var(--space-2) 0;
+}
+
+.comment:not(:last-child) {
+  border-bottom: 1px solid var(--border-color-subtle);
 }
 
 .comment-meta {
@@ -436,7 +448,8 @@ h6 {
 
 .comment-text {
   margin: 0;
-  font-size: var(--font-size-2);
+  /* enda mindre enn brødteksten (--font-size-2) */
+  font-size: var(--font-size-1);
   /* bevarer linjeskift i kommentaren uten at HTML kan snike seg inn */
   white-space: pre-line;
   overflow-wrap: break-word;
@@ -446,6 +459,14 @@ h6 {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+}
+
+/* Skrivefeltet beholder Field.astro sin utforming (solid kant, hevet bakgrunn),
+   men med en litt gråere farge enn --color-surface-raised. --color-surface-hover
+   er allerede en nøytral gråtone i hvert tema, så den følger med temaene. */
+.comments .comment-form .field input,
+.comments .comment-form .field textarea {
+  background: var(--color-surface-hover);
 }
 
 .comment-form .actions {
